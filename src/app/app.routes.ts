@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'app', component: AppPlaceholderComponent },
   { path: 'login', component: Login },
   { path: 'shop/products', component: Products },
-  { path: 'shop/products', component: Rating },
+  { path: 'shop/rating', component: Rating },
   { path: '**', redirectTo: '' },
   
 ];
