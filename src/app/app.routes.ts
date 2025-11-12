@@ -17,8 +17,9 @@ export const routes: Routes = [
   { path: 'dev/products', component: DevProductsComponent },
   { path: 'dev/products/:id/rating', component: DevProductRatingComponent },
   { path: 'app', component: AppPlaceholderComponent },
-  { path: '/login', component: Login },
-  { path: '/shop/products', component: Rating },
+  { path: 'login', component: Login },
+  { path: 'shop/products', component: Products },
+  { path: 'shop/products', component: Rating },
   { path: '**', redirectTo: '' },
   
 ];
