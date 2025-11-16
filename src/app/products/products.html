@@ -1,4 +1,50 @@
 <div class="products-page">
+    <mat-card class="filters-card">
+        <h2 class="filters-title">Products</h2>
+
+        <form [formGroup]="filters" (ngSubmit)="onSearch()" class="filters-grid">
+        <mat-form-field appearance="outline">
+            <mat-label>Page</mat-label>
+            <input matInput type="number" formControlName="page" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Page size</mat-label>
+            <input matInput type="number" formControlName="pageSize" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Min rating</mat-label>
+            <input matInput type="number" formControlName="minRating" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Ordering</mat-label>
+            <mat-select formControlName="ordering">
+            <mat-option value="-created_at">Newest first</mat-option>
+            <mat-option value="created_at">Oldest first</mat-option>
+            <mat-option value="-price">Price ↓</mat-option>
+            <mat-option value="price">Price ↑</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit">
+            Apply
+        </button>
+        </form>
+
+        <div class="status-row">
+        <div *ngIf="loading$ | async" class="spinner-wrapper">
+            <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+        </div>
+
+        <p *ngIf="error$ | async as error" class="error-text">
+            {{ error }}
+        </p>
+
+        <p class="count-text">Total: {{ count$ | async }}</p>
+        </div>
+    </mat-card>
     <mat-card class="table-card">
         <table mat-table [dataSource]="(products$ | async) || []" class="mat-elevation-z2">
 
