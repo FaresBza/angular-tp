@@ -2,7 +2,7 @@
 import { createReducer, on } from '@ngrx/store';
 import { ProductsActions } from './products.action';
 
-export interface ProductsAuth {
+export interface ProductsState {
     list: any[];
     count: number;
     loading: boolean;
@@ -10,7 +10,7 @@ export interface ProductsAuth {
     lastRating: { product_id: number; avg_rating: number; count: number } | null;
 }
 
-export const initialState: ProductsAuth = {
+export const initialState: ProductsState = {
     list: [],
     count: 0,
     loading: false,
