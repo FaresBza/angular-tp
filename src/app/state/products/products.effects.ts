@@ -1,8 +1,9 @@
+// src/app/state/products/products.effects.ts
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ProductsActions, ProductsSucessResponse } from './products.action';
-import { catchError, map, switchMap, of } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 
 @Injectable()
 export class ProductsEffects {
@@ -11,15 +12,34 @@ export class ProductsEffects {
 
     loadProducts$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(ProductsActions.loadProducts),
-        switchMap(() =>
-            this.http.get<ProductsSucessResponse>('/api/products/').pipe(
-            map((data) => ProductsActions.loadProductsSuccess({ data })),
-            catchError((err) =>
-                of(ProductsActions.loadProductsFailure({ error: err?.message ?? 'Load failed' }))
-            )
-            )
-        )
-        )
+            ofType(ProductsActions.loadProducts),
+            switchMap(() =>
+                this.http
+                .get<ProductsSucessResponse>('/api/products/').pipe(
+                    map(data => ProductsActions.loadProductsSuccess({ data })),
+                    catchError(err =>
+                        of(ProductsActions.loadProductsFailure({ error: err?.message ?? 'Load failed' })),
+                    ),
+                ),
+            ),
+        ),
+    );
+
+    loadRating$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(ProductsActions.loadRating),
+            switchMap(({ id }) =>
+                this.http
+                .get<{ product_id: number; avg_rating: number; count: number }>(
+                    `/api/products/${id}/rating/`,
+                )
+                .pipe(
+                    map(r => ProductsActions.loadRatingSuccess(r)),
+                    catchError(err =>
+                        of(ProductsActions.loadProductsFailure({ error: err?.message ?? 'Rating failed' })),
+                    ),
+                ),
+            ),
+        ),
     );
 }

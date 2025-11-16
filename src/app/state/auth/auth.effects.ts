@@ -1,11 +1,17 @@
+// src/app/state/auth/auth.effects.ts
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
 import { AuthActions } from './auth.actions';
 import { catchError, map, switchMap, of } from 'rxjs';
 
-interface LoginRes { access: string; refresh: string }
-interface RefreshRes { access: string }
+interface LoginRes {
+    access: string;
+    refresh: string;
+}
+interface RefreshRes {
+    access: string;
+}
 
 @Injectable()
 export class AuthEffects {
@@ -18,12 +24,12 @@ export class AuthEffects {
         switchMap(({ username, password }) =>
             this.http.post<LoginRes>('/api/auth/token/', { username, password }).pipe(
             map(({ access, refresh }) => AuthActions.loginSuccess({ access, refresh })),
-            catchError((err) =>
-                of(AuthActions.loginFailure({ error: err?.message ?? 'Login failed' }))
-            )
-            )
-        )
-        )
+            catchError(err =>
+                of(AuthActions.loginFailure({ error: err?.message ?? 'Login failed' })),
+            ),
+            ),
+        ),
+        ),
     );
 
     refresh$ = createEffect(() =>
@@ -33,10 +39,10 @@ export class AuthEffects {
             this.http.post<RefreshRes>('/api/auth/token/refresh/', {}).pipe(
             map(({ access }) => AuthActions.refreshSuccess({ access })),
             catchError(() =>
-                of(AuthActions.loginFailure({ error: 'Refresh failed' }))
-            )
-            )
-        )
-        )
+                of(AuthActions.loginFailure({ error: 'Refresh failed' })),
+            ),
+            ),
+        ),
+        ),
     );
 }
