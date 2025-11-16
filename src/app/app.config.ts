@@ -10,6 +10,10 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient } from '@angular/common/http';
+import { authReducer } from './state/auth/auth.reducer';
+import { productsReducer } from './state/products/products.reducer';
+import { AuthEffects } from './state/auth/auth.effects';
+import { ProductsEffects } from './state/products/products.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +24,7 @@ export const appConfig: ApplicationConfig = {
     provideEffects(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideHttpClient(),
+    provideStore({ auth: authReducer, products: productsReducer }),
+    provideEffects([AuthEffects, ProductsEffects]),
 ],
 };
