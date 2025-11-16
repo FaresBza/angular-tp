@@ -1,6 +1,6 @@
 <div class="products-page">
     <mat-card class="table-card">
-        <table mat-table class="mat-elevation-z2">
+        <table mat-table [dataSource]="(products$ | async) || []" class="mat-elevation-z2">
 
         <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>ID</th>
