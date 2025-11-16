@@ -5,6 +5,14 @@ export interface ProductsSucessResponse {
     results: any[];
 }
 
+export interface ProductsQuery {
+    page?: number;
+    pageSize?: number;
+    minRating?: number;
+    ordering?: string;
+}
+
+
 export const ProductsActions = createActionGroup({
     source: 'Products',
     events: {
