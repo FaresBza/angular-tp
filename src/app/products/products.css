@@ -119,6 +119,14 @@ th:last-child {
     padding-right: 16px !important;
 }
 
+.clickable-row {
+    cursor: pointer;
+}
+
+.clickable-row:hover {
+    background: #eef2ff;
+}
+
 @media (max-width: 600px) {
     .filters-grid {
         grid-template-columns: 1fr;

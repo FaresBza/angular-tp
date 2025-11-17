@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 import { ProductsActions } from '../state/products/products.action';
 import {
@@ -40,6 +41,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 export class Products implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
+  private router = inject(Router);
 
   displayedColumns = ['id', 'name', 'price', 'created_at', 'avg'];
 
@@ -69,5 +71,9 @@ export class Products implements OnInit {
       })
     );
   }
-}
 
+  // appelé quand on clique sur une ligne
+  goToRating(id: number) {
+    this.router.navigate(['/shop/rating', id]);
+  }
+}
