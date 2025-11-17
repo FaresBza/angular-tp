@@ -37,7 +37,7 @@ import { filter, take } from 'rxjs';
     MatChipsModule,
   ],
 })
-export class Login implements OnInit {
+export class LoginPageComponent implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
   private router = inject(Router);

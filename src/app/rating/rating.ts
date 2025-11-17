@@ -21,7 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   styleUrls: ['./rating.css'],
   imports: [AsyncPipe, NgIf, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule],
 })
-export class Rating implements OnInit {
+export class ProductRatingPageComponent implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
 
