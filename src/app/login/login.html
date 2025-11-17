@@ -1,3 +1,40 @@
-<h1>Login</h1>
-<p>login works!</p>
+<div class="login-page">
+    <mat-card class="login-card">
+        <h2 class="login-title">My Shop – Login</h2>
 
+        <mat-chip-listbox class="login-chip-row">
+        <mat-chip *ngIf="isLoggedIn$ | async" color="primary" selected>
+            Logged in
+        </mat-chip>
+        </mat-chip-listbox>
+
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" />
+            @if (loginForm.get('username')?.hasError('required')) {
+            <mat-error>
+            Username is required
+            </mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" />
+            @if (loginForm.get('password')?.hasError('required')) {
+            <mat-error>
+            Password is required
+            </mat-error>
+            }
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" class="login-button">
+            Login
+        </button>
+        </form>
+
+        <div class="status">
+            <p *ngIf="error$ | async as error" class="error-text">{{ error }}</p>
+        </div>
+    </mat-card>
+</div>
