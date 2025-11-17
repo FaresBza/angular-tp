@@ -1,2 +1,30 @@
-<h1>Rating</h1>
-<p>rating works!</p>
+<div class="rating-page">
+  <mat-card class="rating-card">
+    <div class="rating-header">
+      <h2>Product Rating</h2>
+      <span *ngIf="productId !== null" class="rating-id">ID : {{ productId }}</span>
+    </div>
+    <div class="rating-status">
+
+      <p *ngIf="error$ | async as error" class="error-text">
+        {{ error }}
+      </p>
+    </div>
+
+    <div *ngIf="rating$ | async as rating" class="rating-result">
+      <p class="rating-line">
+        Average rating:
+        <strong>{{ rating.avg_rating.toFixed(1) }}</strong>/5
+      </p>
+      <p class="rating-line">
+        Votes: <strong>{{ rating.count }}</strong>
+      </p>
+    </div>
+
+    <div class="rating-actions">
+      <button mat-stroked-button routerLink="/shop/products">
+        ← Back to products
+      </button>
+    </div>
+  </mat-card>
+</div>

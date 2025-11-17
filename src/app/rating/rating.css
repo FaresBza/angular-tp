@@ -1,0 +1,53 @@
+.rating-page {
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  background: linear-gradient(135deg, #eef2ff, #ede9fe);
+}
+
+.rating-card {
+  width: 50%;
+  max-width: 460px;
+  padding: 20px 24px 24px;
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+}
+
+.rating-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.rating-id {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.rating-status {
+  min-height: 40px;
+}
+
+.error-text {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+.rating-result {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.rating-line {
+  margin: 4px 0;
+}
+
+.rating-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+}
