@@ -72,8 +72,7 @@ export class Products implements OnInit {
     );
   }
 
-  // appelé quand on clique sur une ligne
-  goToRating(id: number) {
+  goToRatingProductPage(id: number) {
     this.router.navigate(['/shop/rating', id]);
   }
 }

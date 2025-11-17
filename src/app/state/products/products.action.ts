@@ -12,7 +12,6 @@ export interface ProductsQuery {
     ordering?: string;
 }
 
-
 export const ProductsActions = createActionGroup({
     source: 'Products',
     events: {
