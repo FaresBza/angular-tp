@@ -1,4 +1,3 @@
-// src/app/pages/login/login.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
