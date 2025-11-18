@@ -5,28 +5,26 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   selector: 'app-placeholder',
   imports: [RouterLink],
+  styleUrl: './app.css',
   template: `
-    <section class="mx-auto max-w-3xl px-4 py-10 space-y-4">
-      <h2 class="text-2xl font-semibold">App Shop — Placeholder</h2>
-      <p class="text-gray-600">Ici viendra l’UI cohérente (login, liste produits, avis...).</p>
-      <nav class="flex gap-3">
-        <button type="button" routerLink="/dev" class="rounded border px-3 py-2 hover:bg-gray-50">
+    <section class="app-placeholder-section">
+      <h2 class="app-title">App Shop — Placeholder</h2>
+      <p class="app-description">
+        Ici viendra l’UI cohérente (login, liste produits, avis...).
+      </p>
+      <nav class="app-nav">
+        <button type="button" routerLink="/dev" class="nav-btn">
           → Aller à la zone de tests
         </button>
-        <button type="button" routerLink="/" class="rounded border px-3 py-2 hover:bg-gray-50">
+        <button type="button" routerLink="/" class="nav-btn">
           ← Retour accueil
         </button>
-        <button mat-raised-button color="primary" routerLink="/login" class="rounded border px-3 py-2 hover:bg-gray-50">
+        <button mat-raised-button routerLink="/login" class="nav-btn">
           Login
-        </button>
-        <button mat-raised-button color="accent" routerLink="/shop/products" class="rounded border px-3 py-2 hover:bg-gray-50">
-          Products
-        </button>
-        <button mat-raised-button color="warn" routerLink="/shop/rating" class="rounded border px-3 py-2 hover:bg-gray-50">
-          Products Rating
         </button>
       </nav>
     </section>
+
   `,
 })
 export class AppPlaceholderComponent {}
