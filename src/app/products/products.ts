@@ -11,6 +11,7 @@ import {
   selectProductsLoading,
   selectProductsError,
 } from '../state/products/products.selectors';
+import { selectCartCount } from '../state/cart/cart.selectors';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -50,6 +51,7 @@ export class ProductsPageComponent implements OnInit {
   count$ = this.store.select(selectProductsCount);
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
+  carCount$ = this.store.select(selectCartCount);
 
   filters = this.fb.group({
     page: 1,
@@ -75,5 +77,9 @@ export class ProductsPageComponent implements OnInit {
 
   goToRatingProductPage(id: number) {
     this.router.navigate(['/shop/rating', id]);
+  }
+
+  goToCartPage() {
+    this.router.navigate(['/shop/cart']);
   }
 }
