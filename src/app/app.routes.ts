@@ -9,7 +9,7 @@ import { AppPlaceholderComponent } from './app-placeholder.component';
 import { LoginPageComponent } from './login/login';
 import { ProductsPageComponent } from './products/products';
 import { ProductRatingPageComponent } from './rating/rating';
-import { Cart } from './cart/cart';
+import { CartPageComponent } from './cart/cart';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -21,7 +21,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginPageComponent },
   { path: 'shop/products', component: ProductsPageComponent },
   { path: 'shop/rating/:id', component: ProductRatingPageComponent },
-  { path: 'shop/cart', component: Cart },
+  { path: 'shop/cart', component: CartPageComponent },
   { path: '**', redirectTo: '' },
   
 ];
