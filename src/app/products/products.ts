@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 import { ProductsActions } from '../state/products/products.action';
 import {
@@ -26,6 +26,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './products.html',
   styleUrls: ['./products.css'],
   imports: [
+    RouterLink,
     ReactiveFormsModule,
     AsyncPipe,
     NgIf,
