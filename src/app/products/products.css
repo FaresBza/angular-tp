@@ -45,6 +45,12 @@
 
 .cart-button {
     position: relative;
+    border: none;
+    color: #1f2937;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    cursor: pointer;
 }
 
 .cart-badge {
@@ -56,7 +62,7 @@
     border-radius: 999px;
     padding: 2px 6px;
     font-size: 0.7rem;
-    min-width: 18px;
+    min-width: 1px;
     text-align: center;
     font-weight: 600;
 }
@@ -148,6 +154,18 @@
 
 .clickable-row {
     cursor: pointer;
+}
+
+.table-card .mat-mdc-row:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.table-card .mat-mdc-row:nth-child(even) {
+    background-color: #f0f7ff;
+}
+
+.table-card .mat-mdc-row:hover {
+    background-color: #e6efff !important;
 }
 
 .table-card .mat-mdc-cell:nth-child(1),
