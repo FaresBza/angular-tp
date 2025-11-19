@@ -14,6 +14,7 @@ import { authReducer } from './state/auth/auth.reducer';
 import { productsReducer } from './state/products/products.reducer';
 import { AuthEffects } from './state/auth/auth.effects';
 import { ProductsEffects } from './state/products/products.effects';
+import { cartReducer } from './state/cart/cart.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -24,7 +25,7 @@ export const appConfig: ApplicationConfig = {
     provideEffects(),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
     provideHttpClient(),
-    provideStore({ auth: authReducer, products: productsReducer }),
+    provideStore({ auth: authReducer, products: productsReducer, cart: cartReducer }),
     provideEffects([AuthEffects, ProductsEffects]),
 ],
 };
