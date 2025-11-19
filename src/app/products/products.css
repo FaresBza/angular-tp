@@ -1,6 +1,6 @@
 .products-page {
     min-height: 100vh;
-    background: #f5f5f7;
+    background: #f6f1e8;
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -40,7 +40,7 @@
     margin: 0 0 10px;
     font-size: 1rem;
     font-weight: 600;
-    color: #09a46b;
+    color: #8b4513;
 }
 
 .cart-button {
@@ -72,6 +72,7 @@
     border-radius: 16px;
     background: #ffffff;
     box-shadow: 0 10px 30px rgba(15, 23, 42, 0.07);
+    border: 2px solid #f1e5d8;
 }
 
 .filters-grid {
@@ -84,7 +85,7 @@
 .filters-grid button[type="submit"] {
     width: 200px;
     height: 45px;
-    background: #09a46b !important;
+    background: #000 !important;
     color: white !important;
     border-radius: 25px;
     padding: 8px 18px;
@@ -106,7 +107,7 @@
 
 .count-text {
     margin: 0;
-    color: #09a46b;
+    color: #8b4513;
     font-weight: bold;
 }
 
@@ -114,7 +115,7 @@
     padding: 0;
     border-radius: 18px;
     background: #ffffff;
-    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+    border: 1px solid #f1e5d8;
     overflow: hidden;
 }
 
@@ -124,14 +125,14 @@
 }
 
 .table-card .mat-mdc-header-row {
-    background: #edf1f4;
+    background: #000;
 }
 
 .table-card .mat-mdc-header-cell {
     padding: 14px 20px;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #6b7280;
+    color: #fff;
     border-bottom: 1px solid #e5e7eb;
 }
 
@@ -161,11 +162,11 @@
 }
 
 .table-card .mat-mdc-row:nth-child(even) {
-    background-color: #f0f7ff;
+    background-color: #f6f1e8;
 }
 
 .table-card .mat-mdc-row:hover {
-    background-color: #e6efff !important;
+    background-color: #f1e5d8 !important;
 }
 
 .table-card .mat-mdc-cell:nth-child(1),
@@ -180,7 +181,7 @@
 
 .table-card .mat-mdc-cell:nth-child(5) {
     font-weight: 500;
-    color: #16a34a;
+    color: #8b4513;
 }
 
 @media (max-width: 768px) {
