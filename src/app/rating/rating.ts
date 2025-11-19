@@ -1,3 +1,4 @@
+// src/app/pages/rating/rating.component.ts
 import { Component, OnInit, inject } from '@angular/core';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -8,11 +9,15 @@ import {
   selectLastRating,
   selectProductsError,
   selectProductsLoading,
+  selectProductsList,
 } from '../state/products/products.selectors';
+
+import { CartActions } from '../state/cart/cart.actions';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-rating',
@@ -29,13 +34,32 @@ export class ProductRatingPageComponent implements OnInit {
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
 
-  productId: number | null = null;
+  product$ = this.route.paramMap.pipe(
+  switchMap(params => {
+    const id = Number(params.get('id'));
+    return this.store.select(selectProductsList).pipe(
+      map(products => products.find(p => p.id === id) ?? null)
+    );
+  })
+);
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id') ?? '1');
-      this.productId = id;
       this.store.dispatch(ProductsActions.loadRating({ id }));
     });
+  }
+
+  addToCart(product: { id: number; name: string; price: number } | null) {
+    if (!product) return;
+    this.store.dispatch(
+      CartActions.addItem({
+        product: {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+        },
+      }),
+    );
   }
 }
