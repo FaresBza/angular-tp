@@ -21,6 +21,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { SideNavComponent } from '../layout/side-nav/side-nav';
+
 @Component({
   selector: 'app-products',
   standalone: true,
@@ -38,6 +40,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatButtonModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    SideNavComponent,
   ],
 })
 export class ProductsPageComponent implements OnInit {

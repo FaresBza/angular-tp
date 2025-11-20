@@ -19,12 +19,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { map, switchMap } from 'rxjs';
 
+import { SideNavComponent } from '../layout/side-nav/side-nav';
+
 @Component({
   selector: 'app-rating',
   standalone: true,
   templateUrl: './rating.html',
   styleUrls: ['./rating.css'],
-  imports: [AsyncPipe, NgIf, NgClass, NgFor, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [AsyncPipe, NgIf, NgClass, NgFor, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule, SideNavComponent],
 })
 export class ProductRatingPageComponent implements OnInit {
   private store = inject(Store);

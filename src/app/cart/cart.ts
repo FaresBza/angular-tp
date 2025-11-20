@@ -11,12 +11,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 
+import { SideNavComponent } from '../layout/side-nav/side-nav';
+
 @Component({
   selector: 'app-cart',
   standalone: true,
   templateUrl: './cart.html',
   styleUrls: ['./cart.css'],
-  imports: [NgForOf, NgIf, AsyncPipe, CurrencyPipe, MatCardModule, MatButtonModule],
+  imports: [NgForOf, NgIf, AsyncPipe, CurrencyPipe, MatCardModule, MatButtonModule, SideNavComponent],
 })
 export class CartPageComponent {
   private store = inject(Store);

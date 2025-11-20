@@ -15,6 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 
+import { SideNavComponent } from '../layout/side-nav/side-nav';
+
 @Component({
   selector: 'app-checkout',
   standalone: true,
@@ -31,6 +33,7 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    SideNavComponent,
   ],
 })
 export class CheckoutComponent {
