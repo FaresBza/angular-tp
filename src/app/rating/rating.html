@@ -1,52 +1,76 @@
 <div class="rating-page">
   <mat-card class="rating-card">
-    <div class="rating-header">
-      <h2>Product Rating</h2>
-    </div>
-    <div *ngIf="product$ | async as product" class="rating-product">
-      <p class="rating-line">
-        Product: <strong>{{ product.name }}</strong>
-      </p>
-      <p class="rating-line">
-        Price: <strong>{{ product.price }} €</strong>
-      </p>
-    </div>
+    <div *ngIf="product$ | async as product" class="rating-content">
+      <div class="rating-header">
+          <div class="rating-header-main" >
+            <h1 class="product-title">{{ product.name }}</h1>
+            <p class="rating-line">
+              <span class="rating-value" *ngIf="rating$ | async as rating">{{ rating.product_id }}</span>
+            </p>
+          </div>
 
-    <p class="rating-subtitle">
-      Average rating and number of votes for this product.
-    </p>
 
-    <div class="rating-status">
-      <p *ngIf="error$ | async as error" class="error-text">
-        {{ error }}
-      </p>
-    </div>
+        <p class="product-subtitle">
+          Track customer satisfaction and see how this product is performing in real time.
+        </p>
+      </div>
 
-    <div *ngIf="rating$ | async as rating" class="rating-result">
-      <p class="rating-line">
-        Product ID: <strong>{{ rating.product_id }}</strong>
-      </p>
-      <p class="rating-line">
-        Average rating:
-        <strong>{{ rating.avg_rating != null ? rating.avg_rating.toFixed(1) : '-' }}/5</strong>/5
-      </p>
-      <p class="rating-line">
-        Votes: <strong>{{ rating.count }}</strong>
-      </p>
-    </div>
+      <ng-container *ngIf="rating$ | async as rating">
+        <div class="rating-stars-row" *ngIf="rating.avg_rating !== null">
+          <div class="stars">
+            <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+              <span
+                class="star"
+                [ngClass]="{ 'filled': i < Math.round(rating.avg_rating) }"
+              >
+                &#9733;
+              </span>
+            </ng-container>
+          </div>
 
-    <div class="rating-actions" *ngIf="product$ | async as product">
-      <button
-        mat-raised-button
-        color="primary"
-        (click)="addToCart(product)"
-      >
-        Add to cart
-      </button>
+          <span class="rating-score">
+            {{ rating.avg_rating.toFixed(1) }}/5
+          </span>
 
-      <button mat-stroked-button color="primary" routerLink="/shop/products">
-        ← Back to products
-      </button>
+          <span class="rating-count">
+            {{ rating.count }} customer reviews
+          </span>
+        </div>
+
+        <div class="rating-info-panel">
+          <ul class="rating-bullets">
+            <li>
+              <span class="bullet-dot"></span>
+              Average rating based on real customer feedback.
+            </li>
+            <li>
+              <span class="bullet-dot"></span>
+              {{ rating.count }} verified votes recorded.
+            </li>
+            <li>
+              <span class="bullet-dot"></span>
+              Updated each time a new rating is submitted.
+            </li>
+          </ul>
+        </div>
+      </ng-container>
+
+      <div class="rating-error" *ngIf="error$ | async as error">
+        <p class="error-text">{{ error }}</p>
+      </div>
+
+      <div class="rating-footer">
+
+        <div class="rating-actions">
+          <button
+            mat-raised-button
+            class="primary-cta"
+            (click)="addToCart(product)"
+          >
+            ADD TO CART / {{ product.price }}.- CHF
+          </button>
+        </div>
+      </div>
     </div>
   </mat-card>
 </div>
