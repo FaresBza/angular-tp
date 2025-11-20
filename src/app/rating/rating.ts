@@ -1,7 +1,7 @@
 // src/app/pages/rating/rating.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-import { AsyncPipe, NgIf } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AsyncPipe, NgIf, NgClass, NgFor } from '@angular/common';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import { ProductsActions } from '../state/products/products.action';
@@ -24,11 +24,15 @@ import { map, switchMap } from 'rxjs';
   standalone: true,
   templateUrl: './rating.html',
   styleUrls: ['./rating.css'],
-  imports: [AsyncPipe, NgIf, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [AsyncPipe, NgIf, NgClass, NgFor, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule],
 })
 export class ProductRatingPageComponent implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+
+  public Math = Math;
 
   rating$ = this.store.select(selectLastRating);
   loading$ = this.store.select(selectProductsLoading);
@@ -61,5 +65,6 @@ export class ProductRatingPageComponent implements OnInit {
         },
       }),
     );
+    this.router.navigate(['shop/products']);
   }
 }
