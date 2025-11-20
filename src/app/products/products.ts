@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 
 import { ProductsActions } from '../state/products/products.action';
 import {
@@ -44,6 +44,7 @@ export class ProductsPageComponent implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   displayedColumns = ['id', 'name', 'price', 'created_at', 'avg'];
 
@@ -52,6 +53,8 @@ export class ProductsPageComponent implements OnInit {
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
   carCount$ = this.store.select(selectCartCount);
+
+  notification: string | null = null;
 
   filters = this.fb.group({
     page: 1,
@@ -62,6 +65,24 @@ export class ProductsPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.onSearch();
+
+    this.route.queryParamMap.subscribe((params) => {
+    const addedName = params.get('added');
+    if (addedName) {
+      this.notification = `${addedName} has successfully added to the cart`;
+
+      this.router.navigate([], {
+        relativeTo: this.route,
+        replaceUrl: true,
+        queryParams: {},
+        queryParamsHandling: '',
+      });
+
+      setTimeout(() => {
+        this.notification = null;
+      }, 5000);
+    }
+  });
   }
 
   onSearch() {

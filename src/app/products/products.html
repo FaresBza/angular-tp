@@ -1,4 +1,7 @@
 <div class="products-page">
+    <div *ngIf="notification" class="products-notification">
+        {{ notification }}
+    </div>
     <header class="header">
         <h2 class="main-title">My Shop - Products</h2>
         <button routerLink="/login">Log out</button>

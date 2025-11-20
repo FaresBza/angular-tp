@@ -65,6 +65,8 @@ export class ProductRatingPageComponent implements OnInit {
         },
       }),
     );
-    this.router.navigate(['shop/products']);
+    this.router.navigate(['shop/products'], {
+      queryParams: { added: product.name }, 
+    });
   }
 }
