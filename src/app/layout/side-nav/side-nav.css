@@ -1,0 +1,64 @@
+.sidenav-container {
+    height: 100vh;
+    background: #f6f1e8;
+}
+
+.sidenav {
+    width: 220px;
+    background: #f6f1e8;
+    border-right: 1px solid #f1e5d8;
+    padding: 16px;
+    width: 220px;
+}
+
+.sidenav-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding: 0 8px;
+}
+
+.logo-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: #8b4513;
+}
+
+.logo-text {
+    font-weight: bold;
+    font-size: 1rem;
+    color: #8b4513;
+}
+
+mat-nav-list {
+    padding-top: 0;
+}
+
+a[mat-list-item] {
+    margin: 2px 4px;
+}
+
+a[mat-list-item]:hover {
+    background: #f1e5d8;
+}
+
+a[mat-list-item] mat-icon {
+    margin-right: 8px;
+}
+
+.active-link {
+    background: #eef2ff !important;
+    color: #1d4ed8 !important;
+}
+
+.sidenav-content {
+    background: #f5f5f7;
+}
+
+.page-wrapper {
+    padding: 24px;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
