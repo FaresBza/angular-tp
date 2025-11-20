@@ -105,6 +105,57 @@
                     </div>
                 </form>
             </mat-step>
+            <mat-step label="Confirmation">
+                <div class="step-confirmation">
+                    <h3 class="step-subtitle">Confirm your order</h3>
+
+                    <p class="confirm-text">
+                    Please review your details and click "Place order".
+                    </p>
+
+                    <div class="confirm-summary">
+                    <div class="confirm-block">
+                        <h4>Address</h4>
+                        <p>Name : {{ addressForm.value.fullName }}</p>
+                        <p>Address {{ addressForm.value.addressLine }}</p>
+                        <p>
+                        Postal Code : {{ addressForm.value.postalCode }} <br>
+                        City : {{ addressForm.value.city }} <br>
+                        Country : {{ addressForm.value.country }} <br>
+                        </p>
+                        <p>Email : {{ addressForm.value.email }}</p>
+                    </div>
+
+                    <div class="confirm-block">
+                        <h4>Cart total</h4>
+                        <p class="total-price">
+                        {{ total$ | async | currency: 'CHF ' }}
+                        </p>
+                    </div>
+                    </div>
+
+                    <div class="order-status" *ngIf="isPlacingOrder">
+                    Placing order...
+                    </div>
+                    <div class="order-status success" *ngIf="orderId">
+                    Order {{ orderId }} confirmed
+                    </div>
+
+                    <div class="step-actions">
+                    <button mat-button matStepperPrevious>
+                        Back
+                    </button>
+                        <button
+                            mat-raised-button
+                            color="primary"
+                            (click)="placeOrder()"
+                            [disabled]="isPlacingOrder || !addressForm.valid"
+                        >
+                            Place order
+                        </button>
+                    </div>
+                </div>
+            </mat-step>
         </mat-horizontal-stepper>
     </mat-card>
 </div>

@@ -53,4 +53,19 @@ export class CheckoutComponent {
     country: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
   });
+
+  isPlacingOrder = false;
+  orderId: string | null = null;
+
+  placeOrder() {
+    if (this.addressForm.invalid) return;
+
+    this.isPlacingOrder = true;
+    this.orderId = null;
+
+    setTimeout(() => {
+      this.isPlacingOrder = false;
+      this.orderId = 'ORD-' + Date.now();
+    }, 1000);
+  }
 }
