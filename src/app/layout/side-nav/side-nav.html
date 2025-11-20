@@ -28,6 +28,16 @@
 
         <a
             mat-list-item
+            routerLink="/shop/checkout"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }"
+        >
+            <mat-icon>checkout</mat-icon>
+            <span>Checkout</span>
+        </a>
+
+        <a
+            mat-list-item
             routerLink="/login"
         >
             <mat-icon>logout</mat-icon>
