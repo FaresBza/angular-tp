@@ -1,1 +1,59 @@
-<p>checkout works!</p>
+<div class="checkout-page">
+    <h2 class="checkout-title">Checkout</h2>
+
+    <mat-card class="checkout-card">
+        <mat-horizontal-stepper linear animationDuration="1000ms" class="stepper">
+            <mat-step label="Cart">
+                <div *ngIf="(count$ | async) as count">
+                    <div *ngIf="count === 0" class="empty-state">
+                        <p>Your cart is empty.</p>
+                        <button mat-raised-button color="primary" routerLink="/shop/products">
+                        Back to products
+                        </button>
+                    </div>
+                    <div *ngIf="count > 0" class="step-cart-layout">
+                        <section class="step-cart-list">
+                            <h3 class="step-subtitle">Cart summary</h3>
+                            <div class="cart-items">
+                            <div class="cart-item-row" *ngFor="let item of (items$ | async) || []">
+                            <div class="cart-item-info">
+                            <div class="cart-item-name">
+                                {{ item.product.name }}
+                            </div>
+                            <div class="cart-item-qty">
+                                (x {{ item.quantity }})
+                            </div>
+                            </div>
+
+                            <div class="cart-item-price">
+                            {{ item.product.price * item.quantity | currency: 'EUR' }}
+                            </div>
+                            </div>
+                            </div>
+                        </section>
+
+                        <aside class="step-cart-side">
+                            <div class="step-total-box">
+                            <div class="step-total-row">
+                                <span>Total</span>
+                                <span class="step-total-value">
+                                {{ total$ | async | currency: 'EUR' }}
+                                </span>
+                            </div>
+                            <p class="step-total-warn">
+                                Review your cart before continuing to delivery address.
+                            </p>
+                            </div>
+
+                            <div class="step-actions side-actions">
+                            <button mat-stroked-button matStepperNext color="primary">
+                                Next
+                            </button>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </mat-step>
+        </mat-horizontal-stepper>
+    </mat-card>
+</div>
