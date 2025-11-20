@@ -36,21 +36,38 @@ mat-nav-list {
     padding-top: 0;
 }
 
-a[mat-list-item] {
+.sidenav a.mat-mdc-list-item {
+    border-radius: 8px;
     margin: 2px 4px;
+    color: #374151;
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
 }
 
-a[mat-list-item]:hover {
+.sidenav a.mat-mdc-list-item:hover {
     background: #f1e5d8;
+    color: #fff;
+    width: 180px;
+}
+
+.sidenav a.mat-mdc-list-item.active-link {
+    background: #dfc4a6 !important;
+    width: 180px;
+}
+
+.sidenav a.mat-mdc-list-item.active-link .mdc-list-item__primary-text,
+.sidenav a.mat-mdc-list-item.active-link mat-icon {
+    color: #8b4513 !important;
 }
 
 a[mat-list-item] mat-icon {
     margin-right: 8px;
+    color: #8b4513;
 }
 
 .active-link {
     background: #eef2ff !important;
-    color: #1d4ed8 !important;
+    color: #f0d9c0 !important;
 }
 
 .sidenav-content {
