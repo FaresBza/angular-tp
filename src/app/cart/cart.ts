@@ -9,6 +9,7 @@ import {
 import { CartActions } from '../state/cart/cart.actions';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -19,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class CartPageComponent {
   private store = inject(Store);
+  private router = inject(Router);
 
   items$ = this.store.select(selectCartItems);
   total$ = this.store.select(selectCartTotal);
@@ -36,5 +38,9 @@ export class CartPageComponent {
 
   clear() {
     this.store.dispatch(CartActions.clearCart());
+  }
+
+  goToCheckoutPage() {
+    this.router.navigate(['/shop/checkout']);
   }
 }
