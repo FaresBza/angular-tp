@@ -44,4 +44,13 @@ export class CheckoutComponent {
   cartForm = this.fb.group({
     ok: [true],
   });
+
+  addressForm = this.fb.group({
+    fullName: ['', Validators.required],
+    addressLine: ['', Validators.required],
+    city: ['', Validators.required],
+    postalCode: ['', Validators.required],
+    country: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+  });
 }

@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="cart-item-price">
-                            {{ item.product.price * item.quantity | currency: 'EUR' }}
+                            {{ item.product.price * item.quantity }}.- CHF
                             </div>
                             </div>
                             </div>
@@ -37,7 +37,7 @@
                             <div class="step-total-row">
                                 <span>Total</span>
                                 <span class="step-total-value">
-                                {{ total$ | async | currency: 'EUR' }}
+                                {{ total$ | async }}.- CHF
                                 </span>
                             </div>
                             <p class="step-total-warn">
@@ -53,6 +53,57 @@
                         </aside>
                     </div>
                 </div>
+            </mat-step>
+            <mat-step label="Address">
+                <form [formGroup]="addressForm" class="step-address">
+                    <h3 class="step-subtitle">Shipping Address</h3>
+
+                    <div class="address-grid">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Email</mat-label>
+                            <input matInput formControlName="email" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Full name</mat-label>
+                            <input matInput formControlName="fullName" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="address-full">
+                            <mat-label>Address</mat-label>
+                            <input matInput formControlName="addressLine" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>City</mat-label>
+                            <input matInput formControlName="city" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Postal code</mat-label>
+                            <input matInput formControlName="postalCode" />
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline">
+                            <mat-label>Country</mat-label>
+                            <input matInput formControlName="country" />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="step-actions">
+                    <button mat-button matStepperPrevious>
+                        Back
+                    </button>
+                    <button
+                        mat-button
+                        matStepperNext
+                        color="primary"
+                        [disabled]="addressForm.invalid"
+                    >
+                        Next
+                    </button>
+                    </div>
+                </form>
             </mat-step>
         </mat-horizontal-stepper>
     </mat-card>

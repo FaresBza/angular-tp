@@ -157,21 +157,12 @@
     font-weight: 600;
 }
 
-@media (max-width: 900px) {
-    .checkout-card {
-        width: 100%;
-    }
+.address-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px;
+}
 
-    .step-cart-layout {
-        grid-template-columns: 1fr;
-        gap: 18px;
-    }
-
-    .step-cart-side {
-        align-items: stretch;
-    }
-
-    .step-actions {
-        justify-content: flex-start;
-    }
+.address-full {
+    grid-column: 1 / -1;
 }
