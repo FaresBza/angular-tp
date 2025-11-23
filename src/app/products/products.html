@@ -5,7 +5,6 @@
     </div>
     <header class="header">
         <h2 class="main-title">My Shop - Products</h2>
-        <button routerLink="/login">Log out</button>
         <button class="cart-button" type="button" (click)="goToCartPage()">
             Cart
             <ng-container *ngIf="(carCount$ | async) as count">
