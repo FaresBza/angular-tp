@@ -3,7 +3,7 @@ import { AsyncPipe, CurrencyPipe, NgForOf, NgIf } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {
   selectCartItems,
-  selectCartTotal,
+  selectCartSubTotal,
   selectCartCount,
   selectCartDiscount,
   selectCartTotalAfterDiscount,
@@ -28,7 +28,7 @@ export class CartPageComponent {
 
   items$ = this.store.select(selectCartItems);
   count$ = this.store.select(selectCartCount);
-  subtotal$ = this.store.select(selectCartTotal);
+  subtotal$ = this.store.select(selectCartSubTotal);
   discount$ = this.store.select(selectCartDiscount);
   total$ = this.store.select(selectCartTotalAfterDiscount);
 

@@ -5,7 +5,7 @@ export const selectCartState = createFeatureSelector<CartState>('cart');
 
 export const selectCartItems = createSelector(selectCartState, (state) => state.items);
 export const selectCartCount = createSelector(selectCartState, (state) => state.items.reduce((sum, item) => sum + item.quantity, 0));
-export const selectCartTotal = createSelector(
+export const selectCartSubTotal = createSelector(
     selectCartState, (state) => state.items.reduce(
         (sum, item) => sum + item.product.price * item.quantity, 0,
     ),
@@ -14,13 +14,13 @@ export const selectCartTotal = createSelector(
 export const selectCouponPercent = createSelector(selectCartState, (state) => state.couponPercent,);
 
 export const selectCartDiscount = createSelector(
-    selectCartTotal,
+    selectCartSubTotal,
     selectCouponPercent,
     (subtotal, percent) => subtotal * percent,
 );
 
 export const selectCartTotalAfterDiscount = createSelector(
-    selectCartTotal,
+    selectCartSubTotal,
     selectCartDiscount,
     (subtotal, discount) => subtotal - discount,
 );
