@@ -68,7 +68,7 @@
             class="primary-cta"
             (click)="addToCart(product)"
           >
-            ADD TO CART / {{ product.price }}.- CHF
+            ADD TO CART / {{ product.price | currency: 'CHF '}}.-
           </button>
         </div>
       </div>

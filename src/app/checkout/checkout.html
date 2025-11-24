@@ -16,20 +16,20 @@
                         <section class="step-cart-list">
                             <h3 class="step-subtitle">Cart summary</h3>
                             <div class="cart-items">
-                            <div class="cart-item-row" *ngFor="let item of (items$ | async) || []">
-                            <div class="cart-item-info">
-                            <div class="cart-item-name">
-                                {{ item.product.name }}
-                            </div>
-                            <div class="cart-item-qty">
-                                (x {{ item.quantity }})
-                            </div>
-                            </div>
+                                <div class="cart-item-row" *ngFor="let item of (items$ | async) || []">
+                                    <div class="cart-item-info">
+                                        <div class="cart-item-name">
+                                            {{ item.product.name }}
+                                        </div>
+                                        <div class="cart-item-qty">
+                                            (x {{ item.quantity }})
+                                        </div>
+                                        </div>
 
-                            <div class="cart-item-price">
-                            {{ item.product.price * item.quantity }}.- CHF
-                            </div>
-                            </div>
+                                        <div class="cart-item-price">
+                                        {{ item.product.price * item.quantity | currency: 'CHF '}}.-
+                                        </div>
+                                    </div>
                             </div>
                         </section>
 
@@ -38,7 +38,7 @@
                             <div class="step-total-row">
                                 <span>Total</span>
                                 <span class="step-total-value">
-                                {{ total$ | async }}.- CHF
+                                {{ total$ | async | currency: 'CHF '}}.-
                                 </span>
                             </div>
                             <p class="step-total-warn">
@@ -130,7 +130,7 @@
                     <div class="confirm-block">
                         <h4>Cart total</h4>
                         <p class="total-price">
-                        {{ total$ | async | currency: 'CHF ' }}
+                        {{ total$ | async | currency: 'CHF ' }}.-
                         </p>
                     </div>
                     </div>

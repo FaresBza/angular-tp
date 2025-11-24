@@ -1,7 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf, CurrencyPipe } from '@angular/common';
 import { Router, RouterLink, ActivatedRoute } from '@angular/router';
 
 import { ProductsActions } from '../state/products/products.action';
@@ -32,6 +32,7 @@ import { SideNavComponent } from '../layout/side-nav/side-nav';
     RouterLink,
     ReactiveFormsModule,
     AsyncPipe,
+    CurrencyPipe,
     NgIf,
     MatCardModule,
     MatFormFieldModule,

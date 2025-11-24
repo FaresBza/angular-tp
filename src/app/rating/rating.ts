@@ -1,6 +1,6 @@
 // src/app/pages/rating/rating.component.ts
 import { Component, OnInit, inject } from '@angular/core';
-import { AsyncPipe, NgIf, NgClass, NgFor } from '@angular/common';
+import { AsyncPipe, NgIf, NgClass, NgFor, CurrencyPipe } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 
@@ -26,7 +26,7 @@ import { SideNavComponent } from '../layout/side-nav/side-nav';
   standalone: true,
   templateUrl: './rating.html',
   styleUrls: ['./rating.css'],
-  imports: [AsyncPipe, NgIf, NgClass, NgFor, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule, SideNavComponent],
+  imports: [AsyncPipe, CurrencyPipe, NgIf, NgClass, NgFor, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule, SideNavComponent],
 })
 export class ProductRatingPageComponent implements OnInit {
   private store = inject(Store);
