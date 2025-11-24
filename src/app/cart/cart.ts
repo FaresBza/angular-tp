@@ -5,6 +5,8 @@ import {
   selectCartItems,
   selectCartTotal,
   selectCartCount,
+  selectCartDiscount,
+  selectCartTotalAfterDiscount,
 } from '../state/cart/cart.selectors';
 import { CartActions } from '../state/cart/cart.actions';
 import { MatCardModule } from '@angular/material/card';
@@ -25,8 +27,12 @@ export class CartPageComponent {
   private router = inject(Router);
 
   items$ = this.store.select(selectCartItems);
-  total$ = this.store.select(selectCartTotal);
   count$ = this.store.select(selectCartCount);
+  subtotal$ = this.store.select(selectCartTotal);
+  discount$ = this.store.select(selectCartDiscount);
+  total$ = this.store.select(selectCartTotalAfterDiscount);
+
+  promoCode = '';
 
   remove(productId: number) {
     this.store.dispatch(CartActions.removeItem({ productId }));
@@ -44,5 +50,11 @@ export class CartPageComponent {
 
   goToCheckoutPage() {
     this.router.navigate(['/shop/checkout']);
+  }
+
+  applyPromo() {
+    this.store.dispatch(
+      CartActions.applyCoupon({ code: this.promoCode }),
+    );
   }
 }

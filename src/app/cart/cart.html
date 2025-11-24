@@ -73,12 +73,14 @@
                 </span>
             </div>
 
-            <div class="summary-row summary-row-discount">
-                <span>Discount (-20%)</span>
-                <span class="summary-value summary-value-discount">
-                -0 €
-                </span>
-            </div>
+            <ng-container *ngIf="(discount$ | async) as discount">
+                <div class="summary-row summary-row-discount" *ngIf="discount > 0">
+                    <span>Discount (-20%)</span>
+                    <span class="summary-value summary-value-discount">
+                        -{{ discount | currency:'EUR' }}
+                    </span>
+                </div>
+            </ng-container>
 
             <div class="summary-row">
                 <span>Delivery Fee</span>
@@ -100,8 +102,13 @@
                 type="text"
                 class="promo-input"
                 placeholder="Add promo code"
+                [value]="promoCode"
+                (input)="promoCode = $any($event.target).value"
             />
-            <button type="button" class="promo-apply-btn">
+            <button 
+                type="button" 
+                class="promo-apply-btn"
+                (click)="applyPromo()">
                 Apply
             </button>
             </div>
