@@ -24,3 +24,11 @@ export const selectCartTotalAfterDiscount = createSelector(
     selectCartDiscount,
     (subtotal, discount) => subtotal - discount,
 );
+
+export const selectDeliveryFee = createSelector(selectCartState, (state) => state.deliveryFee,);
+
+export const selectCartTotal = createSelector(
+    selectCartTotalAfterDiscount,
+    selectDeliveryFee,
+    (afterDiscount, deliveryFee) => afterDiscount + deliveryFee,
+);

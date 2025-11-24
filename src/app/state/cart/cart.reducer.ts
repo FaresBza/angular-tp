@@ -10,12 +10,16 @@ export interface CartState {
     items: CartItem[];
     couponCode: string | null;
     couponPercent: number;
+    deliveryMode: 'free' | 'standard' | 'express';
+    deliveryFee: number;
 }
 
 export const initialCartState: CartState = {
     items: [],
     couponCode: null,
     couponPercent: 0,
+    deliveryMode: 'free',
+    deliveryFee: 0,
 };
 
 export const cartReducer = createReducer(
@@ -82,4 +86,16 @@ export const cartReducer = createReducer(
         couponCode: null,
         couponPercent: 0,
     })),
+
+    on(CartActions.setDeliveryMode, (state, { mode }) => {
+        let fee = 0;
+        if (mode === 'standard') fee = 4.99;
+        if (mode === 'express') fee = 9.99;
+
+        return {
+            ...state,
+            deliveryMode: mode,
+            deliveryFee: fee,
+        };
+    }),
 );

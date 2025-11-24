@@ -15,5 +15,6 @@ export const CartActions = createActionGroup({
         clearCart: emptyProps(),
         applyCoupon: props<{ code: string }>(),
         clearCoupon: emptyProps(),
+        setDeliveryMode: props<{ mode: 'free' | 'standard' | 'express' }>(),
     },
 });
