@@ -64,12 +64,12 @@ export const cartReducer = createReducer(
     })),
 
     on(CartActions.applyCoupon, (state, { code }) => {
-        const normalized = code.trim().toUpperCase();
+        const promoCode = code.trim().toUpperCase();
 
-        if (normalized === 'ANGULAR2025') {
+        if (promoCode === 'ANGULAR2025') {
         return {
             ...state,
-            couponCode: normalized,
+            couponCode: promoCode,
             couponPercent: 0.2,
             };
         }

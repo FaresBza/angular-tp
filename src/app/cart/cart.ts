@@ -7,6 +7,8 @@ import {
   selectCartCount,
   selectCartDiscount,
   selectCartTotalAfterDiscount,
+  selectCartTotal,
+  selectDeliveryFee,
 } from '../state/cart/cart.selectors';
 import { CartActions } from '../state/cart/cart.actions';
 import { MatCardModule } from '@angular/material/card';
@@ -31,6 +33,9 @@ export class CartPageComponent {
   subtotal$ = this.store.select(selectCartSubTotal);
   discount$ = this.store.select(selectCartDiscount);
   total$ = this.store.select(selectCartTotalAfterDiscount);
+  deliveryFee$ = this.store.select(selectDeliveryFee);
+  totalWithFee$ = this.store.select(selectCartTotal);
+
 
   promoCode = '';
 
@@ -56,5 +61,9 @@ export class CartPageComponent {
     this.store.dispatch(
       CartActions.applyCoupon({ code: this.promoCode }),
     );
+  }
+
+  setDelivery(mode: 'free' | 'standard' | 'express') {
+    this.store.dispatch(CartActions.setDeliveryMode({ mode }));
   }
 }

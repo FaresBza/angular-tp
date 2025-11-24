@@ -84,15 +84,45 @@
 
             <div class="summary-row">
                 <span>Delivery Fee</span>
-                <span class="summary-value">0 €</span>
-            </div>
+                <span class="summary-value">
+                    {{ deliveryFee$ | async | currency:'EUR' }}
+                </span>
+                </div>
+
+                <div class="delivery-options">
+                    <label>
+                        <input
+                            type="radio"
+                            name="delivery"
+                            (change)="setDelivery('free')"
+                            checked
+                        />
+                        Free (0 €)
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="delivery"
+                            (change)="setDelivery('standard')"
+                        />
+                        Standard (4.99 €)
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="delivery"
+                            (change)="setDelivery('express')"
+                        />
+                        Express (9.99 €)
+                    </label>
+                </div>
 
             <div class="summary-divider"></div>
 
             <div class="summary-row summary-row-total">
                 <span>Total</span>
                 <span class="summary-value summary-value-total">
-                {{ total$ | async | currency: 'EUR' }}
+                {{ totalWithFee$ | async | currency: 'EUR' }}
                 </span>
             </div>
             </div>
