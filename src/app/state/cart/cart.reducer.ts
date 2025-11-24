@@ -8,10 +8,14 @@ export interface CartItem {
 
 export interface CartState {
     items: CartItem[];
+    couponCode: string | null;
+    couponPercent: number;
 }
 
 export const initialCartState: CartState = {
     items: [],
+    couponCode: null,
+    couponPercent: 0,
 };
 
 export const cartReducer = createReducer(
@@ -53,5 +57,29 @@ export const cartReducer = createReducer(
     on(CartActions.clearCart, (state) => ({
         ...state,
         items: [],
+    })),
+
+    on(CartActions.applyCoupon, (state, { code }) => {
+        const normalized = code.trim().toUpperCase();
+
+        if (normalized === 'ANGULAR2025') {
+        return {
+            ...state,
+            couponCode: normalized,
+            couponPercent: 0.2,
+            };
+        }
+
+        return {
+        ...state,
+        couponCode: null,
+        couponPercent: 0,
+        };
+    }),
+
+    on(CartActions.clearCoupon, (state) => ({
+        ...state,
+        couponCode: null,
+        couponPercent: 0,
     })),
 );

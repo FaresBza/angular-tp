@@ -13,5 +13,7 @@ export const CartActions = createActionGroup({
         removeItem: props<{ productId: number }>(),
         updateQuantity: props<{ productId: number; quantity: number }>(),
         clearCart: emptyProps(),
+        applyCoupon: props<{ code: string }>(),
+        clearCoupon: emptyProps(),
     },
 });

@@ -10,3 +10,17 @@ export const selectCartTotal = createSelector(
         (sum, item) => sum + item.product.price * item.quantity, 0,
     ),
 );
+
+export const selectCouponPercent = createSelector(selectCartState, (state) => state.couponPercent,);
+
+export const selectCartDiscount = createSelector(
+    selectCartTotal,
+    selectCouponPercent,
+    (subtotal, percent) => subtotal * percent,
+);
+
+export const selectCartTotalAfterDiscount = createSelector(
+    selectCartTotal,
+    selectCartDiscount,
+    (subtotal, discount) => subtotal - discount,
+);
