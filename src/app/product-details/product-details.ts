@@ -71,4 +71,8 @@ export class ProductDetailsPageComponent implements OnInit {
       queryParams: { added: product.name }, 
     });
   }
+
+  returnToProductsPage() {
+    this.router.navigate(['shop/products']);
+  }
 }
