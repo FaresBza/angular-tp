@@ -107,7 +107,7 @@ export class ProductsPageComponent implements OnInit {
   }
 
   goToRatingProductPage(id: number) {
-    this.router.navigate(['/shop/rating', id]);
+    this.router.navigate(['/shop/details', id]);
   }
 
   goToCartPage() {

@@ -22,13 +22,13 @@ import { map, switchMap } from 'rxjs';
 import { SideNavComponent } from '../layout/side-nav/side-nav';
 
 @Component({
-  selector: 'app-rating',
+  selector: 'app-product-details',
   standalone: true,
-  templateUrl: './rating.html',
-  styleUrls: ['./rating.css'],
+  templateUrl: './product-details.html',
+  styleUrls: ['./product-details.css'],
   imports: [AsyncPipe, CurrencyPipe, NgIf, NgClass, NgFor, RouterLink, MatCardModule, MatButtonModule, MatProgressSpinnerModule, SideNavComponent],
 })
-export class ProductRatingPageComponent implements OnInit {
+export class ProductDetailsPageComponent implements OnInit {
   private store = inject(Store);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
