@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SideNavComponent } from '../layout/side-nav/side-nav';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-products',
@@ -41,6 +42,7 @@ import { SideNavComponent } from '../layout/side-nav/side-nav';
     MatButtonModule,
     MatTableModule,
     MatProgressSpinnerModule,
+    MatIconModule,
     SideNavComponent,
   ],
 })

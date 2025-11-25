@@ -6,7 +6,7 @@
     <header class="header">
         <h2 class="main-title">My Shop - Products</h2>
         <button class="cart-button" type="button" (click)="goToCartPage()">
-            Cart
+            <mat-icon>shopping_cart</mat-icon>
             <ng-container *ngIf="(carCount$ | async) as count">
                 <span
                     class="cart-badge"
