@@ -21,15 +21,6 @@
 
 
         <form [formGroup]="filters" (ngSubmit)="onSearch()" class="filters-grid">
-        <mat-form-field appearance="outline">
-            <mat-label>Page</mat-label>
-            <input matInput type="number" formControlName="page" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline">
-            <mat-label>Page size</mat-label>
-            <input matInput type="number" formControlName="pageSize" />
-        </mat-form-field>
 
         <mat-form-field appearance="outline">
             <mat-label>Min rating</mat-label>
@@ -102,6 +93,13 @@
             class="clickable-row"
         ></tr>
         </table>
+        <mat-paginator
+            [length]="(count$ | async) ?? 0"
+            [pageSize]="filters.value.pageSize"
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            aria-label="Select page"
+            (page)="onPaginationChange($event)">
+        </mat-paginator>
     </mat-card>
 </div>
 

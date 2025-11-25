@@ -23,6 +23,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SideNavComponent } from '../layout/side-nav/side-nav';
 import { MatIconModule } from '@angular/material/icon';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { PageEvent } from '@angular/material/paginator';
+
 
 @Component({
   selector: 'app-products',
@@ -43,6 +46,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatProgressSpinnerModule,
     MatIconModule,
+    MatPaginatorModule,
     SideNavComponent,
   ],
 })
@@ -108,5 +112,15 @@ export class ProductsPageComponent implements OnInit {
 
   goToCartPage() {
     this.router.navigate(['/shop/cart']);
+  }
+
+
+  onPaginationChange(event: PageEvent) {
+    this.filters.patchValue({
+      page: event.pageIndex + 1,
+      pageSize: event.pageSize
+    });
+
+    this.onSearch();
   }
 }
