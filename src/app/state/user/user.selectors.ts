@@ -3,8 +3,9 @@ import { UserState } from './user.reducer';
 
 export const selectUserState = createFeatureSelector<UserState>('user');
 
-export const selectUserProfile = createSelector(selectUserState, (s) => s.profile,);
-export const selectUserOrders = createSelector(selectUserState, (s) => s.orders,);
-export const selectUserSelectedOrder = createSelector(selectUserState, (s) => s.selectedOrder,);
-export const selectUserLoading = createSelector(selectUserState,(s) => s.loading,);
-export const selectUserError = createSelector(selectUserState, (s) => s.error,);
+export const selectUserProfile = createSelector(selectUserState, (state) => state.profile,);
+export const selectUserPreferences = createSelector(selectUserProfile, (profile) => profile?.preferences ?? null,);
+export const selectUserOrders = createSelector(selectUserState, (state) => state.orders,);
+export const selectUserSelectedOrder = createSelector(selectUserState, (state) => state.selectedOrder,);
+export const selectUserLoading = createSelector(selectUserState, (state) => state.loading,);
+export const selectUserError = createSelector(selectUserState, (state) => state.error,);

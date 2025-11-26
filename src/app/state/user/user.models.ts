@@ -6,12 +6,32 @@ export interface Address {
     country: string;
 }
 
+export interface OrderItem {
+    productId: number;
+    name: string;
+    unitPrice: number;
+    quantity: number;
+    total: number;
+}
+
+export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled';
+
 export interface OrderSummary {
     id: string;
     createdAt: string;
-    status: 'pending' | 'shipped' | 'delivered' | 'cancelled';
+    status: OrderStatus;
     total: number;
     currency: string;
+}
+
+export interface OrderDetail extends OrderSummary {
+    items: OrderItem[];
+    subtotal: number;
+    discount: number;
+    shipping: number;
+    taxes: number;
+    grandTotal: number;
+    shippingAddress: Address;
 }
 
 export interface UserPreferences {
