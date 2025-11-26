@@ -1,11 +1,69 @@
-import { Component } from '@angular/core';
+// src/app/account/profile/profile.ts
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+
+import {
+  selectUserLoading,
+  selectUserProfile,
+  selectUserError,
+} from '../../state/user/user.selectors';
+import { UserActions } from '../../state/user/user.actions';
+
+import { MatCardModule } from '@angular/material/card';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-profile',
-  imports: [],
+  selector: 'app-account-profile',
+  standalone: true,
   templateUrl: './profile.html',
-  styleUrl: './profile.css',
+  styleUrls: ['./profile.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    AsyncPipe,
+    NgIf,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatSlideToggleModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+  ],
 })
-export class ProfilePageComponent {
+export class ProfilePageComponent implements OnInit {
+  private store = inject(Store);
+  private fb = inject(FormBuilder);
 
+  loading$ = this.store.select(selectUserLoading);
+  profile$ = this.store.select(selectUserProfile);
+  error$ = this.store.select(selectUserError);
+
+  form = this.fb.nonNullable.group({
+    fullName: [''],
+    newsletter: [false],
+    defaultMinRating: [0],
+  });
+
+  ngOnInit(): void {
+    this.store.dispatch(UserActions.loadProfile());
+
+    this.profile$.subscribe((profile) => {
+      if (profile) {
+        this.form.patchValue({
+          fullName: profile.fullName ?? '',
+        });
+      }
+    });
+  }
 }

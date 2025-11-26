@@ -1,1 +1,40 @@
-<p>profile works!</p>
+<div class="account-page">
+  <div class="account-card">
+    <header class="account-header">
+      <div>
+        <h2 class="account-title">Mon profil</h2>
+        <p class="account-subtitle">
+          Gérez vos informations et préférences My Shop.
+        </p>
+      </div>
+    </header>
+
+    <div class="profile-body">
+      <div *ngIf="(loading$ | async)" class="loading-zone">
+        <mat-spinner diameter="40"></mat-spinner>
+      </div>
+
+      <p *ngIf="(error$ | async) as error" class="error-text">
+        {{ error }}
+      </p>
+
+      <ng-container *ngIf="(profile$ | async) as profile">
+        <div class="profile-grid" [class.profile-grid--single]="!(loading$ | async)">
+          <section class="profile-section">
+            <h3 class="section-title">Informations de compte</h3>
+
+            <div class="field-group">
+              <span class="field-label">Identifiant</span>
+              <p>{{ profile.username }}</p>
+            </div>
+
+            <div class="field-group">
+              <span class="field-label">Email</span>
+              <p>{{ profile.email }}</p>
+            </div>
+          </section>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
