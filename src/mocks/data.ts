@@ -170,3 +170,157 @@ export const products: Product[] = [
     ratings: [{ user_id: 9, value: 4 }],
   },
 ];
+
+// --- User & orders mock data ---
+
+export interface MockAddress {
+  line1: string;
+  line2?: string;
+  city: string;
+  zip: string;
+  country: string;
+}
+
+export interface MockOrderItem {
+  productId: number;
+  name: string;
+  unitPrice: number;
+  quantity: number;
+  total: number;
+}
+
+export type MockOrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled';
+
+export interface MockOrderSummary {
+  id: string;
+  createdAt: string;
+  status: MockOrderStatus;
+  total: number;
+  currency: string;
+}
+
+export interface MockOrderDetail extends MockOrderSummary {
+  items: MockOrderItem[];
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  taxes: number;
+  grandTotal: number;
+  shippingAddress: MockAddress;
+}
+
+export interface MockUserProfile {
+  id: string;
+  username: string;
+  email: string;
+  fullName?: string;
+  defaultAddress?: MockAddress;
+  preferences: {
+    newsletter: boolean;
+    defaultMinRating?: number;
+  };
+  orders: MockOrderSummary[];
+}
+
+const defaultAddress: MockAddress = {
+  line1: '12 Rue du Commerce',
+  city: 'Genève',
+  zip: '1200',
+  country: 'Suisse',
+};
+
+export const userProfile: MockUserProfile = {
+  id: 'u-1',
+  username: 'demo-user',
+  email: 'demo@myshop.ch',
+  fullName: 'Demo User',
+  defaultAddress: defaultAddress,
+  preferences: {
+    newsletter: true,
+    defaultMinRating: 3,
+  },
+  orders: [
+    {
+      id: 'ORD-1001',
+      createdAt: '2025-04-10T09:15:00Z',
+      status: 'delivered',
+      total: 120.5,
+      currency: 'CHF',
+    },
+    {
+      id: 'ORD-1002',
+      createdAt: '2025-04-25T15:30:00Z',
+      status: 'shipped',
+      total: 45.9,
+      currency: 'CHF',
+    },
+  ],
+};
+
+export const ordersDetails: Record<string, MockOrderDetail> = {
+  'ORD-1001': {
+    id: 'ORD-1001',
+    createdAt: '2025-04-10T09:15:00Z',
+    status: 'delivered',
+    total: 120.5,
+    currency: 'CHF',
+    items: [
+      {
+        productId: 1,
+        name: 'Stylo Bleu',
+        unitPrice: 2.5,
+        quantity: 10,
+        total: 25,
+      },
+      {
+        productId: 4,
+        name: 'Cahier A4',
+        unitPrice: 3.9,
+        quantity: 15,
+        total: 58.5,
+      },
+      {
+        productId: 7,
+        name: 'Classeur Dos Large',
+        unitPrice: 7.0,
+        quantity: 5,
+        total: 35,
+      },
+    ],
+    subtotal: 118.5,
+    discount: 5,
+    shipping: 4.9,
+    taxes: 2.1,
+    grandTotal: 120.5,
+    shippingAddress: defaultAddress,
+  },
+  'ORD-1002': {
+    id: 'ORD-1002',
+    createdAt: '2025-04-25T15:30:00Z',
+    status: 'shipped',
+    total: 45.9,
+    currency: 'CHF',
+    items: [
+      {
+        productId: 2,
+        name: 'Bloc-notes Jaune',
+        unitPrice: 3.2,
+        quantity: 3,
+        total: 9.6,
+      },
+      {
+        productId: 5,
+        name: 'Surlineur Pastel',
+        unitPrice: 2.9,
+        quantity: 8,
+        total: 23.2,
+      },
+    ],
+    subtotal: 42.8,
+    discount: 0,
+    shipping: 3.1,
+    taxes: 0,
+    grandTotal: 45.9,
+    shippingAddress: defaultAddress,
+  },
+};

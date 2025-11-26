@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { http, HttpResponse } from 'msw';
-import { products } from './data';
+import { products, userProfile, ordersDetails } from './data';
 import { paginate, avgRating } from './utils';
 
 const API = '/api';
@@ -53,4 +53,40 @@ export const handlers = [
       { status: 200 },
     );
   }),
+
+    // --- User profile: GET /api/me/ ---
+  http.get(`${API}/me/`, async () => {
+    return HttpResponse.json(userProfile, { status: 200 });
+  }),
+
+  // --- User profile: PATCH /api/me/ ---
+  http.patch(`${API}/me/`, async ({ request }) => {
+    const body = (await request.json()) as any;
+    const prefs = body.preferences ?? {};
+
+    userProfile.preferences = {
+      ...userProfile.preferences,
+      ...prefs,
+    };
+
+    return HttpResponse.json(userProfile, { status: 200 });
+  }),
+
+  // --- Orders summary: GET /api/me/orders/ ---
+  http.get(`${API}/me/orders/`, async () => {
+    return HttpResponse.json(userProfile.orders, { status: 200 });
+  }),
+
+  // --- Order detail: GET /api/orders/:id/ ---
+  http.get(`${API}/orders/:id/`, async ({ params }) => {
+    const id = params['id'] as string;
+    const order = ordersDetails[id];
+
+    if (!order) {
+      return HttpResponse.json({ detail: 'Order not found' }, { status: 404 });
+    }
+
+    return HttpResponse.json(order, { status: 200 });
+  }),
+
 ];
