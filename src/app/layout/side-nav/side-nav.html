@@ -38,6 +38,16 @@
 
         <a
             mat-list-item
+            routerLink="/account/profile"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }"
+        >
+            <mat-icon>perm_identity</mat-icon>
+            <span>Profile</span>
+        </a>
+
+        <a
+            mat-list-item
             routerLink="/login"
         >
             <mat-icon>logout</mat-icon>
