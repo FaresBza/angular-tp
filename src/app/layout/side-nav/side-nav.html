@@ -48,6 +48,16 @@
 
         <a
             mat-list-item
+            routerLink="/account/orders"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }"
+        >
+            <mat-icon>assignment</mat-icon>
+            <span>Orders</span>
+        </a>
+
+        <a
+            mat-list-item
             routerLink="/login"
         >
             <mat-icon>logout</mat-icon>

@@ -15,8 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     RouterLink,
     RouterLinkActive,
-    NgClass,
-  ],
+],
   templateUrl: './side-nav.html',
   styleUrls: ['./side-nav.css'],
 })
