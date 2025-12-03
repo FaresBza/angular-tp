@@ -1,113 +1,115 @@
-<div class="account-page">
-  <div class="account-card">
-    <header class="account-header">
-      <div class="breadcrumbs">
-        <a routerLink="/account/orders" class="breadcrumb-link">
-          <mat-icon>arrow_back</mat-icon>
-          <span>Retour aux commandes</span>
-        </a>
-        <h2 class="account-title">Détail de la commande</h2>
+<app-side-nav>
+  <div class="account-page">
+    <div class="account-card">
+      <header class="account-header">
+        <div class="breadcrumbs">
+          <a routerLink="/account/orders" class="breadcrumb-link">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Retour aux commandes</span>
+          </a>
+          <h2 class="account-title">Détail de la commande</h2>
+        </div>
+      </header>
+
+      <div class="order-details-body">
+        <div *ngIf="(loading$ | async)" class="loading-zone">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+
+        <p *ngIf="(error$ | async) as error" class="error-text">
+          {{ error }}
+        </p>
+
+        <ng-container *ngIf="(order$ | async) as order">
+          <section class="order-summary-card">
+            <div class="order-summary-header">
+              <p class="order-id">Commande #{{ order.id }}</p>
+              <p class="order-date">
+                Passée le {{ order.createdAt | date: 'medium' }}
+              </p>
+            </div>
+
+            <div class="order-summary-grid">
+              <div class="order-summary-block">
+                <p class="summary-label">Statut</p>
+                <p
+                  class="summary-value status"
+                  [class.status-success]="order.status === 'delivered'"
+                >
+                  {{ order.status | uppercase }}
+                </p>
+              </div>
+
+              <div class="order-summary-block">
+                <p class="summary-label">Total TTC</p>
+                <p class="summary-value total-price">
+                  {{ order.grandTotal | currency: order.currency }}
+                </p>
+              </div>
+
+              <div class="order-summary-block">
+                <p class="summary-label">Adresse de livraison</p>
+                <p class="summary-value">
+                  {{ order.shippingAddress.line1 }}<br />
+                  <ng-container *ngIf="order.shippingAddress.line2">
+                    {{ order.shippingAddress.line2 }}<br />
+                  </ng-container>
+                  {{ order.shippingAddress.zip }} {{ order.shippingAddress.city }}<br />
+                  {{ order.shippingAddress.country }}
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section class="order-items-card">
+            <h3 class="section-title">Articles</h3>
+            <div class="items-header">
+              <span>Produit</span>
+              <span class="items-qty">Qté</span>
+              <span class="items-price">PU</span>
+              <span class="items-total">Total</span>
+            </div>
+
+            <div
+              class="item-row"
+              *ngFor="let item of order.items"
+            >
+              <span class="item-name">{{ item.name }}</span>
+              <span class="item-qty">{{ item.quantity }}</span>
+              <span class="item-price">
+                {{ item.unitPrice | currency: order.currency }}
+              </span>
+              <span class="item-total">
+                {{ item.total | currency: order.currency }}
+              </span>
+            </div>
+          </section>
+
+          <section class="order-totals-card">
+            <h3 class="section-title">Récapitulatif</h3>
+            <div class="totals-row">
+              <span>Sous-total</span>
+              <span>{{ order.subtotal | currency: order.currency }}</span>
+            </div>
+            <div class="totals-row">
+              <span>Remise</span>
+              <span>- {{ order.discount | currency: order.currency }}</span>
+            </div>
+            <div class="totals-row">
+              <span>Livraison</span>
+              <span>{{ order.shipping | currency: order.currency }}</span>
+            </div>
+            <div class="totals-row">
+              <span>Taxes</span>
+              <span>{{ order.taxes | currency: order.currency }}</span>
+            </div>
+            <div class="totals-row totals-row--strong">
+              <span>Total TTC</span>
+              <span>{{ order.grandTotal | currency: order.currency }}</span>
+            </div>
+          </section>
+        </ng-container>
       </div>
-    </header>
-
-    <div class="order-details-body">
-      <div *ngIf="(loading$ | async)" class="loading-zone">
-        <mat-spinner diameter="40"></mat-spinner>
-      </div>
-
-      <p *ngIf="(error$ | async) as error" class="error-text">
-        {{ error }}
-      </p>
-
-      <ng-container *ngIf="(order$ | async) as order">
-        <section class="order-summary-card">
-          <div class="order-summary-header">
-            <p class="order-id">Commande #{{ order.id }}</p>
-            <p class="order-date">
-              Passée le {{ order.createdAt | date: 'medium' }}
-            </p>
-          </div>
-
-          <div class="order-summary-grid">
-            <div class="order-summary-block">
-              <p class="summary-label">Statut</p>
-              <p
-                class="summary-value status"
-                [class.status-success]="order.status === 'delivered'"
-              >
-                {{ order.status | uppercase }}
-              </p>
-            </div>
-
-            <div class="order-summary-block">
-              <p class="summary-label">Total TTC</p>
-              <p class="summary-value total-price">
-                {{ order.grandTotal | currency: order.currency }}
-              </p>
-            </div>
-
-            <div class="order-summary-block">
-              <p class="summary-label">Adresse de livraison</p>
-              <p class="summary-value">
-                {{ order.shippingAddress.line1 }}<br />
-                <ng-container *ngIf="order.shippingAddress.line2">
-                  {{ order.shippingAddress.line2 }}<br />
-                </ng-container>
-                {{ order.shippingAddress.zip }} {{ order.shippingAddress.city }}<br />
-                {{ order.shippingAddress.country }}
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section class="order-items-card">
-          <h3 class="section-title">Articles</h3>
-          <div class="items-header">
-            <span>Produit</span>
-            <span class="items-qty">Qté</span>
-            <span class="items-price">PU</span>
-            <span class="items-total">Total</span>
-          </div>
-
-          <div
-            class="item-row"
-            *ngFor="let item of order.items"
-          >
-            <span class="item-name">{{ item.name }}</span>
-            <span class="item-qty">{{ item.quantity }}</span>
-            <span class="item-price">
-              {{ item.unitPrice | currency: order.currency }}
-            </span>
-            <span class="item-total">
-              {{ item.total | currency: order.currency }}
-            </span>
-          </div>
-        </section>
-
-        <section class="order-totals-card">
-          <h3 class="section-title">Récapitulatif</h3>
-          <div class="totals-row">
-            <span>Sous-total</span>
-            <span>{{ order.subtotal | currency: order.currency }}</span>
-          </div>
-          <div class="totals-row">
-            <span>Remise</span>
-            <span>- {{ order.discount | currency: order.currency }}</span>
-          </div>
-          <div class="totals-row">
-            <span>Livraison</span>
-            <span>{{ order.shipping | currency: order.currency }}</span>
-          </div>
-          <div class="totals-row">
-            <span>Taxes</span>
-            <span>{{ order.taxes | currency: order.currency }}</span>
-          </div>
-          <div class="totals-row totals-row--strong">
-            <span>Total TTC</span>
-            <span>{{ order.grandTotal | currency: order.currency }}</span>
-          </div>
-        </section>
-      </ng-container>
     </div>
   </div>
-</div>
+</app-side-nav>

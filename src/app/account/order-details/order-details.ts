@@ -11,6 +11,7 @@ import {
   selectUserError,
 } from '../../state/user/user.selectors';
 import { UserActions } from '../../state/user/user.actions';
+import { SideNavComponent } from "../../layout/side-nav/side-nav";
 
 @Component({
   selector: 'app-account-order-details',
@@ -27,8 +28,9 @@ import { UserActions } from '../../state/user/user.actions';
     RouterLink,
     MatIconModule,
     MatProgressSpinnerModule,
-    UpperCasePipe
-  ],
+    UpperCasePipe,
+    SideNavComponent
+],
 })
 export class OrderDetailsPageComponent implements OnInit {
   private store = inject(Store);

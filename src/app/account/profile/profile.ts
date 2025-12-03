@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SideNavComponent } from "../../layout/side-nav/side-nav";
 
 @Component({
   selector: 'app-account-profile',
@@ -39,7 +40,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-  ],
+    SideNavComponent
+],
 })
 export class ProfilePageComponent implements OnInit {
   private store = inject(Store);

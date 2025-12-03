@@ -1,67 +1,69 @@
-<div class="account-page">
-  <div class="account-card">
-    <header class="account-header">
-      <div>
-        <h2 class="account-title">Mes commandes</h2>
-        <p class="account-subtitle">
-          Consultez l'historique de vos commandes sur My Shop.
-        </p>
-      </div>
+<app-side-nav>
+  <div class="account-page">
+    <div class="account-card">
+      <header class="account-header">
+        <div>
+          <h2 class="account-title">Mes commandes</h2>
+          <p class="account-subtitle">
+            Consultez l'historique de vos commandes sur My Shop.
+          </p>
+        </div>
 
-      <a routerLink="/account/profile" class="account-link">
-        <mat-icon>person</mat-icon>
-        <span>Mon profil</span>
-      </a>
-    </header>
+        <a routerLink="/account/profile" class="account-link">
+          <mat-icon>person</mat-icon>
+          <span>Mon profil</span>
+        </a>
+      </header>
 
-    <div class="orders-content">
-      <div *ngIf="(loading$ | async)" class="loading-zone">
-        <mat-spinner diameter="40"></mat-spinner>
-      </div>
+      <div class="orders-content">
+        <div *ngIf="(loading$ | async)" class="loading-zone">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
 
-      <p *ngIf="(error$ | async) as error" class="error-text">
-        {{ error }}
-      </p>
-
-      <div *ngIf="(orders$ | async) as orders" class="orders-list" [class.empty]="!orders.length">
-        <p *ngIf="!orders.length" class="empty-text">
-          Vous n'avez pas encore passé de commande.
+        <p *ngIf="(error$ | async) as error" class="error-text">
+          {{ error }}
         </p>
 
-        <div
-          *ngFor="let order of orders; let i = index"
-          class="order-row"
-          role="button"
-          tabindex="0"
-          (click)="openOrder(order.id)"
-          (keydown.enter)="openOrder(order.id)"
-        >
-          <div class="order-main">
-            <div class="order-icon">
-              <mat-icon>{{ orderStatusIcon(order.status) }}</mat-icon>
+        <div *ngIf="(orders$ | async) as orders" class="orders-list" [class.empty]="!orders.length">
+          <p *ngIf="!orders.length" class="empty-text">
+            Vous n'avez pas encore passé de commande.
+          </p>
+
+          <div
+            *ngFor="let order of orders; let i = index"
+            class="order-row"
+            role="button"
+            tabindex="0"
+            (click)="openOrder(order.id)"
+            (keydown.enter)="openOrder(order.id)"
+          >
+            <div class="order-main">
+              <div class="order-icon">
+                <mat-icon>{{ orderStatusIcon(order.status) }}</mat-icon>
+              </div>
+              <div class="order-info">
+                <p class="order-id">Commande #{{ order.id }}</p>
+                <p class="order-meta">
+                  {{ order.createdAt | date: 'mediumDate' }} ·
+                  <span
+                    class="order-status"
+                    [class.order-status--success]="order.status === 'delivered'"
+                  >
+                    {{ order.status | uppercase }}
+                  </span>
+                </p>
+              </div>
             </div>
-            <div class="order-info">
-              <p class="order-id">Commande #{{ order.id }}</p>
-              <p class="order-meta">
-                {{ order.createdAt | date: 'mediumDate' }} ·
-                <span
-                  class="order-status"
-                  [class.order-status--success]="order.status === 'delivered'"
-                >
-                  {{ order.status | uppercase }}
-                </span>
+
+            <div class="order-total">
+              <p class="order-amount">
+                {{ order.total | currency: order.currency }}
               </p>
+              <span class="order-chevron">›</span>
             </div>
-          </div>
-
-          <div class="order-total">
-            <p class="order-amount">
-              {{ order.total | currency: order.currency }}
-            </p>
-            <span class="order-chevron">›</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</app-side-nav>
