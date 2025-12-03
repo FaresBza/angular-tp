@@ -82,3 +82,41 @@
     color: #9ca3af;
     margin-bottom: 2px;
 }
+
+.field-readonly {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #111827;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #f3f4f6;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.rating-field {
+    margin-top: 8px;
+}
+
+.hint {
+    margin: 8px 0 0;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.actions {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.primary-cta {
+    background: #8b4513;
+    color: #fdf9f3;
+}
+
+.primary-cta:hover {
+    background: #78350f;
+}

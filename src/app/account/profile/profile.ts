@@ -1,4 +1,3 @@
-// src/app/account/profile/profile.ts
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,6 +12,7 @@ import {
   selectUserLoading,
   selectUserProfile,
   selectUserError,
+  selectUserPreferences,
 } from '../../state/user/user.selectors';
 import { UserActions } from '../../state/user/user.actions';
 
@@ -48,6 +48,7 @@ export class ProfilePageComponent implements OnInit {
   loading$ = this.store.select(selectUserLoading);
   profile$ = this.store.select(selectUserProfile);
   error$ = this.store.select(selectUserError);
+  preferences$ = this.store.select(selectUserPreferences);
 
   form = this.fb.nonNullable.group({
     fullName: [''],
@@ -62,8 +63,22 @@ export class ProfilePageComponent implements OnInit {
       if (profile) {
         this.form.patchValue({
           fullName: profile.fullName ?? '',
+          newsletter: profile.preferences.newsletter,
+          defaultMinRating: profile.preferences.defaultMinRating ?? 0,
         });
       }
     });
+  }
+
+  save() {
+    const value = this.form.value;
+    this.store.dispatch(
+      UserActions.updatePreferences({
+        preferences: {
+          newsletter: !!value.newsletter,
+          defaultMinRating: Number(value.defaultMinRating ?? 0),
+        },
+      }),
+    );
   }
 }

@@ -1,0 +1,176 @@
+.account-page {
+    min-height: 96vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #f6f1e8;
+}
+
+.account-card {
+    width: 100%;
+    max-width: 840px;
+    padding: 24px 24px 28px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+    background: #fdf9f3;
+    border: 1px solid #e5e7eb;
+}
+
+.account-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.account-title {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.account-subtitle {
+    margin: 4px 0 0;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.account-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    font-size: 0.85rem;
+    color: #374151;
+    text-decoration: none;
+}
+
+.account-link mat-icon {
+    font-size: 18px;
+}
+
+.account-link:hover {
+    background: #f3f4f6;
+}
+
+.orders-content {
+    margin-top: 12px;
+}
+
+.loading-zone {
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+}
+
+.error-text {
+    margin: 0 0 12px;
+    color: #dc2626;
+    font-size: 0.9rem;
+}
+
+.orders-list {
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    overflow: hidden;
+}
+
+.orders-list.empty {
+    padding: 16px;
+}
+
+.empty-text {
+    margin: 0;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.order-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.order-row:not(:last-child) {
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.order-row:hover {
+    background: #f3f4f6;
+    transform: translateY(-1px);
+}
+
+.order-main {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.order-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    background: #fef3c7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-icon mat-icon {
+    font-size: 18px;
+    color: #8b4513;
+}
+
+.order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.order-id {
+    margin: 0;
+    font-weight: 600;
+    color: #111827;
+}
+
+.order-meta {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.order-status {
+    font-weight: 500;
+}
+
+.order-status--success {
+    color: #16a34a;
+}
+
+.order-total {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.order-amount {
+    margin: 0;
+    font-weight: 700;
+    color: #8b4513;
+}
+
+.order-chevron {
+    font-size: 1.4rem;
+    color: #9ca3af;
+}
