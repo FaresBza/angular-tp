@@ -26,12 +26,13 @@ export const userReducer = createReducer(
         loading: true,
         error: null,
     })),
+
     on(UserActions.loadProfileSuccess, (state, { profile }) => ({
         ...state,
-        profile,
-        orders: profile.orders ?? [],
+        profile: { ...profile, orders: state.orders },
         loading: false,
     })),
+
     on(UserActions.loadProfileFailure, (state, { error }) => ({
         ...state,
         loading: false,
@@ -43,12 +44,13 @@ export const userReducer = createReducer(
         loading: true,
         error: null,
     })),
+
     on(UserActions.updatePreferencesSuccess, (state, { profile }) => ({
         ...state,
-        profile,
-        orders: profile.orders,
+        profile: { ...profile, orders: state.orders },
         loading: false,
     })),
+
     on(UserActions.updatePreferencesFailure, (state, { error }) => ({
         ...state,
         loading: false,
@@ -57,35 +59,45 @@ export const userReducer = createReducer(
 
     on(UserActions.loadOrders, (state) => ({
         ...state,
+        loading: false,
+        error: null,
+    })),
+
+    on(UserActions.createOrderFromCart, (state) => ({
+        ...state,
         loading: true,
         error: null,
     })),
-    on(UserActions.loadOrdersSuccess, (state, { orders }) => ({
+
+    on(UserActions.createOrderFromCartSuccess, (state, { order }) => {
+        const newOrders = [...state.orders, order];
+
+        return {
         ...state,
-        orders,
+        orders: newOrders,
+        profile: state.profile
+            ? { ...state.profile, orders: newOrders }
+            : state.profile,
         loading: false,
-    })),
-    on(UserActions.loadOrdersFailure, (state, { error }) => ({
+        };
+    }),
+
+    on(UserActions.createOrderFromCartFailure, (state, { error }) => ({
         ...state,
         loading: false,
         error,
     })),
 
-    on(UserActions.loadOrderDetails, (state) => ({
+    on(UserActions.loadOrderDetails, (state, { id }) => {
+        const found = state.orders.find((o) => o.id === id) as
+        | OrderDetail
+        | undefined;
+
+        return {
         ...state,
-        loading: true,
-        error: null,
-        selectedOrder: null,
-    })),
-    on(UserActions.loadOrderDetailsSuccess, (state, { order }) => ({
-        ...state,
-        selectedOrder: order,
         loading: false,
-    })),
-    on(UserActions.loadOrderDetailsFailure, (state, { error }) => ({
-        ...state,
-        selectedOrder: null,
-        loading: false,
-        error,
-    })),
+        error: found ? null : 'Order not found',
+        selectedOrder: found ?? null,
+        };
+    }),   
 );

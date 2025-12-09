@@ -8,6 +8,8 @@ import {
   selectCartTotal,
   selectCartCount,
 } from '../state/cart/cart.selectors';
+import { UserActions } from '../state/user/user.actions';
+import { Address } from '../state/user/user.models';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -66,9 +68,27 @@ export class CheckoutComponent {
     this.isPlacingOrder = true;
     this.orderId = null;
 
+    const formValue = this.addressForm.value;
+
+    const shippingAddress: Address = {
+      line1: formValue.addressLine ?? '',
+      city: formValue.city ?? '',
+      zip: formValue.postalCode ?? '',
+      country: formValue.country ?? '',
+    };
+
+    const id = 'ORD-' + Date.now();
+
+    this.store.dispatch(
+      UserActions.createOrderFromCart({
+        id,
+        shippingAddress,
+      }),
+    );
+
     setTimeout(() => {
       this.isPlacingOrder = false;
-      this.orderId = 'ORD-' + Date.now();
+      this.orderId = id;
     }, 1000);
   }
 }
