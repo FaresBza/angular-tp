@@ -41,7 +41,7 @@
               </div>
 
               <div class="order-summary-block">
-                <p class="summary-label">Total TTC</p>
+                <p class="summary-label">Total</p>
                 <p class="summary-value total-price">
                   {{ order.grandTotal | currency: order.currency }}
                 </p>
@@ -93,19 +93,15 @@
             </div>
             <div class="totals-row">
               <span>Remise</span>
-              <span>- {{ order.discount | currency: order.currency }}</span>
+              <span class="discount-txt">- {{ order.discount | currency: order.currency }}</span>
             </div>
             <div class="totals-row">
               <span>Livraison</span>
               <span>{{ order.shipping | currency: order.currency }}</span>
             </div>
-            <div class="totals-row">
-              <span>Taxes</span>
-              <span>{{ order.taxes | currency: order.currency }}</span>
-            </div>
             <div class="totals-row totals-row--strong">
-              <span>Total TTC</span>
-              <span>{{ order.grandTotal | currency: order.currency }}</span>
+              <span>Total </span>
+              <span class="grandtotal-txt">{{ order.grandTotal | currency: order.currency }}</span>
             </div>
           </section>
         </ng-container>
