@@ -6,6 +6,7 @@ export interface UserState {
     profile: UserProfile | null;
     orders: OrderSummary[];
     selectedOrder: OrderDetail | null;
+    wishlistProductIds: string[];
     loading: boolean;
     error: string | null;
 }
@@ -14,6 +15,7 @@ export const initialState: UserState = {
     profile: null,
     orders: [],
     selectedOrder: null,
+    wishlistProductIds: [],
     loading: false,
     error: null,
 };
@@ -29,7 +31,10 @@ export const userReducer = createReducer(
 
     on(UserActions.loadProfileSuccess, (state, { profile }) => ({
         ...state,
-        profile: { ...profile, orders: state.orders },
+        profile: {
+        ...profile,
+        orders: state.orders,
+        },
         loading: false,
     })),
 
@@ -47,7 +52,10 @@ export const userReducer = createReducer(
 
     on(UserActions.updatePreferencesSuccess, (state, { profile }) => ({
         ...state,
-        profile: { ...profile, orders: state.orders },
+        profile: {
+        ...profile,
+        orders: state.orders,
+        },
         loading: false,
     })),
 
@@ -99,5 +107,10 @@ export const userReducer = createReducer(
         error: found ? null : 'Order not found',
         selectedOrder: found ?? null,
         };
-    }),   
+    }),
+
+    on(UserActions.setWishlist, (state, { productIds }) => ({
+        ...state,
+        wishlistProductIds: productIds,
+    })),
 );

@@ -1,7 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { HttpClient } from '@angular/common/http';
-import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
+import {
+    catchError,
+    map,
+    of,
+    switchMap,
+    withLatestFrom,
+    tap,
+} from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { UserActions } from './user.actions';
@@ -17,14 +24,18 @@ import {
     selectDeliveryFee,
     selectCartTotal,
 } from '../cart/cart.selectors';
+import { UserState } from './user.reducer';
+import { selectWishlistProductIds } from './user.selectors';
 
 @Injectable()
 export class UserEffects {
     private actions$ = inject(Actions);
     private http = inject(HttpClient);
-    private store = inject(Store);
-
+    private store = inject<Store<{ user: UserState }>>(Store);
     private readonly API = '/api';
+    private readonly WISHLIST_STORAGE_KEY = 'myshop_wishlist';
+
+    // --- Profil ---
 
     loadProfile$ = createEffect(() =>
         this.actions$.pipe(
@@ -67,8 +78,6 @@ export class UserEffects {
         ),
         ),
     );
-
-    // --- 🔥 Nouvelle logique : création d’une commande à partir du panier ---
 
     createOrderFromCart$ = createEffect(() =>
         this.actions$.pipe(
@@ -114,7 +123,57 @@ export class UserEffects {
         ),
     );
 
-  // ⚠️ IMPORTANT :
-  // On n’a plus d’effets loadOrders$ / loadOrderDetails$ ici.
-  // Donc plus AUCUN appel HTTP aux mocks pour les orders.
+    initWishlist$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(UserActions.initWishlist),
+        map(() => {
+            try {
+            const raw = localStorage.getItem(this.WISHLIST_STORAGE_KEY);
+            const parsed = raw ? (JSON.parse(raw) as string[]) : [];
+            return UserActions.setWishlist({ productIds: parsed });
+            } catch {
+            return UserActions.setWishlist({ productIds: [] });
+            }
+        }),
+        ),
+    );
+
+    toggleWishlistItem$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(UserActions.toggleWishlistItem),
+        withLatestFrom(this.store.select(selectWishlistProductIds)),
+        map(([{ productId }, currentIds]) => {
+            const exists = currentIds.includes(productId);
+            const nextIds = exists
+            ? currentIds.filter((id) => id !== productId)
+            : [...currentIds, productId];
+
+            return UserActions.setWishlist({ productIds: nextIds });
+        }),
+        catchError(() =>
+            of(
+            UserActions.toggleWishlistItemFailure({
+                error: 'Failed to update wishlist',
+            }),
+            ),
+        ),
+        ),
+    );
+
+    persistWishlist$ = createEffect(
+        () =>
+        this.actions$.pipe(
+            ofType(UserActions.setWishlist),
+            tap(({ productIds }) => {
+            try {
+                localStorage.setItem(
+                this.WISHLIST_STORAGE_KEY,
+                JSON.stringify(productIds),
+                );
+            } catch {
+            }
+            }),
+        ),
+        { dispatch: false },
+    );
 }

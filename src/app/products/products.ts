@@ -13,6 +13,9 @@ import {
 } from '../state/products/products.selectors';
 import { selectCartCount } from '../state/cart/cart.selectors';
 
+import { UserActions } from '../state/user/user.actions';
+import { selectWishlistProductIds } from '../state/user/user.selectors';
+
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,12 +23,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 import { SideNavComponent } from '../layout/side-nav/side-nav';
-import { MatIconModule } from '@angular/material/icon';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import { PageEvent } from '@angular/material/paginator';
-
 
 @Component({
   selector: 'app-products',
@@ -56,13 +57,15 @@ export class ProductsPageComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  displayedColumns = ['id', 'name', 'price', 'created_at', 'avg'];
+  displayedColumns = ['id', 'name', 'price', 'created_at', 'avg', 'wishlist'];
 
   products$ = this.store.select(selectProductsList);
   count$ = this.store.select(selectProductsCount);
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
   carCount$ = this.store.select(selectCartCount);
+
+  wishlistIds$ = this.store.select(selectWishlistProductIds);
 
   notification: string | null = null;
 
@@ -77,22 +80,15 @@ export class ProductsPageComponent implements OnInit {
     this.onSearch();
 
     this.route.queryParamMap.subscribe((params) => {
-    const addedName = params.get('added');
-    if (addedName) {
-      this.notification = `${addedName} has successfully added to the cart`;
+      const addedName = params.get('added');
+      if (addedName) {
+        this.notification = `${addedName} has successfully added to the cart`;
 
-      this.router.navigate([], {
-        relativeTo: this.route,
-        replaceUrl: true,
-        queryParams: {},
-        queryParamsHandling: '',
-      });
-
-      setTimeout(() => {
-        this.notification = null;
-      }, 5000);
-    }
-  });
+        setTimeout(() => {
+          this.notification = null;
+        }, 5000);
+      }
+    });
   }
 
   onSearch() {
@@ -102,7 +98,7 @@ export class ProductsPageComponent implements OnInit {
         pageSize: this.filters.value.pageSize!,
         minRating: this.filters.value.minRating!,
         ordering: this.filters.value.ordering!,
-      })
+      }),
     );
   }
 
@@ -114,13 +110,23 @@ export class ProductsPageComponent implements OnInit {
     this.router.navigate(['/shop/cart']);
   }
 
-
   onPaginationChange(event: PageEvent) {
     this.filters.patchValue({
       page: event.pageIndex + 1,
-      pageSize: event.pageSize
+      pageSize: event.pageSize,
     });
 
     this.onSearch();
+  }
+
+  isInWishlist(id: number, wishlistIds: string[]): boolean {
+    return wishlistIds.includes(String(id));
+  }
+
+  toggleWishlist(id: number, $event: MouseEvent) {
+    $event.stopPropagation();
+    this.store.dispatch(
+      UserActions.toggleWishlistItem({ productId: String(id) }),
+    );
   }
 }

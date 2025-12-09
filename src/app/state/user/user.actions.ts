@@ -29,5 +29,10 @@ export const UserActions = createActionGroup({
         createOrderFromCart: props<{ id: string; shippingAddress: Address }>(),
         createOrderFromCartSuccess: props<{ order: OrderDetail }>(),
         createOrderFromCartFailure: props<{ error: string }>(),
+
+        initWishlist: emptyProps(),
+        setWishlist: props<{ productIds: string[] }>(),
+        toggleWishlistItem: props<{ productId: string }>(),
+        toggleWishlistItemFailure: props<{ error: string }>(),
     },
 });
