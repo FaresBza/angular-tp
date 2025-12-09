@@ -28,6 +28,16 @@
 
         <a
             mat-list-item
+            routerLink="/shop/wishlist"
+            routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: false }"
+        >
+            <mat-icon>favorite</mat-icon>
+            <span>Wishlist</span>
+        </a>
+
+        <a
+            mat-list-item
             routerLink="/shop/checkout"
             routerLinkActive="active-link"
             [routerLinkActiveOptions]="{ exact: false }"
