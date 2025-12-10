@@ -14,6 +14,7 @@ import { CheckoutComponent } from './checkout/checkout';
 import { ProfilePageComponent } from './account/profile/profile';
 import { OrdersPageComponent } from './account/orders/orders';
 import { OrderDetailsPageComponent } from './account/order-details/order-details';
+import { WishlistPageComponent } from './wishlist/wishlist';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -27,6 +28,7 @@ export const routes: Routes = [
   { path: 'shop/details/:id', component: ProductDetailsPageComponent },
   { path: 'shop/cart', component: CartPageComponent },
   { path: 'shop/checkout', component: CheckoutComponent },
+  { path: 'shop/wishlist', component: WishlistPageComponent },
   { path: 'account/profile', component: ProfilePageComponent },
   { path: 'account/orders', component: OrdersPageComponent },
   { path: 'account/orders/:id', component: OrderDetailsPageComponent },

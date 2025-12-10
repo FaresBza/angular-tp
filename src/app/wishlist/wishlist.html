@@ -1,0 +1,44 @@
+<app-side-nav>
+  <div class="wishlist-page">
+    <h2 class="wishlist-title">Wishlist</h2>
+
+    <ng-container *ngIf="(count$ | async) as count">
+      <p class="wishlist-count" *ngIf="count > 0">
+        You have {{ count }} product(s) in your wishlist.
+      </p>
+      <p class="wishlist-empty" *ngIf="count === 0">
+        Your wishlist is empty.
+      </p>
+    </ng-container>
+
+    <div class="wishlist-grid" *ngIf="(products$ | async) as products">
+      <mat-card
+        class="wishlist-card"
+        *ngFor="let product of products"
+      >
+        <mat-card-title>{{ product.name }}</mat-card-title>
+        <mat-card-subtitle>
+          {{ product.price | currency : 'CHF ' }}.-
+        </mat-card-subtitle>
+
+        <mat-card-actions class="wishlist-actions">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="addToCart(product)"
+          >
+            Add to cart
+          </button>
+
+          <button
+            mat-stroked-button
+            color="warn"
+            (click)="removeFromWishlist(product)"
+          >
+            Remove
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</app-side-nav>

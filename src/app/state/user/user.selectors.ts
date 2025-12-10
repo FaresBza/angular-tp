@@ -23,5 +23,5 @@ export const selectIsInWishlist = (productId: string) =>
 export const selectWishlistProducts = createSelector(
     selectWishlistProductIds,
     selectProductsList,
-    (ids, products) => products.filter((p) => ids.includes(p.id)),
+    (ids, products) => products.filter((p) => ids.includes(String(p.id))),
 );
