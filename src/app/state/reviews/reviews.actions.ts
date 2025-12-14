@@ -1,11 +1,9 @@
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
 import { Review } from './reviews.models';
 
 export const ReviewsActions = createActionGroup({
   source: 'Reviews',
   events: {
-    init: emptyProps(),
-
     loadProductReviews: props<{ productId: string }>(),
     loadProductReviewsSuccess: props<{ productId: string; reviews: Review[] }>(),
     loadProductReviewsFailure: props<{ productId: string; error: string }>(),

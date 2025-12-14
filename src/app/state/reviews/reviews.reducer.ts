@@ -11,11 +11,6 @@ export const initialReviewsState: ReviewsState = {
 export const reviewsReducer = createReducer(
     initialReviewsState,
 
-    on(ReviewsActions.init, (state) => ({
-        ...state,
-        error: null,
-    })),
-
     on(ReviewsActions.loadProductReviews, (state) => ({
         ...state,
         loading: true,
