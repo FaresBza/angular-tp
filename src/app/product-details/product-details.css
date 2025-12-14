@@ -202,3 +202,9 @@
 .gpay-btn.mat-mdc-stroked-button:hover {
   background: #f9fafb;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0 16px;
+}

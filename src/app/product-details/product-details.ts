@@ -1,9 +1,17 @@
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
-import { AsyncPipe, CurrencyPipe, DatePipe, NgClass, NgFor, NgIf, DecimalPipe } from '@angular/common';
+import {
+  AsyncPipe,
+  CurrencyPipe,
+  DatePipe,
+  DecimalPipe,
+  NgClass,
+  NgFor,
+  NgIf,
+} from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { map, of, switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 
 import { ProductsActions } from '../state/products/products.action';
 import {
@@ -14,7 +22,6 @@ import {
 } from '../state/products/products.selectors';
 
 import { CartActions } from '../state/cart/cart.actions';
-
 import { UserActions } from '../state/user/user.actions';
 import { selectIsInWishlist } from '../state/user/user.selectors';
 
@@ -34,8 +41,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-
-import { SideNavComponent } from '../layout/side-nav/side-nav';
+import { SideNavComponent } from "../layout/side-nav/side-nav";
 
 @Component({
   selector: 'app-product-details',
@@ -44,12 +50,11 @@ import { SideNavComponent } from '../layout/side-nav/side-nav';
   styleUrls: ['./product-details.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    SideNavComponent,
     RouterLink,
-    NgClass,
     AsyncPipe,
     NgIf,
     NgFor,
+    NgClass,
     CurrencyPipe,
     DatePipe,
     DecimalPipe,
@@ -61,7 +66,8 @@ import { SideNavComponent } from '../layout/side-nav/side-nav';
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-  ],
+    SideNavComponent
+],
 })
 export class ProductDetailsPageComponent implements OnInit {
   private store = inject(Store);
@@ -75,6 +81,10 @@ export class ProductDetailsPageComponent implements OnInit {
   error$ = this.store.select(selectProductsError);
   rating$ = this.store.select(selectLastRating);
 
+  productId$ = this.route.paramMap.pipe(
+    map((params) => params.get('id') ?? ''),
+  );
+
   product$ = this.route.paramMap.pipe(
     switchMap((params) => {
       const id = Number(params.get('id'));
@@ -84,21 +94,13 @@ export class ProductDetailsPageComponent implements OnInit {
     }),
   );
 
-  isInWishlist$ = this.route.paramMap.pipe(
-    switchMap((params) => {
-      const id = params.get('id');
-      return id ? this.store.select(selectIsInWishlist(String(id))) : of(false);
-    }),
-  );
-
-  productId$ = this.route.paramMap.pipe(
-    map((params) => params.get('id') ?? ''),
+  isInWishlist$ = this.productId$.pipe(
+    switchMap((id) => this.store.select(selectIsInWishlist(String(id)))),
   );
 
   reviews$ = this.productId$.pipe(
     switchMap((id) => this.store.select(selectReviewsForProduct(id))),
   );
-
   reviewsLoading$ = this.store.select(selectReviewsLoading);
   reviewsError$ = this.store.select(selectReviewsError);
 
@@ -121,9 +123,12 @@ export class ProductDetailsPageComponent implements OnInit {
 
       const idNum = Number(idStr);
       this.store.dispatch(ProductsActions.loadRating({ id: idNum }));
-
       this.store.dispatch(ReviewsActions.loadProductReviews({ productId: idStr }));
     });
+  }
+
+  returnToProductsPage() {
+    this.router.navigate(['shop/products']);
   }
 
   addToCart(product: { id: number; name: string; price: number } | null) {
@@ -146,15 +151,16 @@ export class ProductDetailsPageComponent implements OnInit {
 
   toggleWishlist(productId: number, event?: MouseEvent) {
     if (event) event.stopPropagation();
-
     this.store.dispatch(
       UserActions.toggleWishlistItem({ productId: String(productId) }),
     );
   }
 
-  submitReview(productId: number | null) {
-    if (!productId) return;
-    if (this.reviewForm.invalid) return;
+  submitReview(productId: number) {
+    if (this.reviewForm.invalid) {
+      this.reviewForm.markAllAsTouched();
+      return;
+    }
 
     const rating = Number(this.reviewForm.value.rating ?? 5);
     const comment = String(this.reviewForm.value.comment ?? '').trim();
@@ -167,12 +173,8 @@ export class ProductDetailsPageComponent implements OnInit {
       }),
     );
 
-    this.reviewForm.patchValue({ comment: '' });
+    this.reviewForm.reset({ rating: 5, comment: '' });
   }
 
   trackByReviewId = (_: number, r: { id: string }) => r.id;
-
-  returnToProductsPage() {
-    this.router.navigate(['shop/products']);
-  }
 }

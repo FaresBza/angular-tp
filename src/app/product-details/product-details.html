@@ -1,166 +1,194 @@
 <app-side-nav>
   <div class="rating-page">
-  <mat-card class="rating-card">
-    <div *ngIf="product$ | async as product" class="rating-content">
-      <div class="header-btn">
-        <button class="back-button" (click)="returnToProductsPage()">&lt;</button>
-        <span class="rating-value" *ngIf="rating$ | async as rating">{{ rating.product_id }}</span>
-      </div>
+  <mat-card class="rating-card" *ngIf="(product$ | async) as product">
+    <div class="header-btn">
+      <button
+        mat-icon-button
+        class="back-button"
+        (click)="returnToProductsPage()"
+        aria-label="Back to products"
+      >
+        ←
+      </button>
+
+      <button
+        mat-icon-button
+        class="back-button"
+        (click)="toggleWishlist(product.id, $event)"
+        aria-label="Toggle wishlist"
+      >
+        <mat-icon>
+          {{ (isInWishlist$ | async) ? 'favorite' : 'favorite_border' }}
+        </mat-icon>
+      </button>
+    </div>
+
+    <div class="rating-content">
       <div class="rating-header">
-          <div class="rating-header-main" >
-            <h1 class="product-title">{{ product.name }}</h1>
-  
+        <div class="rating-header-main">
+          <h1 class="product-title">{{ product.name }}</h1>
+          <div class="rating-value" *ngIf="(rating$ | async) as rating">
+            {{ Math.round(rating.avg_rating) }}
           </div>
+        </div>
+
         <p class="product-subtitle">
-          Track customer satisfaction and see how this product is performing in real time.
+          Price: <strong>{{ product.price | currency : 'CHF ' }}.-</strong>
         </p>
       </div>
 
-      <ng-container *ngIf="rating$ | async as rating">
-        <div class="rating-stars-row" *ngIf="rating.avg_rating !== null">
-          <div class="stars">
-            <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
-              <span
-                class="star"
-                [ngClass]="{ 'filled': i < Math.round(rating.avg_rating) }"
-              >
-                &#9733;
-              </span>
-            </ng-container>
-          </div>
+      <div *ngIf="(loading$ | async)" class="loader">
+        <mat-spinner></mat-spinner>
+      </div>
 
-          <span class="rating-score">
-            {{ rating.avg_rating.toFixed(1) }}/5
-          </span>
-
-          <span class="rating-count">
-            {{ rating.count }} customer reviews
-          </span>
-        </div>
-
-        <div class="rating-info-panel">
-          <ul class="rating-bullets">
-            <li>
-              <span class="bullet-dot"></span>
-              Average rating based on real customer feedback.
-            </li>
-            <li>
-              <span class="bullet-dot"></span>
-              {{ rating.count }} verified votes recorded.
-            </li>
-            <li>
-              <span class="bullet-dot"></span>
-              Updated each time a new rating is submitted.
-            </li>
-          </ul>
-        </div>
-      </ng-container>
-
-      <div class="rating-error" *ngIf="error$ | async as error">
+      <div class="rating-error" *ngIf="(error$ | async) as error">
         <p class="error-text">{{ error }}</p>
       </div>
 
-      <div class="rating-footer">
+      <div class="rating-stars-row" *ngIf="(rating$ | async) as rating">
+        <div class="stars">
+          <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+            <span class="star" [ngClass]="{ filled: i < Math.round(rating.avg_rating) }">
+              &#9733;
+            </span>
+          </ng-container>
+        </div>
 
+        <span class="rating-score">
+          {{ rating.avg_rating | number : '1.1-1' }}/5
+        </span>
+
+        <span class="rating-count" *ngIf="rating.count != null">
+          ({{ rating.count }} vote(s))
+        </span>
+      </div>
+
+      <div class="rating-info-panel">
+        <ul class="rating-bullets">
+          <li>
+            <span class="bullet-dot"></span>
+            Average rating based on real customer feedback.
+          </li>
+          <li>
+            <span class="bullet-dot"></span>
+            Updated each time a new rating is submitted.
+          </li>
+        </ul>
+      </div>
+
+      <div class="rating-footer">
         <div class="rating-actions">
-          <button
-            mat-raised-button
-            class="primary-cta"
-            (click)="addToCart(product)"
-          >
-            ADD TO CART / {{ product.price | currency: 'CHF '}}.-
+          <button mat-raised-button class="primary-cta" (click)="addToCart(product)">
+            ADD TO CART / CHF {{ product.price | number : '1.2-2' }}.-
           </button>
         </div>
       </div>
-    </div>
-  </mat-card>
-  <mat-card  class="reviews-card">
-    <section *ngIf="product$ | async as product" class="reviews-content">
-        <div class="reviews-title-row">
-          <h2 class="product-title">Customer reviews</h2>
+      <div class="rating-header" style="margin-top: 18px;">
+        <div class="rating-header-main">
+          <h2 class="product-title" style="font-size: 1.35rem; margin-bottom: 10px;">
+            Customer reviews
+          </h2>
 
-          <div class="reviews-meta">
-            <span class="avg">
-              {{ (avgReviewRating$ | async) | number : '1.1-1' }}/5
-            </span>
-            <span class="count">
-              ({{ (reviewCount$ | async) ?? 0 }} review(s))
-            </span>
+          <div class="rating-value">
+            {{ (avgReviewRating$ | async) | number : '1.1-1' }}
           </div>
         </div>
 
-        <div *ngIf="(reviewsLoading$ | async)" class="reviews-loading">
-          Loading reviews...
-        </div>
-
-        <p class="error-text" *ngIf="(reviewsError$ | async) as rerr">
-          {{ rerr }}
+        <p class="product-subtitle">
+          ({{ (reviewCount$ | async) ?? 0 }} review(s))
         </p>
+      </div>
 
-        <ul class="reviews-list" *ngIf="(reviews$ | async) as reviews">
-          <li
-            class="review-item"
-            *ngFor="let r of reviews; trackBy: trackByReviewId"
-          >
-            <div class="review-top">
-              <strong>{{ r.user }}</strong>
-
-              <span class="review-stars">
-                <ng-container *ngFor="let s of [1,2,3,4,5]; let i = index">
-                  <span
-                    class="star"
-                    [ngClass]="{ 'filled': i < r.rating }"
-                  >
-                    &#9733;
-                  </span>
-                </ng-container>
-              </span>
-
-              <span class="date">
-                {{ r.createdAt | date : 'short' }}
-              </span>
-            </div>
-
-            <p class="comment">{{ r.comment }}</p>
-          </li>
-
-          <li class="review-empty" *ngIf="!reviews.length">
-            No reviews yet. Be the first one!
+      <div class="rating-info-panel" *ngIf="(reviewsLoading$ | async)">
+        <ul class="rating-bullets">
+          <li>
+            <span class="bullet-dot"></span>
+            Loading reviews...
           </li>
         </ul>
+      </div>
 
-        <form
-          class="review-form"
-          [formGroup]="reviewForm"
-          (ngSubmit)="submitReview(product.id)"
+      <div class="rating-error" *ngIf="(reviewsError$ | async) as rerr">
+        <p class="error-text">{{ rerr }}</p>
+      </div>
+
+      <div *ngIf="(reviews$ | async) as reviews">
+        <div
+          class="rating-info-panel"
+          *ngFor="let r of reviews; trackBy: trackByReviewId"
+          style="margin-bottom: 12px;"
         >
-          <h3>Leave a review</h3>
+          <div class="rating-stars-row" style="margin-bottom: 8px;">
+            <strong style="color:#111827;">{{ r.user }}</strong>
 
-          <div class="review-form-row">
-            <mat-form-field appearance="outline" class="rating-field">
-              <mat-label>Rating</mat-label>
-              <mat-select formControlName="rating">
-                <mat-option *ngFor="let r of [1,2,3,4,5]" [value]="r">
-                  {{ r }} ★
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+            <div class="stars" style="margin-left: 10px;">
+              <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+                <span class="star" [ngClass]="{ filled: i < r.rating }">
+                  &#9733;
+                </span>
+              </ng-container>
+            </div>
 
-            <mat-form-field appearance="outline" class="comment-field">
-              <mat-label>Comment</mat-label>
-              <textarea
-                matInput
-                rows="3"
-                formControlName="comment"
-              ></textarea>
-            </mat-form-field>
+            <span class="rating-count" style="margin-left:auto;">
+              {{ r.createdAt | date : 'short' }}
+            </span>
           </div>
 
-          <button mat-raised-button color="primary" type="submit">
+          <p class="product-subtitle" style="margin:0; color:#374151;">
+            {{ r.comment }}
+          </p>
+        </div>
+
+        <div class="rating-info-panel" *ngIf="!reviews.length">
+          <ul class="rating-bullets">
+            <li>
+              <span class="bullet-dot"></span>
+              No reviews yet. Be the first one!
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="rating-info-panel" style="margin-top: 10px;">
+        <form [formGroup]="reviewForm" (ngSubmit)="submitReview(product.id)">
+          <ul class="rating-bullets" style="margin-bottom: 10px;">
+            <li>
+              <span class="bullet-dot"></span>
+              Leave a review
+            </li>
+          </ul>
+
+          <mat-form-field appearance="outline" style="width:100%; margin-bottom: 10px;">
+            <mat-label>Rating*</mat-label>
+            <mat-select formControlName="rating">
+              <mat-option *ngFor="let r of [1,2,3,4,5]" [value]="r">
+                {{ r }} ★
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="width:100%; margin-bottom: 10px;">
+            <mat-label>Comment*</mat-label>
+            <textarea matInput rows="3" formControlName="comment"></textarea>
+          </mat-form-field>
+
+          <div class="rating-error" *ngIf="reviewForm.touched && reviewForm.invalid">
+            <p class="error-text">
+              Comment must be at least 5 characters.
+            </p>
+          </div>
+
+          <button
+            mat-raised-button
+            class="primary-cta"
+            type="submit"
+            [disabled]="reviewForm.invalid"
+          >
             Submit review
           </button>
         </form>
-      </section>
+      </div>
+    </div>
   </mat-card>
 </div>
 
