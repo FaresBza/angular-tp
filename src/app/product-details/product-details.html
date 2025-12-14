@@ -72,9 +72,12 @@
           </button>
         </div>
       </div>
-      <section class="reviews-section">
+    </div>
+  </mat-card>
+  <mat-card  class="reviews-card">
+    <section *ngIf="product$ | async as product" class="reviews-content">
         <div class="reviews-title-row">
-          <h2>Customer reviews</h2>
+          <h2 class="product-title">Customer reviews</h2>
 
           <div class="reviews-meta">
             <span class="avg">
@@ -158,7 +161,6 @@
           </button>
         </form>
       </section>
-    </div>
   </mat-card>
 </div>
 
