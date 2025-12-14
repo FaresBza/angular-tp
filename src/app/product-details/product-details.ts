@@ -154,6 +154,32 @@ export class ProductDetailsPageComponent implements OnInit {
     comment: ['', [Validators.required, Validators.minLength(5)]],
   });
 
+  hoverRating = 0;
+  selectedRating = 5;
+
+  setRating(value: number) {
+    this.selectedRating = value;
+    this.reviewForm.patchValue({ rating: value });
+
+    const stars = document.querySelectorAll('.star.clickable');
+    stars.forEach((star, index) => {
+      if (index < value) {
+        star.classList.remove('pulse');
+        void (star as HTMLElement).offsetWidth;
+        star.classList.add('pulse');
+      }
+    });
+  }
+
+  setHover(value: number) {
+    this.hoverRating = value;
+  }
+
+  clearHover() {
+    this.hoverRating = 0;
+  }
+
+
   ngOnInit(): void {
     this.productId$.subscribe((idStr) => {
       if (!idStr) return;

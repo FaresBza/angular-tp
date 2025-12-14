@@ -100,14 +100,20 @@
   gap: 2px;
 }
 
+/* ⭐ Bouton étoile (on enlève le style natif du button) */
 .star {
   position: relative;
-  display: inline-block;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
   font-size: 18px;
   line-height: 1;
   color: #d4d4d8;
+  cursor: pointer;
 }
 
+/* étoile pleine (fluide) */
 .star::after {
   content: "★";
   position: absolute;
@@ -119,8 +125,28 @@
   line-height: 1;
 }
 
-.star.filled {
-  color: #8b4513;
+.star.clickable:hover,
+.star.clickable:focus-visible {
+  transform: scale(1.15);
+  filter: brightness(1.15);
+}
+
+.star.clickable.pulse {
+  animation: star-pulse 0.35s ease-out;
+}
+
+@keyframes star-pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.35);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .rating-score {
@@ -220,4 +246,17 @@
   display: flex;
   justify-content: center;
   padding: 10px 0 16px;
+}
+
+.interactive-stars {
+  cursor: pointer;
+}
+
+.star.clickable {
+  transition: transform 0.12s ease, filter 0.12s ease;
+}
+
+.star.clickable:hover {
+  transform: scale(1.15);
+  filter: brightness(1.1);
 }

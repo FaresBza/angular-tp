@@ -157,44 +157,62 @@
       </div>
 
       <div class="rating-info-panel" style="margin-top: 10px;">
-        <form [formGroup]="reviewForm" (ngSubmit)="submitReview(product.id)">
-          <ul class="rating-bullets" style="margin-bottom: 10px;">
-            <li>
-              <span class="bullet-dot"></span>
-              Leave a review
-            </li>
-          </ul>
+  <form [formGroup]="reviewForm" (ngSubmit)="submitReview(product.id)">
+    <ul class="rating-bullets" style="margin-bottom: 10px;">
+      <li>
+        <span class="bullet-dot"></span>
+        Leave a review
+      </li>
+    </ul>
 
-          <mat-form-field appearance="outline" style="width:100%; margin-bottom: 10px;">
-            <mat-label>Rating*</mat-label>
-            <mat-select formControlName="rating">
-              <mat-option *ngFor="let r of [1,2,3,4,5]" [value]="r">
-                {{ r }} ★
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+    <div
+      class="stars interactive-stars"
+      (mouseleave)="clearHover()"
+      style="margin-bottom: 12px;"
+    >
+      <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+        <button
+          type="button"
+          class="star clickable"
+          [style.--fill.%]="
+            getStarFillPercent(
+              hoverRating || selectedRating,
+              i
+            )
+          "
+          (mouseenter)="setHover(i + 1)"
+          (focus)="setHover(i + 1)"
+          (blur)="clearHover()"
+          (click)="setRating(i + 1)"
+          [attr.aria-label]="'Rate ' + (i + 1) + ' star(s)'"
+        >
+          &#9733;
+        </button>
+      </ng-container>
+    </div>
 
-          <mat-form-field appearance="outline" style="width:100%; margin-bottom: 10px;">
-            <mat-label>Comment*</mat-label>
-            <textarea matInput rows="3" formControlName="comment"></textarea>
-          </mat-form-field>
+    <mat-form-field appearance="outline" style="width:100%; margin-bottom: 10px;">
+      <mat-label>Comment*</mat-label>
+      <textarea matInput rows="3" formControlName="comment"></textarea>
+    </mat-form-field>
 
-          <div class="rating-error" *ngIf="reviewForm.touched && reviewForm.invalid">
-            <p class="error-text">
-              Comment must be at least 5 characters.
-            </p>
-          </div>
+    <div class="rating-error" *ngIf="reviewForm.touched && reviewForm.invalid">
+      <p class="error-text">
+        Please provide a comment (min 5 characters).
+      </p>
+    </div>
 
-          <button
-            mat-raised-button
-            class="primary-cta"
-            type="submit"
-            [disabled]="reviewForm.invalid"
-          >
-            Submit review
-          </button>
-        </form>
-      </div>
+    <button
+      mat-raised-button
+      class="primary-cta"
+      type="submit"
+      [disabled]="reviewForm.invalid"
+    >
+      Submit review
+    </button>
+  </form>
+</div>
+
   </mat-card>
 </div>
 
