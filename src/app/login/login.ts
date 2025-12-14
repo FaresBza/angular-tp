@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthActions } from '../state/auth/auth.actions';
 import {
@@ -40,6 +40,7 @@ export class LoginPageComponent implements OnInit {
   private store = inject(Store);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   loading$ = this.store.select(selectAuthLoading);
   error$ = this.store.select(selectAuthError);
@@ -54,10 +55,11 @@ export class LoginPageComponent implements OnInit {
     this.isLoggedIn$
       .pipe(
         filter((loggedIn) => loggedIn),
-        take(1)
+        take(1),
       )
       .subscribe(() => {
-        this.router.navigate(['/shop/products']);
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        this.router.navigateByUrl(returnUrl || '/shop/products');
       });
   }
 
@@ -69,7 +71,7 @@ export class LoginPageComponent implements OnInit {
       AuthActions.login({
         username: username ?? '',
         password: password ?? '',
-      })
+      }),
     );
   }
 }

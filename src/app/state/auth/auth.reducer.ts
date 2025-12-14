@@ -8,38 +8,76 @@ export interface AuthState {
     error: string | null;
 }
 
+function readToken(key: 'access' | 'refresh'): string | null {
+    try {
+        if (typeof window === 'undefined') return null;
+        return localStorage.getItem(`auth.${key}`);
+    } catch {
+        return null;
+    }
+}
+
 export const initialState: AuthState = {
-    access: null,
-    refresh: null,
+    access: readToken('access'),
+    refresh: readToken('refresh'),
     loading: false,
     error: null,
 };
 
 export const authReducer = createReducer(
     initialState,
-    on(AuthActions.login, state => ({ 
-        ...state, 
-        loading: true, 
-        error: null 
+
+    on(AuthActions.hydrateFromStorage, (state) => ({
+        ...state,
+        access: readToken('access'),
+        refresh: readToken('refresh'),
     })),
+
+    on(AuthActions.login, (state) => ({
+        ...state,
+        loading: true,
+        error: null,
+    })),
+
     on(AuthActions.loginSuccess, (state, { access, refresh }) => ({
         ...state,
         access,
         refresh,
         loading: false,
+        error: null,
     })),
+
     on(AuthActions.loginFailure, (state, { error }) => ({
         ...state,
         loading: false,
         error,
     })),
-    on(AuthActions.refreshToken, state => ({ 
-        ...state, 
-        loading: true 
+
+    on(AuthActions.refreshToken, (state) => ({
+        ...state,
+        loading: true,
+        error: null,
     })),
+
     on(AuthActions.refreshSuccess, (state, { access }) => ({
         ...state,
         access,
         loading: false,
+        error: null,
+    })),
+
+    on(AuthActions.refreshFailure, (state, { error }) => ({
+        ...state,
+        loading: false,
+        error,
+        access: null, // 🔥 access invalide
+    })),
+
+    on(AuthActions.logout, (state) => ({
+        ...state,
+        access: null,
+        refresh: null,
+        loading: false,
+        error: null,
     })),
 );
