@@ -72,6 +72,92 @@
           </button>
         </div>
       </div>
+      <section class="reviews-section">
+        <div class="reviews-title-row">
+          <h2>Customer reviews</h2>
+
+          <div class="reviews-meta">
+            <span class="avg">
+              {{ (avgReviewRating$ | async) | number : '1.1-1' }}/5
+            </span>
+            <span class="count">
+              ({{ (reviewCount$ | async) ?? 0 }} review(s))
+            </span>
+          </div>
+        </div>
+
+        <div *ngIf="(reviewsLoading$ | async)" class="reviews-loading">
+          Loading reviews...
+        </div>
+
+        <p class="error-text" *ngIf="(reviewsError$ | async) as rerr">
+          {{ rerr }}
+        </p>
+
+        <ul class="reviews-list" *ngIf="(reviews$ | async) as reviews">
+          <li
+            class="review-item"
+            *ngFor="let r of reviews; trackBy: trackByReviewId"
+          >
+            <div class="review-top">
+              <strong>{{ r.user }}</strong>
+
+              <span class="review-stars">
+                <ng-container *ngFor="let s of [1,2,3,4,5]; let i = index">
+                  <span
+                    class="star"
+                    [ngClass]="{ 'filled': i < r.rating }"
+                  >
+                    &#9733;
+                  </span>
+                </ng-container>
+              </span>
+
+              <span class="date">
+                {{ r.createdAt | date : 'short' }}
+              </span>
+            </div>
+
+            <p class="comment">{{ r.comment }}</p>
+          </li>
+
+          <li class="review-empty" *ngIf="!reviews.length">
+            No reviews yet. Be the first one!
+          </li>
+        </ul>
+
+        <form
+          class="review-form"
+          [formGroup]="reviewForm"
+          (ngSubmit)="submitReview(product.id)"
+        >
+          <h3>Leave a review</h3>
+
+          <div class="review-form-row">
+            <mat-form-field appearance="outline" class="rating-field">
+              <mat-label>Rating</mat-label>
+              <mat-select formControlName="rating">
+                <mat-option *ngFor="let r of [1,2,3,4,5]" [value]="r">
+                  {{ r }} ★
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="comment-field">
+              <mat-label>Comment</mat-label>
+              <textarea
+                matInput
+                rows="3"
+                formControlName="comment"
+              ></textarea>
+            </mat-form-field>
+          </div>
+
+          <button mat-raised-button color="primary" type="submit">
+            Submit review
+          </button>
+        </form>
+      </section>
     </div>
   </mat-card>
 </div>
