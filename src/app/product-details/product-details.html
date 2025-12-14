@@ -45,10 +45,13 @@
         <p class="error-text">{{ error }}</p>
       </div>
 
-      <div class="rating-stars-row" *ngIf="(rating$ | async) as rating">
+      <div class="rating-stars-row" *ngIf="(displayRating$ | async) as rating">
         <div class="stars">
           <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
-            <span class="star" [ngClass]="{ filled: i < Math.round(rating.avg_rating) }">
+            <span
+              class="star"
+              [style.--fill.%]="getStarFillPercent(rating.avg_rating, i)"
+            >
               &#9733;
             </span>
           </ng-container>
@@ -58,10 +61,11 @@
           {{ rating.avg_rating | number : '1.1-1' }}/5
         </span>
 
-        <span class="rating-count" *ngIf="rating.count != null">
-          ({{ rating.count }} vote(s))
+        <span class="rating-count">
+          ({{ rating.count }} {{ rating.source === 'reviews' ? 'review(s)' : 'vote(s)' }})
         </span>
       </div>
+
 
       <div class="rating-info-panel">
         <ul class="rating-bullets">

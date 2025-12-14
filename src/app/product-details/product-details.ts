@@ -11,7 +11,7 @@ import {
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { map, switchMap } from 'rxjs';
+import { combineLatest, map, switchMap } from 'rxjs';
 
 import { ProductsActions } from '../state/products/products.action';
 import {
@@ -41,7 +41,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
-import { SideNavComponent } from "../layout/side-nav/side-nav";
+import { SideNavComponent } from '../layout/side-nav/side-nav';
+
+type DisplayRating = {
+  avg_rating: number;
+  count: number;
+  source: 'reviews' | 'api';
+};
 
 @Component({
   selector: 'app-product-details',
@@ -67,7 +73,7 @@ import { SideNavComponent } from "../layout/side-nav/side-nav";
     MatSelectModule,
     MatInputModule,
     SideNavComponent
-],
+  ],
 })
 export class ProductDetailsPageComponent implements OnInit {
   private store = inject(Store);
@@ -79,6 +85,8 @@ export class ProductDetailsPageComponent implements OnInit {
 
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
+
+  // Rating API existant (avg_rating + count)
   rating$ = this.store.select(selectLastRating);
 
   productId$ = this.route.paramMap.pipe(
@@ -98,6 +106,7 @@ export class ProductDetailsPageComponent implements OnInit {
     switchMap((id) => this.store.select(selectIsInWishlist(String(id)))),
   );
 
+  // Reviews
   reviews$ = this.productId$.pipe(
     switchMap((id) => this.store.select(selectReviewsForProduct(id))),
   );
@@ -110,6 +119,34 @@ export class ProductDetailsPageComponent implements OnInit {
 
   reviewCount$ = this.productId$.pipe(
     switchMap((id) => this.store.select(selectReviewsCountForProduct(id))),
+  );
+
+  displayRating$ = combineLatest([
+    this.rating$,
+    this.avgReviewRating$,
+    this.reviewCount$,
+  ]).pipe(
+    map(([apiRating, reviewsAvg, reviewsCount]): DisplayRating => {
+      const hasReviews = (reviewsCount ?? 0) > 0;
+
+      if (hasReviews) {
+        return {
+          avg_rating: Number(reviewsAvg ?? 0),
+          count: Number(reviewsCount ?? 0),
+          source: 'reviews',
+        };
+      }
+
+      return {
+        avg_rating: Number(apiRating?.avg_rating ?? 0),
+        count: Number(apiRating?.count ?? 0),
+        source: 'api',
+      };
+    }),
+  );
+
+  ratingStars$ = this.displayRating$.pipe(
+    map((r) => Math.round(r.avg_rating)),
   );
 
   reviewForm = this.fb.group({
@@ -177,4 +214,13 @@ export class ProductDetailsPageComponent implements OnInit {
   }
 
   trackByReviewId = (_: number, r: { id: string }) => r.id;
+
+  getStarFillPercent(avg: number, index: number): number {
+    const raw = (avg - index) * 100;
+    if (raw <= 0) return 0;
+    if (raw >= 100) return 100;
+
+    return raw >= 50 ? 50 : 0;
+  }
+
 }
