@@ -54,7 +54,7 @@
         <p class="count-text">Total: {{ count$ | async }}</p>
         </div>
     </mat-card>
-    <mat-card class="table-card">
+    <mat-card class="table-card table-scrollable">
         <table mat-table [dataSource]="(products$ | async) || []" class="mat-elevation-z2">
             <ng-container matColumnDef="wishlist">
                 <th mat-header-cell *matHeaderCellDef>Wishlist</th>

@@ -131,6 +131,13 @@
     overflow: hidden;
 }
 
+.table-scrollable {
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    border-radius: 16px;
+}
+
+
 .table-card table {
     width: 100%;
     border-collapse: collapse;
