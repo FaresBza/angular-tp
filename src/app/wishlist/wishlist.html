@@ -16,20 +16,55 @@
         class="wishlist-card"
         *ngFor="let product of products"
       >
-        <h2 class="product-title">{{ product.name }}</h2>
-        <mat-card-subtitle>
-          {{ product.price | currency : 'CHF ' }}.-
-        </mat-card-subtitle>
+        <div>
+          <div class="rating-content">
+            <div class="rating-header">
+              <div class="rating-header-main">
+                <h2 class="product-title">{{ product.name }}</h2>
+              </div>
 
-        <mat-card-actions class="wishlist-actions">
-          <button
-            mat-raised-button
-            class="primary-cta"
-            (click)="addToCart(product)"
-          >
-            Add to cart
-          </button>
-        </mat-card-actions>
+              <p class="product-subtitle">
+                Price: <strong>{{ product.price | currency : 'CHF ' }}.-</strong>
+              </p>
+            </div>
+
+            <div class="rating-stars-row" *ngIf="product.avgRating != null">
+              <div class="stars">
+                <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
+                  <span
+                    class="star"
+                    [style.--fill.%]="getStarFillPercent(product.avgRating, i)"
+                  >
+                    &#9733;
+                  </span>
+                </ng-container>
+              </div>
+
+              <span class="rating-score">
+                {{ product.avgRating | number : '1.1-1' }}/5
+              </span>
+
+              <span class="rating-count" *ngIf="product.reviewCount != null">
+                ({{ product.reviewCount }} review(s))
+              </span>
+            </div>
+
+            <div class="rating-info-panel">
+              <ul class="rating-bullets">
+                <li><span class="bullet-dot"></span> Saved in your wishlist.</li>
+              </ul>
+            </div>
+
+            <div class="rating-footer">
+              <div class="rating-actions">
+                <button mat-raised-button class="primary-cta" (click)="addToCart(product)">
+                  ADD TO CART / CHF {{ product.price | number : '1.2-2' }}.-
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </mat-card>
     </div>
   </div>

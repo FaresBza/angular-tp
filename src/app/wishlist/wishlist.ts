@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AsyncPipe, CurrencyPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DecimalPipe, NgForOf, NgIf } from '@angular/common';
 import { Store } from '@ngrx/store';
 
 import {
@@ -23,6 +23,7 @@ import { ProductDetailsPageComponent } from "../product-details/product-details"
   imports: [
     NgIf,
     NgForOf,
+    DecimalPipe,
     AsyncPipe,
     CurrencyPipe,
     MatCardModule,
@@ -52,5 +53,12 @@ export class WishlistPageComponent {
     this.store.dispatch(
       UserActions.toggleWishlistItem({ productId: String(product.id) }),
     );
+  }
+
+  getStarFillPercent(avg: number, index: number): number {
+    const value = avg - index;
+    if (value <= 0) return 0;
+    if (value >= 1) return 100;
+    return value * 100;
   }
 }
