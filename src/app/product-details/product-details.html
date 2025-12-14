@@ -8,7 +8,7 @@
         (click)="returnToProductsPage()"
         aria-label="Back to products"
       >
-        ←
+        &lt;
       </button>
 
       <button
@@ -27,9 +27,6 @@
       <div class="rating-header">
         <div class="rating-header-main">
           <h1 class="product-title">{{ product.name }}</h1>
-          <div class="rating-value" *ngIf="(rating$ | async) as rating">
-            {{ Math.round(rating.avg_rating) }}
-          </div>
         </div>
 
         <p class="product-subtitle">
