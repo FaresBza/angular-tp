@@ -5,6 +5,17 @@ import { paginate, avgRating } from './utils';
 
 const API = '/api';
 
+type Review = {
+  id: string;
+  productId: string;
+  user: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+};
+
+const reviewsDb: Record<string, Review[]> = {};
+
 export const handlers = [
   // Auth: POST /api/auth/token/ -> { access, refresh }
   http.post(`${API}/auth/token/`, async () => {
@@ -54,7 +65,55 @@ export const handlers = [
     );
   }),
 
-    // --- User profile: GET /api/me/ ---
+  // GET /api/products/:id/reviews/ -> Review[]
+  http.get(`${API}/products/:id/reviews/`, async ({ params }) => {
+    const productId = String(params['id']);
+
+    // Vérifie que le produit existe (optionnel mais propre)
+    const exists = products.some((p) => String(p.id) === productId);
+    if (!exists) {
+      return HttpResponse.json({ detail: 'Not found.' }, { status: 404 });
+    }
+
+    return HttpResponse.json(reviewsDb[productId] ?? [], { status: 200 });
+  }),
+
+  // POST /api/products/:id/reviews/ -> Review
+  http.post(`${API}/products/:id/reviews/`, async ({ params, request }) => {
+    const productId = String(params['id']);
+
+    const exists = products.some((p) => String(p.id) === productId);
+    if (!exists) {
+      return HttpResponse.json({ detail: 'Not found.' }, { status: 404 });
+    }
+
+    const body = (await request.json()) as { rating: number; comment: string };
+
+    const rating = Math.max(1, Math.min(5, Number(body.rating)));
+    const comment = String(body.comment ?? '').trim();
+
+    if (!comment || comment.length < 5) {
+      return HttpResponse.json(
+        { detail: 'Comment must be at least 5 characters.' },
+        { status: 400 },
+      );
+    }
+
+    const review: Review = {
+      id: `REV-${Date.now()}`,
+      productId,
+      user: userProfile.username ?? 'demo-user',
+      rating,
+      comment,
+      createdAt: new Date().toISOString(),
+    };
+
+    reviewsDb[productId] = [...(reviewsDb[productId] ?? []), review];
+
+    return HttpResponse.json(review, { status: 201 });
+  }),
+
+  // --- User profile: GET /api/me/ ---
   http.get(`${API}/me/`, async () => {
     return HttpResponse.json(userProfile, { status: 200 });
   }),
@@ -88,5 +147,4 @@ export const handlers = [
 
     return HttpResponse.json(order, { status: 200 });
   }),
-
 ];
