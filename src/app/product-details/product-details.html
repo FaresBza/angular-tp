@@ -87,7 +87,10 @@
           </button>
         </div>
       </div>
-      <div class="rating-header" style="margin-top: 18px;">
+    </div>
+  </mat-card>
+  <mat-card class="reviews-card" *ngIf="(product$ | async) as product">
+    <div class="rating-header">
         <div class="rating-header-main">
           <h2 class="product-title" style="font-size: 1.35rem; margin-bottom: 10px;">
             Customer reviews
@@ -192,7 +195,6 @@
           </button>
         </form>
       </div>
-    </div>
   </mat-card>
 </div>
 
