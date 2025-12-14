@@ -16,7 +16,7 @@
         class="wishlist-card"
         *ngFor="let product of products"
       >
-        <mat-card-title>{{ product.name }}</mat-card-title>
+        <h2 class="product-title">{{ product.name }}</h2>
         <mat-card-subtitle>
           {{ product.price | currency : 'CHF ' }}.-
         </mat-card-subtitle>
@@ -24,18 +24,10 @@
         <mat-card-actions class="wishlist-actions">
           <button
             mat-raised-button
-            color="primary"
+            class="primary-cta"
             (click)="addToCart(product)"
           >
             Add to cart
-          </button>
-
-          <button
-            mat-stroked-button
-            color="warn"
-            (click)="removeFromWishlist(product)"
-          >
-            Remove
           </button>
         </mat-card-actions>
       </mat-card>
