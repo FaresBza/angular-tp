@@ -23,6 +23,8 @@ import { AuthEffects } from './state/auth/auth.effects';
 import { ProductsEffects } from './state/products/products.effects';
 import { UserEffects } from './state/user/user.effects';
 import { ReviewsEffects } from './state/reviews/reviews.effects';
+import { adminReducer } from './state/admin/admin.reducer';
+import { AdminEffects } from './state/admin/admin.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -37,6 +39,7 @@ export const appConfig: ApplicationConfig = {
       cart: cartReducer,
       user: userReducer,
       reviews: reviewsReducer,
+      admin: adminReducer,
     }),
 
     provideEffects(
@@ -44,7 +47,8 @@ export const appConfig: ApplicationConfig = {
         AuthEffects, 
         ProductsEffects, 
         UserEffects, 
-        ReviewsEffects
+        ReviewsEffects,
+        AdminEffects,
       ]
     ),
 
