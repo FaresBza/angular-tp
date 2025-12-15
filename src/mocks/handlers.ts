@@ -151,4 +151,99 @@ export const handlers = [
 
     return HttpResponse.json(order, { status: 200 });
   }),
+
+  // GET /api/admin/summary/
+  http.get(`${API}/admin/summary/`, async () => {
+    const orderIds = (userProfile.orders ?? []).map((o: any) => String(o.id));
+
+    const detailedOrders = orderIds
+      .map((id: string) => (ordersDetails as any)[id])
+      .filter(Boolean);
+
+    const totalOrders = detailedOrders.length;
+
+    const revenue = detailedOrders.reduce((sum: number, o: any) => {
+      const gt = Number(o.grandTotal ?? (Number(o.subtotal ?? 0) + Number(o.shipping ?? 0) + Number(o.taxes ?? 0)));
+      return sum + gt;
+    }, 0);
+
+    const avgBasket = totalOrders > 0 ? revenue / totalOrders : 0;
+
+    // top products par quantité
+    const qtyByProductId: Record<string, number> = {};
+    for (const o of detailedOrders) {
+      for (const it of (o.items ?? [])) {
+        const pid = String(it.productId ?? it.product?.id ?? it.id ?? '');
+        if (!pid) continue;
+        const q = Number(it.quantity ?? 1);
+        qtyByProductId[pid] = (qtyByProductId[pid] ?? 0) + q;
+      }
+    }
+
+    const topProducts = Object.entries(qtyByProductId)
+      .map(([productId, qty]) => {
+        const p: any = (products as any[]).find((x) => String(x.id) === String(productId));
+        return {
+          productId: Number(productId),
+          name: p?.name ?? `Product #${productId}`,
+          qty,
+        };
+      })
+      .sort((a, b) => b.qty - a.qty)
+      .slice(0, 5);
+
+    return HttpResponse.json(
+      {
+        totalOrders,
+        revenue,
+        avgBasket,
+        topProducts,
+      },
+      { status: 200 },
+    );
+  }),
+
+  // GET /api/admin/orders/recent/?limit=10
+  http.get(`${API}/admin/orders/recent/`, async ({ request }) => {
+    const url = new URL(request.url);
+    const limit = Number(url.searchParams.get('limit') || '10');
+
+    const orderIds = (userProfile.orders ?? [])
+      .map((o: any) => String(o.id))
+      .slice()
+      .reverse();
+
+    const recent = orderIds
+      .map((id: string) => (ordersDetails as any)[id])
+      .filter(Boolean)
+      .slice(0, limit)
+      .map((o: any) => ({
+        id: o.id,
+        createdAt: o.createdAt ?? o.created_at ?? new Date().toISOString(),
+        itemsCount: (o.items ?? []).reduce((s: number, it: any) => s + Number(it.quantity ?? 1), 0),
+        total: Number(o.grandTotal ?? (Number(o.subtotal ?? 0) + Number(o.shipping ?? 0) + Number(o.taxes ?? 0))),
+        status: o.status ?? 'PAID',
+      }));
+
+    return HttpResponse.json(recent, { status: 200 });
+  }),
+
+  // GET /api/admin/products/low-stock/
+  http.get(`${API}/admin/products/low-stock/`, async () => {
+    const getStock = (p: any) => (typeof p.stock === 'number' ? p.stock : (5 + (p.id % 6) * 3));
+    const getThreshold = (p: any) => (typeof p.lowStockThreshold === 'number' ? p.lowStockThreshold : 3);
+
+    const low = (products as any[])
+      .map((p) => ({
+        id: p.id,
+        name: p.name,
+        stock: getStock(p),
+        lowStockThreshold: getThreshold(p),
+      }))
+      .filter((p) => p.stock <= p.lowStockThreshold)
+      .sort((a, b) => a.stock - b.stock);
+
+    return HttpResponse.json(low, { status: 200 });
+  }),
+
 ];
