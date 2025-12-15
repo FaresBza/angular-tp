@@ -96,6 +96,10 @@
               <span class="discount-txt">- {{ order.discount | currency: order.currency }}</span>
             </div>
             <div class="totals-row">
+              <span>Taxes (CHF7.7)</span>
+              <span class="discount-txt">- {{ order.taxes | currency: order.currency }}</span>
+            </div>
+            <div class="totals-row">
               <span>Livraison</span>
               <span>{{ order.shipping | currency: order.currency }}</span>
             </div>
