@@ -4,6 +4,7 @@ export interface CartProduct {
     id: number;
     name: string;
     price: number;
+    stock?: number;
 }
 
 export const CartActions = createActionGroup({
@@ -13,8 +14,13 @@ export const CartActions = createActionGroup({
         removeItem: props<{ productId: number }>(),
         updateQuantity: props<{ productId: number; quantity: number }>(),
         clearCart: emptyProps(),
+        
         applyCoupon: props<{ code: string }>(),
         clearCoupon: emptyProps(),
+
         setDeliveryMode: props<{ mode: 'free' | 'standard' | 'express' }>(),
+
+        setCartMessage: props<{ message: string }>(),
+        clearCartMessage: emptyProps(),
     },
 });

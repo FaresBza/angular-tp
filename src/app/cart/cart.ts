@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AsyncPipe, CurrencyPipe, NgForOf, NgIf } from '@angular/common';
+import { AsyncPipe, CurrencyPipe, DecimalPipe, NgForOf, NgIf } from '@angular/common';
 import { Store } from '@ngrx/store';
 import {
   selectCartItems,
@@ -9,6 +9,10 @@ import {
   selectCartTotalAfterDiscount,
   selectCartTotal,
   selectDeliveryFee,
+  selectCouponCode,
+  selectCouponPercent,
+  selectTaxAmount,
+  selectCartMessage,
 } from '../state/cart/cart.selectors';
 import { CartActions } from '../state/cart/cart.actions';
 import { MatCardModule } from '@angular/material/card';
@@ -22,7 +26,16 @@ import { SideNavComponent } from '../layout/side-nav/side-nav';
   standalone: true,
   templateUrl: './cart.html',
   styleUrls: ['./cart.css'],
-  imports: [NgForOf, NgIf, AsyncPipe, CurrencyPipe, MatCardModule, MatButtonModule, SideNavComponent],
+  imports: [
+    NgForOf,
+    NgIf,
+    AsyncPipe,
+    CurrencyPipe,
+    DecimalPipe,
+    MatCardModule,
+    MatButtonModule,
+    SideNavComponent,
+  ],
 })
 export class CartPageComponent {
   private store = inject(Store);
@@ -36,6 +49,10 @@ export class CartPageComponent {
   deliveryFee$ = this.store.select(selectDeliveryFee);
   totalWithFee$ = this.store.select(selectCartTotal);
 
+  couponCode$ = this.store.select(selectCouponCode);
+  couponPercent$ = this.store.select(selectCouponPercent);
+  taxes$ = this.store.select(selectTaxAmount);
+  message$ = this.store.select(selectCartMessage);
 
   promoCode = '';
 
@@ -58,9 +75,7 @@ export class CartPageComponent {
   }
 
   applyPromo() {
-    this.store.dispatch(
-      CartActions.applyCoupon({ code: this.promoCode }),
-    );
+    this.store.dispatch(CartActions.applyCoupon({ code: this.promoCode }));
   }
 
   setDelivery(mode: 'free' | 'standard' | 'express') {

@@ -1,165 +1,143 @@
 <app-side-nav>
     <div class="cart-page">
-    <h2 class="cart-title">Cart</h2>
+        <h2 class="cart-title">Cart</h2>
 
-    <ng-template #emptyCart>
+        <ng-template #emptyCart>
         <p class="cart-empty">Your cart is empty.</p>
-    </ng-template>
+        </ng-template>
 
-    <ng-container *ngIf="(count$ | async) as total; else emptyCart">
+        <ng-container *ngIf="(count$ | async) as total; else emptyCart">
         <div class="cart-layout">
-        <section class="cart-items-panel" *ngIf="total > 0">
-            <article
-            class="cart-item-card"
-            *ngFor="let item of (items$ | async) || []"
-            >
-            <div class="cart-item-left">
+            <section class="cart-items-panel" *ngIf="total > 0">
+            <article class="cart-item-card" *ngFor="let item of (items$ | async) || []">
+                <div class="cart-item-left">
                 <div class="cart-item-thumb">
-                <span class="cart-item-thumb-placeholder">
+                    <span class="cart-item-thumb-placeholder">
                     {{ item.product.name[0] }}
-                </span>
+                    </span>
                 </div>
 
                 <div class="cart-item-info">
-                <h3 class="cart-item-name">{{ item.product.name }}</h3>
-                <p class="cart-item-meta">
-                    Quantity: {{ item.quantity }}
-                </p>
+                    <h3 class="cart-item-name">{{ item.product.name }}</h3>
+                    <p class="cart-item-meta">Quantity: {{ item.quantity }}</p>
                 </div>
-            </div>
+                </div>
 
-            <div class="cart-item-right">
+                <div class="cart-item-right">
                 <div class="cart-item-price">
-                {{ item.product.price | currency: 'CHF ' }}.-
+                    {{ item.product.price | currency : 'CHF ' }}.-
                 </div>
 
                 <div class="cart-item-qty-control">
-                <button
+                    <button
                     type="button"
                     class="qty-btn qty-btn-minus"
                     (click)="changeQuantity(item.product.id, -1, item.quantity)"
-                >
+                    >
                     -
-                </button>
-                <span class="qty-value">{{ item.quantity }}</span>
-                <button
+                    </button>
+                    <span class="qty-value">{{ item.quantity }}</span>
+                    <button
                     type="button"
                     class="qty-btn qty-btn-plus"
                     (click)="changeQuantity(item.product.id, +1, item.quantity)"
-                >
+                    >
                     +
-                </button>
+                    </button>
                 </div>
 
-                <button
-                type="button"
-                class="cart-item-remove"
-                (click)="remove(item.product.id)"
-                >
-                X
+                <button type="button" class="cart-item-remove" (click)="remove(item.product.id)">
+                    X
                 </button>
-            </div>
+                </div>
             </article>
-        </section>
+            </section>
 
-        <aside class="cart-summary-panel" *ngIf="total > 0">
+            <aside class="cart-summary-panel" *ngIf="total > 0">
             <h3 class="summary-title">Order Summary</h3>
 
             <div class="summary-rows">
-            <div class="summary-row">
+                <div class="summary-row">
                 <span>Subtotal</span>
                 <span class="summary-value">
-                {{ total$ | async | currency: 'CHF ' }}.-
+                    {{ total$ | async | currency : 'CHF ' }}.-
                 </span>
-            </div>
-
-            <ng-container *ngIf="(discount$ | async) as discount">
-                <div class="summary-row summary-row-discount" *ngIf="discount > 0">
-                    <span>Discount (-20%)</span>
-                    <span class="summary-value summary-value-discount">
-                        -{{ discount | currency: 'CHF ' }}.-
-                    </span>
                 </div>
-            </ng-container>
 
-            <div class="summary-row">
+                <ng-container *ngIf="(discount$ | async) as discount">
+                    <ng-container *ngIf="(couponCode$ | async) as code">
+                        <ng-container *ngIf="(couponPercent$ | async) as percent">
+                        <div class="summary-row summary-row-discount" *ngIf="discount > 0">
+                            <span>Discount ({{ (percent * 100) | number : '1.0-0' }}%)</span>
+                            <span class="summary-value summary-value-discount">
+                            -{{ discount | currency : 'CHF ' }}.-
+                            </span>
+                        </div>
+                        </ng-container>
+                    </ng-container>
+                </ng-container>
+
+                <div class="summary-row">
+                <span>Taxes (7.7%)</span>
+                <span class="summary-value">
+                    {{ taxes$ | async | currency : 'CHF ' }}.-
+                </span>
+                </div>
+
+                <div class="summary-row">
                 <span>Delivery Fee</span>
                 <span class="summary-value">
-                    {{ deliveryFee$ | async | currency: 'CHF ' }}.-
+                    {{ deliveryFee$ | async | currency : 'CHF ' }}.-
                 </span>
                 </div>
 
                 <div class="delivery-options">
-                    <label>
-                        <input
-                            type="radio"
-                            name="delivery"
-                            (change)="setDelivery('free')"
-                            checked
-                        />
-                        Free (CHF 0.-)
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="delivery"
-                            (change)="setDelivery('standard')"
-                        />
-                        Standard (CHF 4.99.-)
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name="delivery"
-                            (change)="setDelivery('express')"
-                        />
-                        Express (CHF 9.99.-)
-                    </label>
+                <label>
+                    <input type="radio" name="delivery" (change)="setDelivery('free')" checked />
+                    Free (CHF 0.-)
+                </label>
+                <label>
+                    <input type="radio" name="delivery" (change)="setDelivery('standard')" />
+                    Standard (CHF 4.99.-)
+                </label>
+                <label>
+                    <input type="radio" name="delivery" (change)="setDelivery('express')" />
+                    Express (CHF 9.99.-)
+                </label>
                 </div>
 
-            <div class="summary-divider"></div>
+                <div class="summary-divider"></div>
 
-            <div class="summary-row summary-row-total">
+                <div class="summary-row summary-row-total">
                 <span>Total</span>
                 <span class="summary-value summary-value-total">
-                {{ totalWithFee$ | async | currency: 'CHF ' }}.-
+                    {{ totalWithFee$ | async | currency : 'CHF ' }}.-
                 </span>
-            </div>
+                </div>
             </div>
 
             <div class="summary-promo">
-            <input
+                <input
                 type="text"
                 class="promo-input"
                 placeholder="Add promo code"
                 [value]="promoCode"
                 (input)="promoCode = $any($event.target).value"
-            />
-            <button 
-                type="button" 
-                class="promo-apply-btn"
-                (click)="applyPromo()">
-                Apply
-            </button>
+                />
+                <button type="button" class="promo-apply-btn" (click)="applyPromo()">Apply</button>
             </div>
 
-            <button
-            type="button"
-            class="summary-checkout-btn"
-            (click)="goToCheckoutPage()"
-            >
-            Go to Checkout →
+            <p class="error-text" *ngIf="(message$ | async) as msg">
+                {{ msg }}
+            </p>
+
+            <button type="button" class="summary-checkout-btn" (click)="goToCheckoutPage()">
+                Go to Checkout →
             </button>
 
-            <button
-            type="button"
-            class="summary-clear-btn"
-            (click)="clear()"
-            >
-            Clear cart
-            </button>
-        </aside>
+            <button type="button" class="summary-clear-btn" (click)="clear()">Clear cart</button>
+            </aside>
         </div>
-    </ng-container>
-</div>
+        </ng-container>
+    </div>
 </app-side-nav>
