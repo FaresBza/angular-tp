@@ -37,13 +37,14 @@ export class WishlistPageComponent {
   products$ = this.store.select(selectWishlistProducts);
   count$ = this.store.select(selectWishlistCount);
 
-  addToCart(product: { id: number; name: string; price: number }) {
+  addToCart(product: { id: number; name: string; price: number, stock?: number }) {
     this.store.dispatch(
       CartActions.addItem({
         product: {
           id: product.id,
           name: product.name,
           price: product.price,
+          stock: product.stock,
         },
       }),
     );

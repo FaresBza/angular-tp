@@ -86,7 +86,6 @@ export class ProductDetailsPageComponent implements OnInit {
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
 
-  // Rating API existant (avg_rating + count)
   rating$ = this.store.select(selectLastRating);
 
   productId$ = this.route.paramMap.pipe(
@@ -106,7 +105,6 @@ export class ProductDetailsPageComponent implements OnInit {
     switchMap((id) => this.store.select(selectIsInWishlist(String(id)))),
   );
 
-  // Reviews
   reviews$ = this.productId$.pipe(
     switchMap((id) => this.store.select(selectReviewsForProduct(id))),
   );
@@ -194,7 +192,7 @@ export class ProductDetailsPageComponent implements OnInit {
     this.router.navigate(['shop/products']);
   }
 
-  addToCart(product: { id: number; name: string; price: number } | null) {
+  addToCart(product: { id: number; name: string; price: number, stock?: number } | null) {
     if (!product) return;
 
     this.store.dispatch(
@@ -203,6 +201,7 @@ export class ProductDetailsPageComponent implements OnInit {
           id: product.id,
           name: product.name,
           price: product.price,
+          stock: product.stock,
         },
       }),
     );

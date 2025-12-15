@@ -57,7 +57,7 @@ export class ProductsPageComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  displayedColumns = ['id', 'name', 'price', 'created_at', 'avg', 'wishlist'];
+  displayedColumns = ['id', 'name', 'price', 'created_at', 'avg', 'stock', 'wishlist'];
 
   products$ = this.store.select(selectProductsList);
   count$ = this.store.select(selectProductsCount);

@@ -43,7 +43,11 @@ export const handlers = [
     const ordering = url.searchParams.get('ordering') || '-created_at';
 
     const rows = products
-      .map((p) => ({ ...p, _avg: avgRating(p.ratings) }))
+      .map((p) => ({
+        ...p,
+        stock: (p as any).stock ?? (5 + (p.id % 6) * 3),
+        _avg: avgRating(p.ratings),
+      }))
       .filter((p) => p._avg >= min_rating);
 
     const sign = ordering.startsWith('-') ? -1 : 1;

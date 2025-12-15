@@ -23,6 +23,7 @@ import {
     selectCartDiscount,
     selectDeliveryFee,
     selectCartTotal,
+    selectTaxAmount,
 } from '../cart/cart.selectors';
 import { UserState } from './user.reducer';
 import { selectWishlistProductIds } from './user.selectors';
@@ -34,8 +35,6 @@ export class UserEffects {
     private store = inject<Store<{ user: UserState }>>(Store);
     private readonly API = '/api';
     private readonly WISHLIST_STORAGE_KEY = 'myshop_wishlist';
-
-    // --- Profil ---
 
     loadProfile$ = createEffect(() =>
         this.actions$.pipe(
@@ -87,9 +86,10 @@ export class UserEffects {
             this.store.select(selectCartSubTotal),
             this.store.select(selectCartDiscount),
             this.store.select(selectDeliveryFee),
+            this.store.select(selectTaxAmount),
             this.store.select(selectCartTotal),
         ),
-        map(([action, items, subtotal, discount, shipping, grandTotal]) => {
+        map(([action, items, subtotal, discount, shipping, taxes, grandTotal]) => {
             const order: OrderDetail = {
             id: action.id,
             createdAt: new Date().toISOString(),
@@ -106,7 +106,7 @@ export class UserEffects {
             subtotal,
             discount,
             shipping,
-            taxes: 0,
+            taxes,
             grandTotal,
             shippingAddress: action.shippingAddress,
             };

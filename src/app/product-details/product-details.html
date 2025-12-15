@@ -32,6 +32,9 @@
         <p class="product-subtitle">
           Price: <strong>{{ product.price | currency : 'CHF ' }}.-</strong>
         </p>
+        <p class="product-subtitle">
+          Stock: <strong>{{ product.stock }}</strong>
+        </p>
       </div>
 
       <div *ngIf="(loading$ | async)" class="loader">
