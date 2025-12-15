@@ -16,6 +16,8 @@ import { OrdersPageComponent } from './account/orders/orders';
 import { OrderDetailsPageComponent } from './account/order-details/order-details';
 import { WishlistPageComponent } from './wishlist/wishlist';
 import { authGuard } from './state/auth/auth.guard';
+import { AdminPageComponent } from './admin/admin';
+import { adminGuard } from './state/admin/admin.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -33,6 +35,7 @@ export const routes: Routes = [
   { path: 'account/profile', component: ProfilePageComponent, canActivate: [authGuard] },
   { path: 'account/orders', component: OrdersPageComponent, canActivate: [authGuard] },
   { path: 'account/orders/:id', component: OrderDetailsPageComponent, canActivate: [authGuard] },
+  { path: 'dashboard/admin', component: AdminPageComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: '' },
   
 ];
