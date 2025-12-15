@@ -2,12 +2,6 @@
     <mat-card class="login-card">
         <h2 class="login-title">My Shop – Login</h2>
 
-        <mat-chip-listbox class="login-chip-row">
-        <mat-chip *ngIf="isLoggedIn$ | async" color="primary" selected>
-            Logged in
-        </mat-chip>
-        </mat-chip-listbox>
-
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <mat-form-field appearance="outline" class="form-field">
             <mat-label>Username</mat-label>

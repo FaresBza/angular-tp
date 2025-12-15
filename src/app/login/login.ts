@@ -1,8 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AsyncPipe, NgIf } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { filter, take } from 'rxjs';
 
 import { AuthActions } from '../state/auth/auth.actions';
 import {
@@ -16,8 +17,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatChipsModule } from '@angular/material/chips';
-import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +32,6 @@ import { filter, take } from 'rxjs';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatChipsModule,
   ],
 })
 export class LoginPageComponent implements OnInit {
@@ -47,11 +45,20 @@ export class LoginPageComponent implements OnInit {
   isLoggedIn$ = this.store.select(selectIsLoggedIn);
 
   loginForm = this.fb.group({
-    username: ['demo', Validators.required],
-    password: ['demo', Validators.required],
+    username: ['', Validators.required],
+    password: ['', Validators.required],
   });
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  onSubmit() {
+    if (this.loginForm.invalid) return;
+
+    const username = this.loginForm.value.username ?? '';
+    const password = this.loginForm.value.password ?? '';
+
+    this.store.dispatch(AuthActions.login({ username, password }));
+
     this.isLoggedIn$
       .pipe(
         filter((loggedIn) => loggedIn),
@@ -59,19 +66,17 @@ export class LoginPageComponent implements OnInit {
       )
       .subscribe(() => {
         const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
-        this.router.navigateByUrl(returnUrl || '/shop/products');
+
+        if (returnUrl) {
+          this.router.navigateByUrl(returnUrl);
+          return;
+        }
+
+        if (username == 'admin') {
+          this.router.navigate(['/dashboard/admin']);
+        } else {
+          this.router.navigate(['/shop/products']);
+        }
       });
-  }
-
-  onSubmit() {
-    if (this.loginForm.invalid) return;
-
-    const { username, password } = this.loginForm.value;
-    this.store.dispatch(
-      AuthActions.login({
-        username: username ?? '',
-        password: password ?? '',
-      }),
-    );
   }
 }
