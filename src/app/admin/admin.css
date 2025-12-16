@@ -1,0 +1,158 @@
+.admin-page {
+    min-height: 100vh;
+    background: #f6f1e8;
+    padding: 32px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.admin-header {
+    margin-bottom: 16px;
+}
+
+.admin-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #111827;
+}
+
+.admin-subtitle {
+    margin: 4px 0 0;
+    color: #6b7280;
+}
+
+.loader {
+    display: flex;
+    justify-content: center;
+    padding: 14px 0;
+}
+
+.error-text {
+    color: #b91c1c;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.kpi-card {
+    padding: 14px;
+    border-radius: 16px;
+    background: #fdf9f3;
+    border: 1px solid #f1e5d8;
+}
+
+.kpi-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.kpi-value {
+    margin-top: 6px;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #8b4513;
+}
+
+.section-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 2.8fr;
+}
+
+.panel {
+    margin-top: 12px;
+    padding: 14px;
+    border-radius: 16px;
+    background: #fdf9f3;
+    border: 1px solid #f1e5d8;
+}
+
+.panel.panel-top-products {
+    width: 300px;
+}
+
+.panel-title {
+    margin: 0 0 10px;
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #8b4513;
+}
+
+.admin-table {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+}
+
+.admin-table .mat-mdc-header-row {
+    background: #000;
+}
+
+.admin-table .mat-mdc-header-cell {
+    padding: 14px 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.admin-table .mat-mdc-row {
+    background-color: #ffffff;
+}
+
+.admin-table .mat-mdc-cell p {
+    padding: 4px;
+    max-width: 70px;
+    text-align: center;
+    border-radius: 25px;
+}
+
+.shipped {
+    color: #f6753f;
+    background: #ffece7;
+    font-weight: 600;
+}
+
+.delivered {
+    color: #22725c;
+    background: #e0fffb;
+    font-weight: 600;
+}
+
+.top-products {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.top-row {
+    display: flex;
+    justify-content: space-between;
+    color: #374151;
+}
+
+.top-name {
+    font-weight: 700;
+}
+
+.stock-label {
+    font-size: 0.85rem;
+}
+
+.stock-ok {
+    color: #166534;
+}
+
+.stock-low {
+    color: #92400e;
+}
+
+.stock-out {
+    color: #b91c1c;
+}
