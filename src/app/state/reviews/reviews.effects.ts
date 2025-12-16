@@ -5,59 +5,65 @@ import { catchError, map, of, switchMap } from 'rxjs';
 
 import { ReviewsActions } from './reviews.actions';
 import { Review } from './reviews.models';
+import { UiActions } from '../ui/ui.actions';
 
 @Injectable()
 export class ReviewsEffects {
-    private actions$ = inject(Actions);
-    private http = inject(HttpClient);
-    private readonly API = '/api';
+  private actions$ = inject(Actions);
+  private http = inject(HttpClient);
+  private readonly API = '/api';
 
-    loadProductReviews$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(ReviewsActions.loadProductReviews),
-            switchMap(({ productId }) =>
-                this.http
-                    .get<Review[]>(`${this.API}/products/${productId}/reviews/`)
-                    .pipe(
-                        map((reviews) =>
-                            ReviewsActions.loadProductReviewsSuccess({ productId, reviews }),
-                        ),
-                        catchError(() =>
-                        of(
-                            ReviewsActions.loadProductReviewsFailure({
-                                productId,
-                                error: 'Failed to load reviews',
-                            }),
-                        ),
-                    ),
-                ),
+  loadProductReviews$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReviewsActions.loadProductReviews),
+      switchMap(({ productId }) =>
+        this.http.get<Review[]>(`${this.API}/products/${productId}/reviews/`).pipe(
+          map((reviews) => ReviewsActions.loadProductReviewsSuccess({ productId, reviews })),
+          catchError(() =>
+            of(
+              ReviewsActions.loadProductReviewsFailure({
+                productId,
+                error: 'Failed to load reviews',
+              }),
             ),
+          ),
         ),
-    );
+      ),
+    ),
+  );
 
-    createReview$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(ReviewsActions.createReview),
-            switchMap(({ productId, rating, comment }) =>
-                this.http
-                .post<Review>(`${this.API}/products/${productId}/reviews/`, {
-                    rating,
-                    comment,
-                })
-                .pipe(
-                    map((review) =>
-                        ReviewsActions.createReviewSuccess({ productId, review }),
-                    ),
-                        catchError(() =>
-                        of(
-                            ReviewsActions.createReviewFailure({
-                            productId,
-                            error: 'Failed to create review',
-                            }),
-                        ),
-                    ),
-                ),
+  createReview$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReviewsActions.createReview),
+      switchMap(({ productId, rating, comment }) =>
+        this.http
+          .post<Review>(`${this.API}/products/${productId}/reviews/`, { rating, comment })
+          .pipe(
+            map((review) => ReviewsActions.createReviewSuccess({ productId, review })),
+            catchError(() =>
+              of(
+                ReviewsActions.createReviewFailure({
+                  productId,
+                  error: 'Failed to create review',
+                }),
+              ),
             ),
-        ),
-    );
+          ),
+      ),
+    ),
+  );
+
+  reviewSuccessToast$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReviewsActions.createReviewSuccess),
+      map(() => UiActions.notifySuccess({ message: 'Review created ✅' })),
+    ),
+  );
+
+  reviewFailureToast$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ReviewsActions.createReviewFailure),
+      map(({ error }) => UiActions.notifyError({ message: error || 'Failed to create review' })),
+    ),
+  );
 }
