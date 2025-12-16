@@ -8,14 +8,17 @@ import {
   selectCartTotal,
   selectCartCount,
 } from '../state/cart/cart.selectors';
+
 import { UserActions } from '../state/user/user.actions';
 import { Address } from '../state/user/user.models';
+import { selectCheckoutLoading } from '../state/ui/ui.selectors';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { SideNavComponent } from '../layout/side-nav/side-nav';
 
@@ -35,6 +38,7 @@ import { SideNavComponent } from '../layout/side-nav/side-nav';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatProgressSpinnerModule,
     SideNavComponent,
   ],
 })
@@ -46,9 +50,7 @@ export class CheckoutComponent {
   total$ = this.store.select(selectCartTotal);
   count$ = this.store.select(selectCartCount);
 
-  cartForm = this.fb.group({
-    ok: [true],
-  });
+  checkoutLoading$ = this.store.select(selectCheckoutLoading);
 
   addressForm = this.fb.group({
     fullName: ['', Validators.required],
@@ -59,14 +61,12 @@ export class CheckoutComponent {
     email: ['', [Validators.required, Validators.email]],
   });
 
-  isPlacingOrder = false;
-  orderId: string | null = null;
+  lastOrderId: string | null = null;
 
   placeOrder() {
     if (this.addressForm.invalid) return;
 
-    this.isPlacingOrder = true;
-    this.orderId = null;
+    this.lastOrderId = null;
 
     const formValue = this.addressForm.value;
 
@@ -78,6 +78,7 @@ export class CheckoutComponent {
     };
 
     const id = 'ORD-' + Date.now();
+    this.lastOrderId = id;
 
     this.store.dispatch(
       UserActions.createOrderFromCart({
@@ -85,10 +86,5 @@ export class CheckoutComponent {
         shippingAddress,
       }),
     );
-
-    setTimeout(() => {
-      this.isPlacingOrder = false;
-      this.orderId = id;
-    }, 1000);
   }
 }

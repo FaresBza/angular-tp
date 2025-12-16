@@ -72,7 +72,7 @@ type DisplayRating = {
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
-    SideNavComponent
+    SideNavComponent,
   ],
 })
 export class ProductDetailsPageComponent implements OnInit {
@@ -83,14 +83,13 @@ export class ProductDetailsPageComponent implements OnInit {
 
   public Math = Math;
 
+  // Loader (produits/rating) + reviews loader (utilisé dans le template)
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
 
   rating$ = this.store.select(selectLastRating);
 
-  productId$ = this.route.paramMap.pipe(
-    map((params) => params.get('id') ?? ''),
-  );
+  productId$ = this.route.paramMap.pipe(map((params) => params.get('id') ?? ''));
 
   product$ = this.route.paramMap.pipe(
     switchMap((params) => {
@@ -119,11 +118,7 @@ export class ProductDetailsPageComponent implements OnInit {
     switchMap((id) => this.store.select(selectReviewsCountForProduct(id))),
   );
 
-  displayRating$ = combineLatest([
-    this.rating$,
-    this.avgReviewRating$,
-    this.reviewCount$,
-  ]).pipe(
+  displayRating$ = combineLatest([this.rating$, this.avgReviewRating$, this.reviewCount$]).pipe(
     map(([apiRating, reviewsAvg, reviewsCount]): DisplayRating => {
       const hasReviews = (reviewsCount ?? 0) > 0;
 
@@ -143,9 +138,7 @@ export class ProductDetailsPageComponent implements OnInit {
     }),
   );
 
-  ratingStars$ = this.displayRating$.pipe(
-    map((r) => Math.round(r.avg_rating)),
-  );
+  ratingStars$ = this.displayRating$.pipe(map((r) => Math.round(r.avg_rating)));
 
   reviewForm = this.fb.group({
     rating: [5, [Validators.required]],
@@ -177,11 +170,9 @@ export class ProductDetailsPageComponent implements OnInit {
     this.hoverRating = 0;
   }
 
-
   ngOnInit(): void {
     this.productId$.subscribe((idStr) => {
       if (!idStr) return;
-
       const idNum = Number(idStr);
       this.store.dispatch(ProductsActions.loadRating({ id: idNum }));
       this.store.dispatch(ReviewsActions.loadProductReviews({ productId: idStr }));
@@ -192,7 +183,7 @@ export class ProductDetailsPageComponent implements OnInit {
     this.router.navigate(['shop/products']);
   }
 
-  addToCart(product: { id: number; name: string; price: number, stock?: number } | null) {
+  addToCart(product: { id: number; name: string; price: number; stock?: number } | null) {
     if (!product) return;
 
     this.store.dispatch(
@@ -206,16 +197,13 @@ export class ProductDetailsPageComponent implements OnInit {
       }),
     );
 
-    this.router.navigate(['shop/products'], {
-      queryParams: { added: product.name },
-    });
+    // Retour produits, toast géré globalement par CartEffects
+    this.router.navigate(['shop/products']);
   }
 
   toggleWishlist(productId: number, event?: MouseEvent) {
     if (event) event.stopPropagation();
-    this.store.dispatch(
-      UserActions.toggleWishlistItem({ productId: String(productId) }),
-    );
+    this.store.dispatch(UserActions.toggleWishlistItem({ productId: String(productId) }));
   }
 
   submitReview(productId: number) {

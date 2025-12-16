@@ -1,126 +1,134 @@
 <app-side-nav>
-    <div class="products-page">
-    <div *ngIf="notification" class="products-notification">
-        {{ notification }}
-    </div>
+  <div class="products-page">
     <header class="header">
-        <h2 class="main-title">My Shop - Products</h2>
-        <button class="cart-button" type="button" (click)="goToCartPage()">
-            <mat-icon>shopping_cart</mat-icon>
-            <ng-container *ngIf="(carCount$ | async) as count">
-                <span
-                    class="cart-badge"
-                    *ngIf="count > 0"
-                >
-                    {{ count }}
-                </span>
-            </ng-container>
-        </button>
+      <h2 class="main-title">My Shop - Products</h2>
+
+      <button
+        class="cart-button"
+        type="button"
+        (click)="goToCartPage()"
+        aria-label="Open cart"
+      >
+        <mat-icon aria-hidden="true">shopping_cart</mat-icon>
+
+        <ng-container *ngIf="(cartCount$ | async) as count">
+          <span class="cart-badge" *ngIf="count > 0">
+            {{ count }}
+          </span>
+        </ng-container>
+      </button>
     </header>
+
     <mat-card class="filters-card">
-
-
-        <form [formGroup]="filters" (ngSubmit)="onSearch()" class="filters-grid">
-
+      <form [formGroup]="filters" (ngSubmit)="onSearch()" class="filters-grid">
         <mat-form-field appearance="outline">
-            <mat-label>Min rating</mat-label>
-            <input matInput type="number" formControlName="minRating" />
+          <mat-label>Min rating</mat-label>
+          <input matInput type="number" formControlName="minRating" />
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-            <mat-label>Ordering</mat-label>
-            <mat-select formControlName="ordering">
+          <mat-label>Ordering</mat-label>
+          <mat-select formControlName="ordering">
             <mat-option value="-created_at">Newest first</mat-option>
             <mat-option value="created_at">Oldest first</mat-option>
             <mat-option value="-price">Price ↓</mat-option>
             <mat-option value="price">Price ↑</mat-option>
-            </mat-select>
+          </mat-select>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit">
-            Apply
+        <button mat-raised-button color="primary" type="submit" aria-label="Apply filters">
+          Apply
         </button>
-        </form>
+      </form>
 
-        <div class="status-row">
-        <div *ngIf="loading$ | async" class="spinner-wrapper">
-            <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
-        </div>
-
+      <div class="status-row">
         <p *ngIf="error$ | async as error" class="error-text">
-            {{ error }}
+          {{ error }}
         </p>
 
         <p class="count-text">Total: {{ count$ | async }}</p>
-        </div>
+      </div>
     </mat-card>
-    <mat-card class="table-card table-scrollable">
-        <table mat-table [dataSource]="(products$ | async) || []" class="mat-elevation-z2">
-            <ng-container matColumnDef="wishlist">
-                <th mat-header-cell *matHeaderCellDef>Wishlist</th>
-                <td mat-cell *matCellDef="let p">
-                    <ng-container *ngIf="(wishlistIds$ | async) as wishlistIds">
-                    <button
-                        mat-icon-button
-                        (click)="toggleWishlist(p.id, $event)"
-                    >
-                        <mat-icon [class.red]="isInWishlist(p.id, wishlistIds)">
-                        {{ isInWishlist(p.id, wishlistIds) ? 'favorite' : 'favorite_border' }}
-                        </mat-icon>
-                    </button>
-                    </ng-container>
-                </td>
-            </ng-container>
 
-        <ng-container matColumnDef="id">
+    <mat-card class="table-card table-scrollable">
+      <ng-container *ngIf="loading$ | async; else tableTpl">
+        <app-table-skeleton [rows]="10"></app-table-skeleton>
+      </ng-container>
+
+      <ng-template #tableTpl>
+        <table mat-table [dataSource]="(products$ | async) || []" class="mat-elevation-z2">
+          <ng-container matColumnDef="wishlist">
+            <th mat-header-cell *matHeaderCellDef>Wishlist</th>
+            <td mat-cell *matCellDef="let p">
+              <ng-container *ngIf="(wishlistIds$ | async) as wishlistIds">
+                <button
+                  mat-icon-button
+                  (click)="toggleWishlist(p.id, $event)"
+                  [attr.aria-label]="isInWishlist(p.id, wishlistIds) ? 'Remove from wishlist' : 'Add to wishlist'"
+                >
+                  <mat-icon [class.red]="isInWishlist(p.id, wishlistIds)" aria-hidden="true">
+                    {{ isInWishlist(p.id, wishlistIds) ? 'favorite' : 'favorite_border' }}
+                  </mat-icon>
+                </button>
+              </ng-container>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>ID</th>
             <td mat-cell *matCellDef="let p">{{ p.id }}</td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="name">
+          <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef>Name</th>
             <td mat-cell *matCellDef="let p">{{ p.name }}</td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="price">
+          <ng-container matColumnDef="price">
             <th mat-header-cell *matHeaderCellDef>Price</th>
             <td mat-cell *matCellDef="let p">{{ p.price | currency: 'CHF '}}.-</td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="created_at">
+          <ng-container matColumnDef="created_at">
             <th mat-header-cell *matHeaderCellDef>Created at</th>
             <td mat-cell *matCellDef="let p">{{ p.created_at }}</td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="avg">
+          <ng-container matColumnDef="avg">
             <th mat-header-cell *matHeaderCellDef>Rating</th>
             <td mat-cell *matCellDef="let p">
-            {{ p._avg != null ? p._avg.toFixed(1) : '-' }}/5
+              {{ p._avg != null ? p._avg.toFixed(1) : '-' }}/5
             </td>
-        </ng-container>
+          </ng-container>
 
-        <ng-container matColumnDef="stock">
+          <ng-container matColumnDef="stock">
             <th mat-header-cell *matHeaderCellDef>Stock</th>
             <td mat-cell *matCellDef="let p">{{ p.stock }}</td>
-        </ng-container>
+          </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+          <tr
             mat-row
             *matRowDef="let row; columns: displayedColumns"
-            (click)="goToRatingProductPage(row.id)"
-            (keydown.enter)="goToRatingProductPage(row.id)"
             class="clickable-row"
-        ></tr>
+            role="button"
+            tabindex="0"
+            (click)="goToRatingProductPage(row.id)"
+            (keydown)="onRowKeydown($event, row.id)"
+            [attr.aria-label]="'Open details for ' + row.name"
+          ></tr>
         </table>
-        <mat-paginator
-            [length]="(count$ | async) ?? 0"
-            [pageSize]="filters.value.pageSize"
-            [pageSizeOptions]="[5, 10, 25, 100]"
-            aria-label="Select page"
-            (page)="onPaginationChange($event)">
-        </mat-paginator>
-    </mat-card>
-</div>
 
+        <mat-paginator
+          [length]="(count$ | async) ?? 0"
+          [pageSize]="filters.value.pageSize"
+          [pageSizeOptions]="[5, 10, 25, 100]"
+          aria-label="Select page"
+          (page)="onPaginationChange($event)"
+        >
+        </mat-paginator>
+      </ng-template>
+    </mat-card>
+  </div>
 </app-side-nav>

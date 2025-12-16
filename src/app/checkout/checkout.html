@@ -1,164 +1,175 @@
 <app-side-nav>
-    <div class="checkout-page">
+  <div class="checkout-page">
     <h2 class="checkout-title">Checkout</h2>
 
     <mat-card class="checkout-card">
-        <mat-horizontal-stepper linear animationDuration="1000ms" class="stepper">
-            <mat-step label="Cart">
-                <div *ngIf="(count$ | async) as count">
-                    <div *ngIf="count === 0" class="empty-state">
-                        <p>Your cart is empty.</p>
-                        <button mat-raised-button color="primary" routerLink="/shop/products">
-                        Back to products
-                        </button>
+      <mat-horizontal-stepper linear animationDuration="1000ms" class="stepper">
+        <mat-step label="Cart">
+          <div *ngIf="(count$ | async) as count">
+            <div *ngIf="count === 0" class="empty-state">
+              <p>Your cart is empty.</p>
+              <button mat-raised-button color="primary" routerLink="/shop/products" aria-label="Back to products">
+                Back to products
+              </button>
+            </div>
+
+            <div *ngIf="count > 0" class="step-cart-layout">
+              <section class="step-cart-list">
+                <h3 class="step-subtitle">Cart summary</h3>
+
+                <div class="cart-items">
+                  <div class="cart-item-row" *ngFor="let item of (items$ | async) || []">
+                    <div class="cart-item-info">
+                      <div class="cart-item-name">{{ item.product.name }}</div>
+                      <div class="cart-item-qty">(x {{ item.quantity }})</div>
                     </div>
-                    <div *ngIf="count > 0" class="step-cart-layout">
-                        <section class="step-cart-list">
-                            <h3 class="step-subtitle">Cart summary</h3>
-                            <div class="cart-items">
-                                <div class="cart-item-row" *ngFor="let item of (items$ | async) || []">
-                                    <div class="cart-item-info">
-                                        <div class="cart-item-name">
-                                            {{ item.product.name }}
-                                        </div>
-                                        <div class="cart-item-qty">
-                                            (x {{ item.quantity }})
-                                        </div>
-                                        </div>
 
-                                        <div class="cart-item-price">
-                                        {{ item.product.price * item.quantity | currency: 'CHF '}}.-
-                                        </div>
-                                    </div>
-                            </div>
-                        </section>
-
-                        <aside class="step-cart-side">
-                            <div class="step-total-box">
-                            <div class="step-total-row">
-                                <span>Total</span>
-                                <span class="step-total-value">
-                                {{ total$ | async | currency: 'CHF '}}.-
-                                </span>
-                            </div>
-                            <p class="step-total-warn">
-                                Review your cart before continuing to delivery address.
-                            </p>
-                            </div>
-
-                            <div class="step-actions side-actions">
-                            <button mat-stroked-button matStepperNext color="primary">
-                                Next
-                            </button>
-                            </div>
-                        </aside>
+                    <div class="cart-item-price">
+                      {{ item.product.price * item.quantity | currency: 'CHF ' }}.-
                     </div>
+                  </div>
                 </div>
-            </mat-step>
-            <mat-step label="Address">
-                <form [formGroup]="addressForm" class="step-address">
-                    <h3 class="step-subtitle">Shipping Address</h3>
+              </section>
 
-                    <div class="address-grid">
-                        <mat-form-field appearance="outline">
-                            <mat-label>Email</mat-label>
-                            <input matInput formControlName="email" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Full name</mat-label>
-                            <input matInput formControlName="fullName" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline" class="address-full">
-                            <mat-label>Address</mat-label>
-                            <input matInput formControlName="addressLine" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>City</mat-label>
-                            <input matInput formControlName="city" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Postal code</mat-label>
-                            <input matInput formControlName="postalCode" />
-                        </mat-form-field>
-
-                        <mat-form-field appearance="outline">
-                            <mat-label>Country</mat-label>
-                            <input matInput formControlName="country" />
-                        </mat-form-field>
-                    </div>
-
-                    <div class="step-actions">
-                    <button mat-button matStepperPrevious>
-                        Back
-                    </button>
-                    <button
-                        mat-button
-                        matStepperNext
-                        color="primary"
-                        [disabled]="addressForm.invalid"
-                    >
-                        Next
-                    </button>
-                    </div>
-                </form>
-            </mat-step>
-            <mat-step label="Confirmation">
-                <div class="step-confirmation">
-                    <h3 class="step-subtitle">Confirm your order</h3>
-
-                    <p class="confirm-text">
-                    Please review your details and click "Place order".
-                    </p>
-
-                    <div class="confirm-summary">
-                    <div class="confirm-block">
-                        <h4>Address</h4>
-                        <p>Name : {{ addressForm.value.fullName }}</p>
-                        <p>Address {{ addressForm.value.addressLine }}</p>
-                        <p>
-                        Postal Code : {{ addressForm.value.postalCode }} <br>
-                        City : {{ addressForm.value.city }} <br>
-                        Country : {{ addressForm.value.country }} <br>
-                        </p>
-                        <p>Email : {{ addressForm.value.email }}</p>
-                    </div>
-
-                    <div class="confirm-block">
-                        <h4>Cart total</h4>
-                        <p class="total-price">
-                        {{ total$ | async | currency: 'CHF ' }}.-
-                        </p>
-                    </div>
-                    </div>
-
-                    <div class="order-status" *ngIf="isPlacingOrder">
-                    Placing order...
-                    </div>
-                    <div class="order-status success" *ngIf="orderId">
-                    Order {{ orderId }} confirmed
-                    </div>
-
-                    <div class="step-actions">
-                    <button mat-button matStepperPrevious>
-                        Back
-                    </button>
-                        <button
-                            mat-raised-button
-                            color="primary"
-                            (click)="placeOrder()"
-                            [disabled]="isPlacingOrder || !addressForm.valid"
-                        >
-                            Place order
-                        </button>
-                    </div>
+              <aside class="step-cart-side">
+                <div class="step-total-box">
+                  <div class="step-total-row">
+                    <span>Total</span>
+                    <span class="step-total-value">
+                      {{ total$ | async | currency: 'CHF ' }}.-
+                    </span>
+                  </div>
+                  <p class="step-total-warn">
+                    Review your cart before continuing to delivery address.
+                  </p>
                 </div>
-            </mat-step>
-        </mat-horizontal-stepper>
+
+                <div class="step-actions side-actions">
+                  <button mat-stroked-button matStepperNext color="primary" aria-label="Next step">
+                    Next
+                  </button>
+                </div>
+              </aside>
+            </div>
+          </div>
+        </mat-step>
+
+        <mat-step label="Address">
+          <form [formGroup]="addressForm" class="step-address">
+            <h3 class="step-subtitle">Shipping Address</h3>
+
+            <div class="address-grid">
+              <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="email" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Full name</mat-label>
+                <input matInput formControlName="fullName" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="address-full">
+                <mat-label>Address</mat-label>
+                <input matInput formControlName="addressLine" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <input matInput formControlName="city" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Postal code</mat-label>
+                <input matInput formControlName="postalCode" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Country</mat-label>
+                <input matInput formControlName="country" />
+              </mat-form-field>
+            </div>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious aria-label="Back to cart">
+                Back
+              </button>
+
+              <button
+                mat-button
+                matStepperNext
+                color="primary"
+                [disabled]="addressForm.invalid"
+                aria-label="Next step"
+              >
+                Next
+              </button>
+            </div>
+          </form>
+        </mat-step>
+
+        <mat-step label="Confirmation">
+          <div class="step-confirmation">
+            <h3 class="step-subtitle">Confirm your order</h3>
+
+            <p class="confirm-text">
+              Please review your details and click "Place order".
+            </p>
+
+            <div class="confirm-summary">
+              <div class="confirm-block">
+                <h4>Address</h4>
+                <p>Name : {{ addressForm.value.fullName }}</p>
+                <p>Address {{ addressForm.value.addressLine }}</p>
+                <p>
+                  Postal Code : {{ addressForm.value.postalCode }} <br />
+                  City : {{ addressForm.value.city }} <br />
+                  Country : {{ addressForm.value.country }} <br />
+                </p>
+                <p>Email : {{ addressForm.value.email }}</p>
+              </div>
+
+              <div class="confirm-block">
+                <h4>Cart total</h4>
+                <p class="total-price">
+                  {{ total$ | async | currency: 'CHF ' }}.-
+                </p>
+              </div>
+            </div>
+
+            <div class="step-actions">
+              <button mat-button matStepperPrevious aria-label="Back to address">
+                Back
+              </button>
+
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="placeOrder()"
+                [disabled]="(checkoutLoading$ | async) || !addressForm.valid"
+                aria-label="Validate order"
+              >
+                <ng-container *ngIf="checkoutLoading$ | async; else placeTxt">
+                  <mat-progress-spinner
+                    diameter="18"
+                    mode="indeterminate"
+                    aria-label="Order validation in progress"
+                  ></mat-progress-spinner>
+                  <span style="margin-left: 8px;">Validating...</span>
+                </ng-container>
+
+                <ng-template #placeTxt>
+                  Place order
+                </ng-template>
+              </button>
+            </div>
+
+            <div class="order-status success" *ngIf="lastOrderId && !(checkoutLoading$ | async)">
+              Order {{ lastOrderId }} confirmed
+            </div>
+          </div>
+        </mat-step>
+      </mat-horizontal-stepper>
     </mat-card>
-</div>
-
+  </div>
 </app-side-nav>
