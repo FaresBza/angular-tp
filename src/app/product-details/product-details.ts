@@ -83,7 +83,6 @@ export class ProductDetailsPageComponent implements OnInit {
 
   public Math = Math;
 
-  // Loader (produits/rating) + reviews loader (utilisé dans le template)
   loading$ = this.store.select(selectProductsLoading);
   error$ = this.store.select(selectProductsError);
 
@@ -197,7 +196,6 @@ export class ProductDetailsPageComponent implements OnInit {
       }),
     );
 
-    // Retour produits, toast géré globalement par CartEffects
     this.router.navigate(['shop/products']);
   }
 
@@ -223,10 +221,18 @@ export class ProductDetailsPageComponent implements OnInit {
       }),
     );
 
+    this.selectedRating = 5;
+    this.hoverRating = 0;
     this.reviewForm.reset({ rating: 5, comment: '' });
   }
 
   trackByReviewId = (_: number, r: { id: string }) => r.id;
+
+  asRatingNumber(value: unknown): number {
+    const n = typeof value === 'number' ? value : Number(value);
+    if (!Number.isFinite(n)) return 0;
+    return Math.max(0, Math.min(5, Math.round(n)));
+  }
 
   getStarFillPercent(avg: number, index: number): number {
     const raw = (avg - index) * 100;
@@ -236,4 +242,8 @@ export class ProductDetailsPageComponent implements OnInit {
     return raw >= 50 ? 50 : 0;
   }
 
+  getReviewStarFillPercent(ratingValue: unknown, index: number): number {
+    const rating = this.asRatingNumber(ratingValue);
+    return index < rating ? 100 : 0;
+  }
 }

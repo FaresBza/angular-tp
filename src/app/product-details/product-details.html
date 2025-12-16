@@ -130,7 +130,11 @@
 
             <div class="stars" style="margin-left: 10px;">
               <ng-container *ngFor="let star of [1,2,3,4,5]; let i = index">
-                <span class="star" [ngClass]="{ filled: i < r.rating }">
+                <span
+                  class="star"
+                  [style.--fill.%]="getReviewStarFillPercent(r.rating, i)"
+                  aria-hidden="true"
+                >
                   &#9733;
                 </span>
               </ng-container>
@@ -156,6 +160,7 @@
         </div>
       </div>
 
+      <!-- FORM -->
       <div class="rating-info-panel" style="margin-top: 10px;">
   <form [formGroup]="reviewForm" (ngSubmit)="submitReview(product.id)">
     <ul class="rating-bullets" style="margin-bottom: 10px;">
