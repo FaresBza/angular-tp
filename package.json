@@ -49,6 +49,7 @@
     "@storybook/angular": "^10.0.7",
     "@tailwindcss/postcss": "^4.1.17",
     "@types/jasmine": "~5.1.0",
+    "@types/jest": "^30.0.0",
     "angular-eslint": "20.6.0",
     "autoprefixer": "^10.4.22",
     "eslint": "^9.39.0",
