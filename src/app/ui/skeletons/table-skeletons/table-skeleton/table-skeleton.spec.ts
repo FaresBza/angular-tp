@@ -1,23 +1,19 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { TestBed } from '@angular/core/testing';
 import { TableSkeletonComponent } from './table-skeleton';
 
-describe('TableSkeleton', () => {
-  let component: TableSkeletonComponent;
-  let fixture: ComponentFixture<TableSkeletonComponent>;
-
+describe('TableSkeletonComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TableSkeletonComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(TableSkeletonComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [TableSkeletonComponent],
+    }).compileComponents();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('returns correct number of skeleton rows', () => {
+    const fixture = TestBed.createComponent(TableSkeletonComponent);
+    const component = fixture.componentInstance;
+
+    component.rows = 7;
+
+    expect(component.items().length).toBe(7);
   });
 });

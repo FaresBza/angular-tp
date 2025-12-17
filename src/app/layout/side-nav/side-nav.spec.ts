@@ -1,23 +1,28 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { By } from '@angular/platform-browser';
 
 import { SideNavComponent } from './side-nav';
 
-describe('SideNav', () => {
-  let component: SideNavComponent;
-  let fixture: ComponentFixture<SideNavComponent>;
-
+describe('SideNavComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SideNavComponent]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(SideNavComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+      imports: [SideNavComponent, RouterTestingModule, NoopAnimationsModule],
+    }).compileComponents();
   });
 
   it('should create', () => {
+    const fixture = TestBed.createComponent(SideNavComponent);
+    const component = fixture.componentInstance;
     expect(component).toBeTruthy();
+  });
+
+  it('renders navigation links', () => {
+    const fixture = TestBed.createComponent(SideNavComponent);
+    fixture.detectChanges();
+
+    const links = fixture.debugElement.queryAll(By.css('[routerLink]'));
+    expect(links.length).toBeGreaterThan(0);
   });
 });
