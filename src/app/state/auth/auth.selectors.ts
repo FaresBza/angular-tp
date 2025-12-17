@@ -8,3 +8,4 @@ export const selectRefreshToken = createSelector(selectAuth, (s) => s.refresh);
 export const selectIsLoggedIn = createSelector(selectAccessToken, (token) => !!token,);
 export const selectAuthLoading = createSelector(selectAuth, (s) => s.loading);
 export const selectAuthError = createSelector(selectAuth, (s) => s.error);
+export const selectAuthUsername = createSelector(selectAuth, (s) => s.username);

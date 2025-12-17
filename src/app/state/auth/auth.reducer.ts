@@ -4,6 +4,7 @@ import { AuthActions } from './auth.actions';
 export interface AuthState {
     access: string | null;
     refresh: string | null;
+    username: string | null;
     loading: boolean;
     error: string | null;
 }
@@ -20,6 +21,7 @@ function readToken(key: 'access' | 'refresh'): string | null {
 export const initialState: AuthState = {
     access: readToken('access'),
     refresh: readToken('refresh'),
+    username: null,
     loading: false,
     error: null,
 };
@@ -33,8 +35,9 @@ export const authReducer = createReducer(
         refresh: readToken('refresh'),
     })),
 
-    on(AuthActions.login, (state) => ({
+    on(AuthActions.login, (state, { username }) => ({
         ...state,
+        username,
         loading: true,
         error: null,
     })),

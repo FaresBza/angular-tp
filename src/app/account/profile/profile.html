@@ -26,7 +26,7 @@
 
               <div class="field-group">
                 <span class="field-label">Identifiant</span>
-                <p class="field-readonly">{{ profile.username }}</p>
+                <p class="field-readonly">{{ (username$ | async) ?? profile.username }}</p>
               </div>
             </section>
           </div>

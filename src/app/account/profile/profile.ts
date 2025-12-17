@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { SideNavComponent } from "../../layout/side-nav/side-nav";
+import { selectAuthUsername } from '../../state/auth/auth.selectors';
 
 @Component({
   selector: 'app-account-profile',
@@ -51,6 +52,7 @@ export class ProfilePageComponent implements OnInit {
   profile$ = this.store.select(selectUserProfile);
   error$ = this.store.select(selectUserError);
   preferences$ = this.store.select(selectUserPreferences);
+  username$ = this.store.select(selectAuthUsername);
 
   form = this.fb.nonNullable.group({
     fullName: [''],
