@@ -1,37 +1,79 @@
-<app-side-nav>
-  <div class="account-page">
-    <div class="account-card">
-      <header class="account-header">
-        <div>
-          <h2 class="account-title">Mon profil</h2>
-          <p class="account-subtitle">
-            Gérez vos informations et préférences My Shop.
-          </p>
+<div class="profile-page">
+  <div class="profile-card" *ngIf="(profile$ | async) as profile">
+    <span class="corner corner--tl"></span>
+    <span class="corner corner--tr"></span>
+    <span class="corner corner--bl"></span>
+    <span class="corner corner--br"></span>
+
+    <header class="profile-header">
+      <div class="profile-label">USERNAME :</div>
+
+      <div class="profile-headline">
+        <div class="profile-name">
+          <span class="profile-first">
+            {{ (username$ | async) ?? profile.username }}
+          </span>
         </div>
-      </header>
-
-      <div class="profile-body">
-        <div *ngIf="(loading$ | async)" class="loading-zone">
-          <mat-spinner diameter="40"></mat-spinner>
-        </div>
-
-        <p *ngIf="(error$ | async) as error" class="error-text">
-          {{ error }}
-        </p>
-
-        <ng-container *ngIf="(profile$ | async) as profile">
-          <div class="profile-grid" [class.profile-grid--single]="!(loading$ | async)">
-            <section class="profile-section">
-              <h3 class="section-title">Informations de compte</h3>
-
-              <div class="field-group">
-                <span class="field-label">Identifiant</span>
-                <p class="field-readonly">{{ (username$ | async) ?? profile.username }}</p>
-              </div>
-            </section>
-          </div>
-        </ng-container>
       </div>
+
+      <p class="profile-desc">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nisi leo, porta eu mi et, 
+        molestie hendrerit massa. Sed aliquam felis et interdum semper. Quisque mauris lacus, faucibus 
+        a odio ut, congue aliquet purus.
+      </p>
+    </header>
+
+    <div class="profile-body">
+      <div *ngIf="(loading$ | async)" class="profile-loading">
+        <mat-spinner diameter="34"></mat-spinner>
+      </div>
+
+      <p *ngIf="(error$ | async) as error" class="profile-error">
+        {{ error }}
+      </p>
+
+      <ng-container>
+        <div class="profile-info">
+          <div class="profile-info-left">
+            <div class="profile-info-title">Identifiant</div>
+            <div class="profile-info-value">
+              {{ (username$ | async) ?? profile.username }}
+            </div>
+          </div>
+
+          <div class="profile-info-right">
+            <div class="profile-info-title">Email</div>
+            <div class="profile-info-value">
+              {{ profile.email || '—' }}
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-links">
+          <div class="profile-links-label">LINKS:</div>
+
+          <a class="profile-link" routerLink="/shop/products">
+            <span class="profile-link-text">Products</span>
+            <span class="profile-link-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="profile-link" routerLink="/shop/wishlist">
+            <span class="profile-link-text">Wishlist</span>
+            <span class="profile-link-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="profile-link" routerLink="/shop/cart">
+            <span class="profile-link-text" >Cart</span>
+            <span class="profile-link-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="profile-link" routerLink="/account/orders">
+            <span class="profile-link-text">Orders</span>
+            <span class="profile-link-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="profile-link" routerLink="/login">
+            <span class="profile-link-text">Logout</span>
+            <span class="profile-link-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </ng-container>
     </div>
   </div>
-</app-side-nav>
+</div>

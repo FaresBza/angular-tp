@@ -22,8 +22,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { SideNavComponent } from "../../layout/side-nav/side-nav";
 import { selectAuthUsername } from '../../state/auth/auth.selectors';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-account-profile',
@@ -33,6 +33,7 @@ import { selectAuthUsername } from '../../state/auth/auth.selectors';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    RouterLink,
     NgIf,
     ReactiveFormsModule,
     MatCardModule,
@@ -41,7 +42,6 @@ import { selectAuthUsername } from '../../state/auth/auth.selectors';
     MatInputModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    SideNavComponent
 ],
 })
 export class ProfilePageComponent implements OnInit {
