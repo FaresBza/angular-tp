@@ -1,8 +1,9 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe, NgIf, CurrencyPipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 import { ProductsActions } from '../state/products/products.action';
 import {
@@ -54,10 +55,13 @@ import { TableSkeletonComponent } from '../ui/skeletons/table-skeletons/table-sk
     TableSkeletonComponent,
   ],
 })
-export class ProductsPageComponent implements OnInit {
+export class ProductsPageComponent implements OnInit, OnDestroy {
   private store = inject(Store);
   private fb = inject(FormBuilder);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  private debounce$ = new Subject<void>();
 
   displayedColumns = ['id', 'name', 'price', 'created_at', 'avg', 'stock', 'wishlist'];
 
@@ -77,18 +81,50 @@ export class ProductsPageComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.onSearch();
+    this.route.queryParams.pipe(takeUntil(this.debounce$)).subscribe((params) => {
+      const page = Number(params['page'] ?? 1);
+      const pageSize = Number(params['pageSize'] ?? 10);
+      const minRating = Number(params['minRating'] ?? 0);
+      const ordering = String(params['ordering'] ?? '-created_at');
+
+      this.filters.patchValue(
+        { page, pageSize, minRating, ordering },
+        { emitEvent: false },
+      );
+
+      this.onSearch();
+    });
+
+    this.filters.valueChanges
+      .pipe(debounceTime(1000), takeUntil(this.debounce$))
+      .subscribe((values) => {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: values,
+          queryParamsHandling: 'merge',
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.debounce$.next();
+    this.debounce$.complete();
   }
 
   onSearch() {
+    const v = this.filters.value;
     this.store.dispatch(
       ProductsActions.loadProducts({
-        page: this.filters.value.page!,
-        pageSize: this.filters.value.pageSize!,
-        minRating: this.filters.value.minRating!,
-        ordering: this.filters.value.ordering!,
+        page: v.page!,
+        pageSize: v.pageSize!,
+        minRating: v.minRating!,
+        ordering: v.ordering!,
       }),
     );
+  }
+
+  retry() {
+    this.onSearch();
   }
 
   goToRatingProductPage(id: number) {
@@ -104,7 +140,6 @@ export class ProductsPageComponent implements OnInit {
       page: event.pageIndex + 1,
       pageSize: event.pageSize,
     });
-    this.onSearch();
   }
 
   isInWishlist(id: number, wishlistIds: string[]): boolean {
