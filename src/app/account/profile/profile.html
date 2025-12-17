@@ -4,76 +4,81 @@
     <span class="corner corner--tr"></span>
     <span class="corner corner--bl"></span>
     <span class="corner corner--br"></span>
+    <div class="profile-infos">
+      <header class="profile-header">
+        <div class="profile-label">USERNAME :</div>
 
-    <header class="profile-header">
-      <div class="profile-label">USERNAME :</div>
-
-      <div class="profile-headline">
-        <div class="profile-name">
-          <span class="profile-first">
-            {{ (username$ | async) ?? profile.username }}
-          </span>
-        </div>
-      </div>
-
-      <p class="profile-desc">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nisi leo, porta eu mi et, 
-        molestie hendrerit massa. Sed aliquam felis et interdum semper. Quisque mauris lacus, faucibus 
-        a odio ut, congue aliquet purus.
-      </p>
-    </header>
-
-    <div class="profile-body">
-      <div *ngIf="(loading$ | async)" class="profile-loading">
-        <mat-spinner diameter="34"></mat-spinner>
-      </div>
-
-      <p *ngIf="(error$ | async) as error" class="profile-error">
-        {{ error }}
-      </p>
-
-      <ng-container>
-        <div class="profile-info">
-          <div class="profile-info-left">
-            <div class="profile-info-title">Identifiant</div>
-            <div class="profile-info-value">
+        <div class="profile-headline">
+          <div class="profile-name">
+            <span class="profile-first">
               {{ (username$ | async) ?? profile.username }}
-            </div>
-          </div>
-
-          <div class="profile-info-right">
-            <div class="profile-info-title">Email</div>
-            <div class="profile-info-value">
-              {{ profile.email || '—' }}
-            </div>
+            </span>
           </div>
         </div>
 
-        <div class="profile-links">
-          <div class="profile-links-label">LINKS:</div>
+        <p class="profile-desc">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse nisi leo, porta eu mi et, 
+          molestie hendrerit massa. Sed aliquam felis et interdum semper. Quisque mauris lacus, faucibus 
+          a odio ut, congue aliquet purus.
+        </p>
+      </header>
 
-          <a class="profile-link" routerLink="/shop/products">
-            <span class="profile-link-text">Products</span>
-            <span class="profile-link-arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="profile-link" routerLink="/shop/wishlist">
-            <span class="profile-link-text">Wishlist</span>
-            <span class="profile-link-arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="profile-link" routerLink="/shop/cart">
-            <span class="profile-link-text" >Cart</span>
-            <span class="profile-link-arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="profile-link" routerLink="/account/orders">
-            <span class="profile-link-text">Orders</span>
-            <span class="profile-link-arrow" aria-hidden="true">→</span>
-          </a>
-          <a class="profile-link" routerLink="/login">
-            <span class="profile-link-text">Logout</span>
-            <span class="profile-link-arrow" aria-hidden="true">→</span>
-          </a>
+      <div class="profile-body">
+        <div *ngIf="(loading$ | async)" class="profile-loading">
+          <mat-spinner diameter="34"></mat-spinner>
         </div>
-      </ng-container>
+
+        <p *ngIf="(error$ | async) as error" class="profile-error">
+          {{ error }}
+        </p>
+
+        <ng-container>
+          <div class="profile-info">
+            <div class="profile-info-left">
+              <div class="profile-info-title">Identifiant</div>
+              <div class="profile-info-value">
+                {{ (username$ | async) ?? profile.username }}
+              </div>
+            </div>
+
+            <div class="profile-info-right">
+              <div class="profile-info-title">Email</div>
+              <div class="profile-info-value">
+                {{ profile.email || '—' }}
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-links">
+            <div class="profile-links-label">
+              <p>LINKS↓</p>
+            </div>
+
+            <div class="profile-links-link">
+              <a class="profile-link" routerLink="/shop/products">
+                <span class="profile-link-text">Products</span>
+                <span class="profile-link-arrow" aria-hidden="true">→</span>
+              </a>
+              <a class="profile-link" routerLink="/shop/wishlist">
+                <span class="profile-link-text">Wishlist</span>
+                <span class="profile-link-arrow" aria-hidden="true">→</span>
+              </a>
+              <a class="profile-link" routerLink="/shop/cart">
+                <span class="profile-link-text" >Cart</span>
+                <span class="profile-link-arrow" aria-hidden="true">→</span>
+              </a>
+              <a class="profile-link" routerLink="/account/orders">
+                <span class="profile-link-text">Orders</span>
+                <span class="profile-link-arrow" aria-hidden="true">→</span>
+              </a>
+              <a class="profile-link" routerLink="/login">
+                <span class="profile-link-text">Logout</span>
+                <span class="profile-link-arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>
