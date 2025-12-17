@@ -4,11 +4,29 @@
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
         <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" />
-            @if (loginForm.get('username')?.hasError('required')) {
+            <mat-label>Firstname</mat-label>
+            <input matInput formControlName="firstname" />
+            @if (loginForm.get('firstname')?.hasError('required')) {
             <mat-error>
-            Username is required
+            Firstname is required
+            </mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Lastname</mat-label>
+            <input matInput formControlName="lastname" />
+            @if (loginForm.get('lastname')?.hasError('required')) {
+            <mat-error>
+            Lastname is required
+            </mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+            @if (loginForm.get('email')?.hasError('required')) {
+            <mat-error>
+            Email is required
             </mat-error>
             }
         </mat-form-field>

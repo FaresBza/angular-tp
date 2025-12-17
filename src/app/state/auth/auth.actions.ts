@@ -5,7 +5,7 @@ export const AuthActions = createActionGroup({
     events: {
         hydrateFromStorage: emptyProps(),
 
-        login: props<{ username: string; password: string }>(),
+        login: props<{ firstname: string; lastname: string; email: string; password: string }>(),
         loginSuccess: props<{ access: string; refresh: string }>(),
         loginFailure: props<{ error: string }>(),
 

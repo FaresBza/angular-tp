@@ -41,7 +41,8 @@ export interface UserPreferences {
 
 export interface UserProfile {
     id: string;
-    username: string;
+    firstname: string;
+    lastname: string;
     email: string;
     fullName?: string;
     defaultAddress?: Address;

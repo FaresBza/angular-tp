@@ -20,8 +20,8 @@ export class AuthEffects {
     login$ = createEffect(() =>
         this.actions$.pipe(
         ofType(AuthActions.login),
-        switchMap(({ username, password }) =>
-            this.http.post<LoginRes>('/api/auth/token/', { username, password }).pipe(
+        switchMap(({ firstname, lastname, email, password }) =>
+            this.http.post<LoginRes>('/api/auth/token/', { firstname, lastname, email, password }).pipe(
             map(({ access, refresh }) => AuthActions.loginSuccess({ access, refresh })),
             catchError((err) =>
                 of(AuthActions.loginFailure({ error: err?.message ?? 'Login failed' })),

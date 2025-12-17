@@ -22,7 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { selectAuthUsername } from '../../state/auth/auth.selectors';
+import { selectAuthFirstname, selectAuthLastname, selectAuthEmail } from '../../state/auth/auth.selectors';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -52,7 +52,9 @@ export class ProfilePageComponent implements OnInit {
   profile$ = this.store.select(selectUserProfile);
   error$ = this.store.select(selectUserError);
   preferences$ = this.store.select(selectUserPreferences);
-  username$ = this.store.select(selectAuthUsername);
+  firstname$ = this.store.select(selectAuthFirstname);
+  lastname$ = this.store.select(selectAuthLastname);
+  email$ = this.store.select(selectAuthEmail);
 
   form = this.fb.nonNullable.group({
     fullName: [''],

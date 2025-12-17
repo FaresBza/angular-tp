@@ -11,7 +11,8 @@
         <div class="profile-headline">
           <div class="profile-name">
             <span class="profile-first">
-              {{ (username$ | async) ?? profile.username }}
+              {{ (firstname$ | async) ?? profile.firstname }}
+              {{ (lastname$ | async) ?? profile.lastname }}
             </span>
           </div>
         </div>
@@ -35,16 +36,23 @@
         <ng-container>
           <div class="profile-info">
             <div class="profile-info-left">
-              <div class="profile-info-title">Identifiant</div>
+              <div class="profile-info-title">Firstname</div>
               <div class="profile-info-value">
-                {{ (username$ | async) ?? profile.username }}
+                {{ (firstname$ | async) ?? profile.firstname }}
+              </div>
+            </div>
+
+            <div class="profile-info-right">
+              <div class="profile-info-title">Lastname</div>
+              <div class="profile-info-value">
+                {{ (lastname$ | async) ?? profile.lastname }}
               </div>
             </div>
 
             <div class="profile-info-right">
               <div class="profile-info-title">Email</div>
               <div class="profile-info-value">
-                {{ profile.email || '—' }}
+                {{ (email$ | async) ?? profile.email }}
               </div>
             </div>
           </div>

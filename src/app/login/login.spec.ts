@@ -25,18 +25,33 @@ describe('LoginPageComponent (simple)', () => {
   });
 
   it('should dispatches login action on submit when form is valid', () => {
-    component.loginForm.setValue({ username: 'u', password: 'p' });
+    component.loginForm.setValue({ 
+      firstname: 'Jean',
+      lastname: 'Dupont',
+      email: 'jean.dupont@gmail.com',
+      password: '12345' 
+    });
     expect(component.loginForm.valid).toBeTrue();
 
     component.onSubmit();
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      AuthActions.login({ username: 'u', password: 'p' }),
+      AuthActions.login({ 
+        firstname: 'Jean',
+        lastname: 'Dupont',
+        email: 'jean.dupont@gmail.com',
+        password: '12345' 
+      }),
     );
   });
 
   it('should does not dispatch when form is invalid', () => {
-    component.loginForm.setValue({ username: '', password: '' });
+    component.loginForm.setValue({ 
+      firstname: '', 
+      lastname: '', 
+      email: '', 
+      password: '' 
+    });
     expect(component.loginForm.invalid).toBeTrue();
 
     component.onSubmit();

@@ -45,7 +45,9 @@ export class LoginPageComponent implements OnInit {
   isLoggedIn$ = this.store.select(selectIsLoggedIn);
 
   loginForm = this.fb.group({
-    username: ['', Validators.required],
+    firstname: ['', Validators.required],
+    lastname: ['', Validators.required],
+    email: ['', Validators.required],
     password: ['', Validators.required],
   });
 
@@ -54,10 +56,12 @@ export class LoginPageComponent implements OnInit {
   onSubmit() {
     if (this.loginForm.invalid) return;
 
-    const username = this.loginForm.value.username ?? '';
+    const firstname = this.loginForm.value.firstname ?? '';
+    const lastname = this.loginForm.value.lastname ?? '';
+    const email = this.loginForm.value.email ?? '';
     const password = this.loginForm.value.password ?? '';
 
-    this.store.dispatch(AuthActions.login({ username, password }));
+    this.store.dispatch(AuthActions.login({ firstname, lastname, email, password }));
 
     this.isLoggedIn$
       .pipe(
@@ -72,7 +76,7 @@ export class LoginPageComponent implements OnInit {
           return;
         }
 
-        if (username == 'admin') {
+        if (firstname && lastname == 'admin') {
           this.router.navigate(['/dashboard/admin']);
         } else {
           this.router.navigate(['/shop/products']);
