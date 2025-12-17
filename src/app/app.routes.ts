@@ -18,6 +18,7 @@ import { WishlistPageComponent } from './wishlist/wishlist';
 import { authGuard } from './state/auth/auth.guard';
 import { AdminPageComponent } from './admin/admin';
 import { adminGuard } from './state/admin/admin.guard';
+import { checkoutGuard } from './state/cart/checkout.guard';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -30,7 +31,7 @@ export const routes: Routes = [
   { path: 'shop/products', component: ProductsPageComponent },
   { path: 'shop/details/:id', component: ProductDetailsPageComponent },
   { path: 'shop/cart', component: CartPageComponent },
-  { path: 'shop/checkout', component: CheckoutComponent },
+  { path: 'shop/checkout', component: CheckoutComponent, canActivate: [checkoutGuard] },
   { path: 'shop/wishlist', component: WishlistPageComponent },
   { path: 'account/profile', component: ProfilePageComponent, canActivate: [authGuard] },
   { path: 'account/orders', component: OrdersPageComponent, canActivate: [authGuard] },
