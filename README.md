@@ -1,42 +1,4 @@
-# Angular : Project with state management (NgRx), Storybook, and Material
-
-## 1. Install dependencies
-```bash
-#Install base dependencies:
-    - npm install
-
-#NgRx (store, effects, devtools):
-    - ng add @ngrx/store@latest
-#or
-    - npm install @ngrx/store @ngrx/effects @ngrx/store-devtools
-
-#Storybook:
-    - npx sb init
-
-#Angular Material:
-    - ng add @angular/material@latest
-```
-
-## 2. Run the project
-```bash
-    - ng serve
-```
-
-## 3. Run Storybook
-```bash
-    - npm run storybook
-```
-
-## 4. Where state lives
-State is kept in the NgRx store under src/app/state. Use actions → reducers/effects → selectors; components dispatch actions and select slices of state.
-
-
-# My Shop — Angular + NgRx (E-commerce)
-
-Projet Angular (standalone components) avec gestion d’état via **NgRx** (store + effects + selectors).  
-Objectif : implémenter un mini e-commerce avec UX “production ready” (loaders, erreurs, CI, tests unitaires, accessibilité).
-
----
+# E4 - Application e-commerce Angular + NgRx
 
 ## Sommaire
 
@@ -44,7 +6,7 @@ Objectif : implémenter un mini e-commerce avec UX “production ready” (loade
 - [Architecture & structure](#architecture--structure)
 - [NgRx slices](#ngrx-slices)
 - [Décisions techniques](#décisions-techniques)
-- [Quality & Production Readiness (Exercice 4)](#quality--production-readiness-exercice-4)
+- [Code Quality](#code-quality)
 - [Lancer le projet](#lancer-le-projet)
 
 ---
