@@ -68,23 +68,153 @@
 
 ## Architecture & structure
 
-``` 
-src/app/
-    products/
-    product-details/
-    cart/
-    checkout/
-    wishlist/
-    account/ (profile, orders, order-details)
-    state/
-    auth/
-    products/
-    reviews/
-    cart/
-    user/
-    ui/ # loaders + notifications
-    ui/
-    skeletons/
+```
+├── .github
+│   └── workflows
+│       └── ci.yml
+├── public
+│   ├── favicon.ico
+│   └── mockServiceWorker.js
+├── src
+│   ├── app
+│   │   ├── account
+│   │   │   ├── order-details
+│   │   │   │   ├── order-details.css
+│   │   │   │   ├── order-details.html
+│   │   │   │   ├── order-details.spec.ts
+│   │   │   │   └── order-details.ts
+│   │   │   ├── orders
+│   │   │   │   ├── orders.css
+│   │   │   │   ├── orders.html
+│   │   │   │   ├── orders.spec.ts
+│   │   │   │   └── orders.ts
+│   │   │   └── profile
+│   │   │       ├── profile.css
+│   │   │       ├── profile.html
+│   │   │       ├── profile.spec.ts
+│   │   │       └── profile.ts
+│   │   ├── admin
+│   │   │   ├── admin.css
+│   │   │   ├── admin.html
+│   │   │   ├── admin.spec.ts
+│   │   │   └── admin.ts
+│   │   ├── cart
+│   │   │   ├── cart.css
+│   │   │   ├── cart.html
+│   │   │   ├── cart.spec.ts
+│   │   │   └── cart.ts
+│   │   ├── checkout
+│   │   │   ├── checkout.css
+│   │   │   ├── checkout.html
+│   │   │   ├── checkout.spec.ts
+│   │   │   └── checkout.ts
+│   │   ├── dev
+│   │   │   ├── dev-auth.component.ts
+│   │   │   ├── dev-index.component.ts
+│   │   │   ├── dev-product-rating.component.ts
+│   │   │   └── dev-products.component.ts
+│   │   ├── layout
+│   │   │   └── side-nav
+│   │   │       ├── side-nav.css
+│   │   │       ├── side-nav.html
+│   │   │       ├── side-nav.spec.ts
+│   │   │       └── side-nav.ts
+│   │   ├── login
+│   │   │   ├── login.css
+│   │   │   ├── login.html
+│   │   │   ├── login.spec.ts
+│   │   │   └── login.ts
+│   │   ├── product-details
+│   │   │   ├── product-details.css
+│   │   │   ├── product-details.html
+│   │   │   ├── product-details.spec.ts
+│   │   │   └── product-details.ts
+│   │   ├── products
+│   │   │   ├── products.css
+│   │   │   ├── products.html
+│   │   │   ├── products.spec.ts
+│   │   │   └── products.ts
+│   │   ├── state
+│   │   │   ├── admin
+│   │   │   │   ├── admin.actions.ts
+│   │   │   │   ├── admin.effects.ts
+│   │   │   │   ├── admin.guard.ts
+│   │   │   │   ├── admin.models.ts
+│   │   │   │   ├── admin.reducer.ts
+│   │   │   │   └── admin.selectors.ts
+│   │   │   ├── auth
+│   │   │   │   ├── auth.actions.ts
+│   │   │   │   ├── auth.effects.ts
+│   │   │   │   ├── auth.guard.ts
+│   │   │   │   ├── auth.reducer.ts
+│   │   │   │   └── auth.selectors.ts
+│   │   │   ├── cart
+│   │   │   │   ├── cart.actions.ts
+│   │   │   │   ├── cart.effects.ts
+│   │   │   │   ├── cart.reducer.ts
+│   │   │   │   ├── cart.selectors.ts
+│   │   │   │   └── checkout.guard.ts
+│   │   │   ├── products
+│   │   │   │   ├── products.action.ts
+│   │   │   │   ├── products.effects.ts
+│   │   │   │   ├── products.reducer.ts
+│   │   │   │   └── products.selectors.ts
+│   │   │   ├── reviews
+│   │   │   │   ├── reviews.actions.ts
+│   │   │   │   ├── reviews.effects.ts
+│   │   │   │   ├── reviews.models.ts
+│   │   │   │   ├── reviews.reducer.ts
+│   │   │   │   └── reviews.selectors.ts
+│   │   │   ├── tests
+│   │   │   │   ├── auth.effects.spec.ts
+│   │   │   │   ├── auth.reducer.spec.ts
+│   │   │   │   ├── cart.reducer.spec.ts
+│   │   │   │   ├── products.effect.spec.ts
+│   │   │   │   └── user.selectors.spec.ts
+│   │   │   ├── ui
+│   │   │   │   ├── ui.actions.ts
+│   │   │   │   ├── ui.effects.ts
+│   │   │   │   ├── ui.models.ts
+│   │   │   │   ├── ui.reducer.ts
+│   │   │   │   └── ui.selectors.ts
+│   │   │   └── user
+│   │   │       ├── user.actions.ts
+│   │   │       ├── user.effects.ts
+│   │   │       ├── user.models.ts
+│   │   │       ├── user.reducer.ts
+│   │   │       └── user.selectors.ts
+│   │   ├── ui
+│   │   │   └── skeletons
+│   │   │       └── table-skeletons
+│   │   │           └── table-skeleton
+│   │   │               ├── table-skeleton.css
+│   │   │               ├── table-skeleton.html
+│   │   │               ├── table-skeleton.spec.ts
+│   │   │               └── table-skeleton.ts
+│   │   ├── wishlist
+│   │   │   ├── wishlist.css
+│   │   │   ├── wishlist.html
+│   │   │   ├── wishlist.spec.ts
+│   │   │   └── wishlist.ts
+│   │   ├── app-placeholder.component.ts
+│   │   ├── app.config.ts
+│   │   ├── app.css
+│   │   ├── app.html
+│   │   ├── app.routes.ts
+│   │   ├── app.spec.ts
+│   │   ├── app.ts
+│   │   ├── home.component.css
+│   │   └── home.component.ts
+│   ├── mocks
+│   │   ├── browser.ts
+│   │   ├── data.ts
+│   │   ├── handlers.ts
+│   │   └── utils.ts
+│   ├── custom-theme.scss
+│   ├── index.html
+│   ├── main.ts
+│   └── styles.css
+└── README.md
 ```
 
 ---
