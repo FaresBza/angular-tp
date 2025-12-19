@@ -20,7 +20,6 @@
 - Accès panier (badge count)
 - Navigation vers `/shop/details/:id` via clic ligne ou clavier (Enter/Espace)
 
-
 ---
 
 ### `/shop/details/:id` (Product details + reviews)
@@ -88,7 +87,6 @@ src/app/
     skeletons/
 ```
 
-
 ---
 
 ## NgRx slices
@@ -146,9 +144,19 @@ Notifications globales (NgRx → Effects) :
 
 ### Tests unitaires
 - Reducers : `cart.reducer.spec.ts`, `auth.reducer.spec.ts`
-- Selectors : `cart.selectors.spec.ts`
+- Selectors : `user.selectors.spec.ts`
 - Effects : `products.effects.spec.ts`, `auth.effects.spec.ts`
-- Components : `login.spec.ts`, `products.spec.ts`
+- Components : 
+    - `order-details.spec.ts`, 
+    - `orders.spec.ts`
+    - `admin.spec.ts`, 
+    - `cart.spec.ts`
+    - `checkout.spec.ts`
+    - `login.spec.ts`, 
+    - `product-details.spec.ts`, 
+    - `products.spec.ts`
+    - `table-skeletons.spec.ts`, 
+    - `wislist.spec.ts`
 
 ### CI (GitHub Actions)
 Workflow exécuté sur chaque PR vers `main` :
