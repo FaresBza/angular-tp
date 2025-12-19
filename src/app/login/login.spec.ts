@@ -6,14 +6,29 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginPageComponent } from './login';
 import { AuthActions } from '../state/auth/auth.actions';
 
-describe('LoginPageComponent (simple)', () => {
+describe('LoginPageComponent', () => {
   let store: MockStore;
   let component: LoginPageComponent;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoginPageComponent, RouterTestingModule, NoopAnimationsModule],
-      providers: [provideMockStore()],
+      providers: [
+        provideMockStore({
+          initialState: {
+            auth: {
+              access: null,
+              refresh: null,
+              firsx: null,
+              firstname: null,
+              lastname: null,
+              email: null,
+              loading: false,
+              error: null,
+            },
+          },
+        }),
+      ],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
@@ -24,34 +39,36 @@ describe('LoginPageComponent (simple)', () => {
     fixture.detectChanges();
   });
 
-  it('should dispatches login action on submit when form is valid', () => {
-    component.loginForm.setValue({ 
+  it('dispatches login action on submit when form is valid', () => {
+    component.loginForm.setValue({
       firstname: 'Jean',
       lastname: 'Dupont',
       email: 'jean.dupont@gmail.com',
-      password: '12345' 
+      password: '12345',
     });
+
     expect(component.loginForm.valid).toBeTrue();
 
     component.onSubmit();
 
     expect(store.dispatch).toHaveBeenCalledWith(
-      AuthActions.login({ 
+      AuthActions.login({
         firstname: 'Jean',
         lastname: 'Dupont',
         email: 'jean.dupont@gmail.com',
-        password: '12345' 
+        password: '12345',
       }),
     );
   });
 
-  it('should does not dispatch when form is invalid', () => {
-    component.loginForm.setValue({ 
-      firstname: '', 
-      lastname: '', 
-      email: '', 
-      password: '' 
+  it('does not dispatch when form is invalid', () => {
+    component.loginForm.setValue({
+      firstname: '',
+      lastname: '',
+      email: '',
+      password: '',
     });
+
     expect(component.loginForm.invalid).toBeTrue();
 
     component.onSubmit();
